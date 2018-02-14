@@ -2,8 +2,19 @@
 require('file-loader!./index.ejs')
 
 
-// Add instantiation for figures here
 import StyleTransferExamples from './StyleTransferExamples.html';
+import AlignedInterpolationExamples from './AlignedInterpolationExamples.html';
 
-const tag = document.getElementById('StyleTransferExamples');
-const styleTransferExamples = new StyleTransferExamples({target: tag});
+{
+  const figure = document.getElementById('StyleTransferExamples');
+  figure.addEventListener("ready", function() {
+    const styleTransferExamples = new StyleTransferExamples({target: figure});
+  });
+}
+
+{
+  const figure = document.getElementById('AlignedInterpolationExamples');
+  figure.addEventListener("ready", function() {
+    const alignedInterpolationExamples = new AlignedInterpolationExamples({target: figure});
+  });
+}

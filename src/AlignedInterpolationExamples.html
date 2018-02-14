@@ -1,0 +1,85 @@
+<figure class="base-grid">
+  <figcaption><p>
+    Text!
+  </p></figcaption>
+  <div class="container">
+    <ImageArray ref:imageArray></ImageArray>
+  </div>
+</figure>
+
+
+<style>
+
+  figure {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  figcaption {
+    grid-column: kicker;
+  }
+  
+  .container {
+    grid-column: text-start / page-end;
+  }
+  
+  .interpolation-sprite {
+    background-image: url("images/interpolation.jpg");
+  }
+  
+</style>
+
+<script>
+  import ImageArray from './ImageArray';
+  
+  const imageArrayData = {
+    src_class: "interpolation-sprite",
+    icon_src_class: "interpolation-sprite",
+    icon_x: 0,
+    label_func: (n, i) => {
+      if (n == 0) {
+        return [
+          "Layer 4a, Unit 476",
+          "Layer 4a, Unit 476",
+          "Layer 4a, Unit 460",
+          "Layer 4b, Unit 475",
+          "Layer 4c, Unit 369",
+          "Layer 4d, Unit 503",
+          "Layer 4d, Unit 503",
+          "Layer 5a, Unit 810",
+          "Layer 5a, Unit 810",
+        ][i];
+      } else if (n == 5) {
+        return [
+          "Layer 4a, Unit 455",
+          "Layer 4a, Unit 460",
+          "Layer 4a, Unit 501",
+          "Layer 4a, Unit 476",
+          "Layer 4a, Unit 476",
+          "Layer 5a, Unit 791",
+          "Layer 5a, Unit 810",
+          "Layer 5a, Unit 200",
+          "Layer 5a, Unit 791",
+        ][i];
+      } else {
+        return "";
+      }
+    },
+    n_images: 6,
+    n_icons: 9,
+    sprite_size: 128, 
+    size: 128,
+    icon_scale: 1,
+    hover_scale: 1,
+    selected: 1,
+    backwards: false
+  }
+  
+  export default {
+    oncreate() {
+      this.refs.imageArray.set(imageArrayData);
+    },
+    components: { ImageArray }
+  }
+
+</script>
