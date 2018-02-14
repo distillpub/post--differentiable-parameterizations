@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://distill.pub/template.v2.js"></script>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <style><%= require("raw-loader!../static/style.css") %></style>
 </head>
 
 <body>
@@ -13,6 +13,7 @@
   <script type="text/json">{
   "title": "Differentiable Image Parameterizations",
   "description": "Examples of differentiable image parameterizations that allow solving previously intractable optimization tasks.",
+  "password": "params",
   "authors": [
     {
       "author": "Alexander Mordvintsev",
@@ -20,7 +21,21 @@
       "affiliation": "Google Research",
       "affiliationURL": "https://research.google.com/"
     }
-  ]
+  ],
+  "katex": {
+    "delimiters": [
+      {
+        "left": "$",
+        "right": "$",
+        "display": false
+      },
+      {
+        "left": "$$",
+        "right": "$$",
+        "display": true
+      }
+    ]
+  }
   }</script>
 </d-front-matter>
 
@@ -50,13 +65,20 @@
   <h2 id='experiment-aligned'>Aligned Neuron Interpolation</h2>
   
   <p>
-    As an introductory example, we explore how the <a href="https://distill.pub/2017/feature-visualization/#interpolation">aligned interpolation neuron visualizations</a> in <d-cite key="olah2017feature"></d-cite> are created.
-    The motivation for a non-standard image parameterization comes from the desire to have the interpolation be visually aligned.
-    Take this naive approach that simply optimizes each image independently for a linear combination of the two neurons:
+    As an introductory example, we explore how <a href="https://distill.pub/2017/feature-visualization/#interpolation">aligned interpolation neuron visualizations</a> are created.
+    The motivation for a non-standard image parameterization comes from the desire to have the interpolation be visually aligned, as in the following figure originally published in <d-cite key="olah2017feature">Feature Visualization</d-cite>:
   </p>
-  <img src="images/interpolation-naive.jpg"/>
-  
   <d-figure class="base-grid" id='AlignedInterpolationExamples'></d-figure>
+  <p>
+    To see the problem with a naive approach, compare the following animations.
+    In the first animation, each image was optimized independently for a convex combination of the two neurons. The resulting animation is jumpy. In the second animation we used a shared parameterization we will detail shortly. Notice how much smoother the second animation appears: (TODO: hover to play indicator, layout)
+  </p>
+  <d-figure id='AlignedInterpolationAnimations'></d-figure>
+  <p>
+    To achieve this visual alignment we optimized the frames of the second animation as a combination of a lower-resolution shared parameterization and a higher resolution parameterization unique to each frame.
+    Thus the parameterization $P^i$ of each image $i$ is $ N(P_{\text{unique}}^i + P_{\text{shared}}) $ where $N$ is usually the logistic function.
+  </p>
+  <%- require('!svg-inline-loader!../static/images/lowres-tensor.svg') %>
   
   <h2 id='experiment-styletransfer'>Style Transfer on non-VGG architectures</h2>
   

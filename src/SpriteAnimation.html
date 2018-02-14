@@ -1,0 +1,40 @@
+<div id='animation' style='
+  --width: {{width}}px;
+  --height: {{height}}px;
+  --n_images: {{n_images}};
+  --background-position: -{{run ? n_images * width : 0}}px;
+  --image_url: url({{image_url}});
+  --interval_seconds: {{interval_seconds}}s;
+  --alternate: {{alternate ? 'alternate' : ''}};
+  --infinite: {{infinite ? 'infinite' : ''}};
+'></div>
+
+<style> 
+  #animation {
+    width: var(--width);
+    height: var(--height);
+    background: var(--image_url) left center;
+    animation: play var(--interval_seconds) steps(var(--n_images)) var(--infinite) var(--alternate);
+  }
+  @keyframes play {
+    100% { background-position: var(--background-position); }
+  }
+</style>
+
+<script>
+
+export default {
+  data() {
+    return {
+      width: 128,
+      height: 128,
+      n_images: 5,
+      image_url: null,
+      interval_seconds: 1.0,
+      alternate: true,
+      infinite: true,
+      run: true
+    }
+  }
+}
+</script>

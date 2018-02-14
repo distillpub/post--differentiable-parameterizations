@@ -47,6 +47,15 @@ module.exports = {
         }
       },
       {
+        test: /\.svg$/,
+        exclude: /node_modules/,
+        loader: 'svg-inline-loader',
+        options: {
+          removeSVGTagAttrs: true,
+          removingTagAttrs: ["font-family"]
+        }
+      },
+      {
         test: /\.(png|jpg|jpeg)$/,
         exclude: /node_modules/,
         loader: 'file',

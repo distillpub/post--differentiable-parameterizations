@@ -1,0 +1,39 @@
+<div class='grid' on:mouseover='set({run: true})' on:mouseout='set({run: false})'>
+  <div class="animation">
+    <SpriteAnimation :run :interval_seconds :n_images image_url={{naive_image_url}}></SpriteAnimation>
+    <span class="figcaption">Independently optimized images</span>
+  </div>
+  <div>
+    <SpriteAnimation :run :interval_seconds :n_images image_url={{aligned_image_url}}></SpriteAnimation>
+    <span class="figcaption">Images optimized with alignment</span>
+  </div>
+</div>
+
+
+<style>
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+  }
+  .animation {
+    display: inline;
+  }
+</style>
+
+
+<script>
+  import SpriteAnimation from './SpriteAnimation';
+  
+  export default {
+    data() {
+      return {
+        run: false,
+        interval_seconds: 2.0,
+        n_images: 15,
+        naive_image_url: 'images/interpolation-animation-naive.jpg',
+        aligned_image_url: 'images/interpolation-animation-aligned.jpg',
+      }
+    },
+    components: { SpriteAnimation }
+  }
+</script>
