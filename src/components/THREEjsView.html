@@ -1,0 +1,166 @@
+<div class='meshview'>
+  <div class='controls'>
+    <input ref:unfoldBox id="unfoldBox" type="checkbox" class="control" bind:value='unfoldFlag'/>
+    <label for="unfoldBox">Unfold</label>
+    <input ref:shadeBox id="shadeBox" type="checkbox" class="control" bind:value='shadedFlag'/>
+    <label for='shadeBox'>Shade</label>
+  </div>
+  <div ref:container class='container'></div>
+</div>
+
+<style>
+
+</style>
+
+<script>
+import * as THREE from 'three';
+import OrbitControls from 'three-orbitcontrols';
+
+const vertexShaderString = `
+  uniform float viewAspect;
+  uniform float unfolding_perc;
+  uniform float shadeFlag;
+  varying vec2 text_coord;
+  varying float shading;
+  
+  void main () {
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vec4 plane_position = vec4((uv.x*2.0-1.0)/viewAspect, (uv.y*2.0-1.0), 0, 1);
+    gl_Position = mix(gl_Position, plane_position, unfolding_perc);
+    //not normalized on purpose to simulate the rotation
+    shading = 1.0;
+    if (shadeFlag > 0.5) {
+      vec3 light_vector = mix(normalize(cameraPosition-position), normal, unfolding_perc);
+      shading = dot(normal, light_vector);
+    }
+    text_coord = uv;
+  }
+`;
+
+const fragmentShaderString = `
+  uniform float unfolding_perc;
+  varying vec2  text_coord;
+  varying float shading;
+  uniform sampler2D texture;
+  
+  void main() {
+    gl_FragColor = texture2D(texture, text_coord);
+    gl_FragColor.rgb *= (shading/1.25)+0.5;
+  }
+`;
+
+function ease (x) {
+  x = Math.min(Math.max(x, 0.0), 1.0);
+  return x*x*(3.0 - 2.0*x);
+}
+
+let update_f, animate_f;
+
+export default {
+  oncreate() {
+    const { renderer, scene, camera } = this.get();
+    animate_f = function(time) {
+      renderer.render(scene, camera);
+    }
+    update_f = function() {
+      requestAnimationFrame(animate_f);
+    }
+    this.set({'update_f': update_f, 'animate_f': animate_f});
+    
+    this.refs.container.appendChild(renderer.domElement);
+    update_f();
+    
+    this.observe('shadedFlag', shadedFlag => {
+      console.log(shadedFlag)
+      const { material } = this.get();
+      material.uniforms.shadeFlag.value = shadedFlag ? 1.0 : 0.0;
+      update_f();
+    });
+    
+    this.observe('unfoldFlag', unfoldFlag => {
+      const { material } = this.get();
+      // material.uniforms.unfoldFlag.value = unfoldFlag ? 1.0 : 0.0;
+      update_f();
+    });
+  },
+  data() {
+    return {
+      texture_url: null,
+      background: '#ffffff',
+      size: [400, 400],
+      raw_scene: new THREE.Scene(),
+      shadedFlag: true,
+      unfoldFlag: false,
+      unfoldDuration: 1000.0,
+    }
+  },
+  computed: {
+    camera: (scene, size) => {
+      const camera = new THREE.PerspectiveCamera(50, size[0] / size[1], 0.1, 100);
+      camera.position.z = 2.0;
+      scene.add(camera);
+      return camera ;
+    },
+    controls: (camera) => {
+      const controls = new OrbitControls( camera );
+      controls.addEventListener('change', function() {
+        // fold mesh back if user wants to interact
+        unfoldBox.checked = false;
+        update_f();
+      });
+      controls.enableZoom = false;
+      return controls;
+    },
+    geometry: (resources) => {
+      const geometry = new THREE.BufferGeometry();
+      geometry.addAttribute( 'position', new THREE.BufferAttribute(resources[0], 3 ) );
+      geometry.addAttribute( 'uv', new THREE.BufferAttribute(resources[1], 2) );
+      geometry.setIndex(new THREE.BufferAttribute(resources[2], 1 ));
+      geometry.computeVertexNormals();
+      return geometry;
+    },
+    texture: (texture_url, update_f) => {
+      return new THREE.TextureLoader().load(texture_url, update_f);
+    },
+    raw_material: (size) => {
+      const material = new THREE.ShaderMaterial( {
+        uniforms: {
+          viewAspect: {value: size[0]/size[1]},
+          unfolding_perc: { value: 0.0 },
+          shadeFlag: { value: 1.0 },
+          // texture: { type: 't', value: texture },
+        },
+        side: THREE.DoubleSide,
+        vertexShader: vertexShaderString,
+        fragmentShader: fragmentShaderString
+      });
+      return material;
+    },
+    material: (raw_material, texture) => {
+      raw_material.uniforms.texture = { type: 't', value: texture };
+      return raw_material;
+    },
+    mesh: (geometry, material) => {
+      const mesh = new THREE.Mesh(geometry, material);
+      return mesh;
+    },
+    scene: (raw_scene, mesh, background) => {
+      const oldMesh = raw_scene.getObjectByName('mesh');
+      if (oldMesh) raw_scene.remove(oldMesh);
+      mesh.name = 'mesh';
+      raw_scene.add(mesh);
+      raw_scene.background = new THREE.Color( background );
+      return raw_scene;
+    },
+    renderer: (size) => {
+      const renderer = new THREE.WebGLRenderer({antialias: true});
+      renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+      renderer.setSize(...size);
+      return renderer;
+    },
+  },
+  methods: {
+    
+  }
+}
+</script>

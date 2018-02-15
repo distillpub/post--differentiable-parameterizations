@@ -78,7 +78,9 @@
     To achieve this visual alignment we optimized the frames of the second animation as a combination of a lower-resolution shared parameterization and a higher resolution parameterization unique to each frame.
     Thus the parameterization $P^i$ of each image $i$ is $ N(P_{\text{unique}}^i + P_{\text{shared}}) $ where $N$ is usually the logistic function.
   </p>
-  <%- require('!svg-inline-loader!../static/images/lowres-tensor.svg') %>
+  <div>
+    <%= require('!svg-inline-loader!../static/images/lowres-tensor.svg') %>
+  </div>
   
   <h2 id='experiment-styletransfer'>Style Transfer on non-VGG architectures</h2>
   
@@ -93,6 +95,8 @@
   <h2 id='experiment-featureviz-3d'>Feature Visualization through a 3D Renderer</h2>
   
   <h2 id='experiment-styletransfer-3d'>Style Transfer through a 3D Renderer</h2>
+  
+  <d-figure class="base-grid" id="3DStyleTransferExamples"></d-figure>
   
   <h2 id='experiment-xy2rgb'>xy2rgb, a CPPN</h2>
 

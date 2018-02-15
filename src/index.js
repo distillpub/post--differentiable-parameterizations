@@ -2,9 +2,10 @@
 require('file-loader!./index.ejs')
 
 
-import StyleTransferExamples from './StyleTransferExamples.html';
-import AlignedInterpolationExamples from './AlignedInterpolationExamples.html';
-import AlignedInterpolationAnimations from './AlignedInterpolationAnimations.html';
+import StyleTransferExamples from './diagrams/StyleTransferExamples.html';
+import AlignedInterpolationExamples from './diagrams/AlignedInterpolationExamples.html';
+import AlignedInterpolationAnimations from './diagrams/AlignedInterpolationAnimations.html';
+import ThreeDStyleTransferExamples from './diagrams/3DStyleTransferExamples.html';
 
 {
   const figure = document.getElementById('StyleTransferExamples');
@@ -24,5 +25,13 @@ import AlignedInterpolationAnimations from './AlignedInterpolationAnimations.htm
   const figure = document.getElementById('AlignedInterpolationAnimations');
   figure.addEventListener("ready", function() {
     const alignedInterpolationAnimations = new AlignedInterpolationAnimations({target: figure});
+  });
+}
+
+
+{
+  const figure = document.getElementById('3DStyleTransferExamples');
+  figure.addEventListener("ready", function() {
+    const styleTransferExamples = new ThreeDStyleTransferExamples({target: figure});
   });
 }
