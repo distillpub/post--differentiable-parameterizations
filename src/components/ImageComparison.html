@@ -1,0 +1,83 @@
+<:Window on:resize='resize()' on:DOMContentLoaded='resize()' />
+
+<div ref:container class="container" on:mousemove="mousemove(event)">
+  <img src={{right}}>
+  <div class="resizeable" style="width: {{overlayWidth}}px">
+    <img src={{left}} style="width: {{width}}px">
+  </div>
+  <div ref:handle class="handle" style="left: {{overlayWidth-1}}px"></div>
+</div>
+
+
+<style>
+
+  .container {
+    cursor: ew-resize;
+  }
+  
+  .container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .handle {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background-color: hsla(0, 100%, 100%, 0.5);
+  }
+  
+  /*.handle::after {
+    position: absolute;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    margin: -12px 0 0 -11px;
+    content: ' ';
+    background: hsla(0, 100%, 100%, 0.5);;
+    border-radius: 50%;
+  } */
+  
+  .resizeable {
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    overflow: hidden;
+  }
+</style>
+
+
+<script>
+
+export default {
+  oncreate() {
+    // TODO: discuss with shancarter@ why this is needed
+    requestAnimationFrame(() => { this.resize(); });
+  },
+  data() {
+    return {
+      width: null,
+      overlayWidthRatio: 0.5
+    }
+  },
+  computed: {
+    overlayWidth: (overlayWidthRatio, width) => overlayWidthRatio * width
+  },
+  methods: {
+    mousemove(event) {
+      const bbox = this.refs.container.getBoundingClientRect();
+      const overlayWidth = event.clientX - bbox.left;
+      const overlayWidthRatio = overlayWidth / bbox.width;
+      this.set({overlayWidthRatio: overlayWidthRatio, width: bbox.width});
+    },
+    resize() {
+      const bbox = this.refs.container.getBoundingClientRect();
+      console.debug("resize bboix", bbox);
+      this.set({width: bbox.width});
+    }
+  }
+}
+</script>

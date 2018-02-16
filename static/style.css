@@ -10,3 +10,8 @@ d-figure.base-grid {
 d-figure {
   margin-bottom: 1em;
 }
+
+d-figure > figure {
+  margin-top: 0;
+  margin-bottom: 0;
+}

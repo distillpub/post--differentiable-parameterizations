@@ -28,3 +28,4 @@ node_modules/
 
 # don't need the built files
 public/*
+webpack-stats.json

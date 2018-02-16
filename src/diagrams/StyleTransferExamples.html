@@ -1,4 +1,5 @@
-<figure>
+<figure class="grid">
+  <ImageComparison left={{imageURLWhitened}} right={{imageURLUnwhitened}}></ImageComparison>
   <img src="images/style-transfer-mockup.png"/>
   <figcaption>
     Explanation 
@@ -8,7 +9,8 @@
 
 <style>
   figure {
-    grid-column: text;
+    grid-column: page;
+    grid-auto-flow: column;
   }
   
   img {
@@ -18,8 +20,14 @@
 
 <script>
   import { range } from '../util';
+  import ImageComparison from '../components/ImageComparison'
   
   export default {
+    components: { ImageComparison },
+    computed: {
+      imageURLWhitened: (n) => "images/content/architecture.jpg",
+      imageURLUnwhitened: (n) => "images/content/bridge.jpg",
+    },
     data() {
       return {
         n: 10,

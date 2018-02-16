@@ -140,25 +140,11 @@ export default {
       renderer.render(scene, camera);
     }
     
-    this.observe('shadedFlag', shadedFlag => {
-      console.debug(shadedFlag)
-      // const { material } = this.get();
-      // material.uniforms.shadeFlag.value = shadedFlag ? 1.0 : 0.0;
-      // update();
-    });
-    
-    this.observe('unfoldFlag', unfoldFlag => {
-      const { material } = this.get();
-      // material.uniforms.unfoldFlag.value = unfoldFlag ? 1.0 : 0.0;
-      update();
-    });
-    
     this.observe('texture_url', texture_url => {
       const { material } = this.get();
       console.debug(texture_url, material)
       const texture = new TextureLoader().load(texture_url, update);
       material.uniforms.texture = { type: 't', value: texture };
-      // update();
     });
   },
   data() {
