@@ -1,23 +1,32 @@
-<figure>
-  <div class="controls">
-    <select bind:value='texture_file'>
-      {{ #each texture_files as file }}
-        <option value="{{ file }}">{{ file }}</option>
-      {{ /each }}
-    </select>
+<figure class="grid">
+  
+  <div class="THREEjsview">
+    <div class="controls">
+      <select bind:value='texture_file'>
+        {{ #each texture_files as file }}
+          <option value="{{ file }}">{{ file }}</option>
+        {{ /each }}
+      </select>
+    </div>
+    {{#await resourcePromise}}
+      <p>wait for it...</p>
+    {{then resources}}
+      <THREEjsView ref:view resources={{resources}} :texture_url></THREEjsView>
+    {{catch error}}
+      <p>well that's odd</p>
+    {{/await}}
   </div>
-  {{#await resourcePromise}}
-    <p>wait for it...</p>
-  {{then resources}}
-    <THREEjsView ref:view resources={{resources}} :texture_url></THREEjsView>
-  {{catch error}}
-    <p>well that's odd</p>
-  {{/await}}
+  
+  <div class="texture grid">
+    <img src={{texture_url}}/>
+  </div>
+
 </figure>
 
 <style>
   figure {
     grid-column: text;
+    grid-auto-flow: column;
   }
 </style>
 
@@ -34,16 +43,13 @@ export default {
       faces_file: 'face.3d',
       positions_file: 'position.3d',
       uvs_file: 'uv.3d',
-      texture_file: 'texture1.jpg',
+      // texture_file: 'texture1.jpg',
       texture_files: ['texture1.jpg', 'texture2.jpg', 'texture3.jpg', 'texture4.jpg'],
       resourcesReady: false,
       texture_index: 0,
     }
   },
   computed: {
-    // texture_file: (texture_files, texture_index) => {
-    //   return texture_files[texture_index];
-    // },
     texture_url: (model_folder, texture_file) => {
       return model_folder + '/' + texture_file;
     },

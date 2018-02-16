@@ -9,12 +9,16 @@
 </div>
 
 <style>
-
+  .container {
+    width: 400px;
+    height: 400px;
+    border: 1px solid #ddd;
+  }
 </style>
 
 <script>
-import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
+import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer } from 'three';
 
 const vertexShaderString = `
   uniform float viewAspect;
@@ -45,119 +49,130 @@ const fragmentShaderString = `
   
   void main() {
     gl_FragColor = texture2D(texture, text_coord);
-    gl_FragColor.rgb *= (shading/1.25)+0.5;
+    gl_FragColor.rgb *= (shading/2.0) + 0.5;
   }
 `;
 
-function ease (x) {
-  x = Math.min(Math.max(x, 0.0), 1.0);
-  return x*x*(3.0 - 2.0*x);
-}
-
-let update_f, animate_f;
-
 export default {
   oncreate() {
-    const { renderer, scene, camera } = this.get();
-    animate_f = function(time) {
+    const { texture_url, backgroundColor, resources, size } = this.get();
+    const [width, height] = size;
+    const [positions, uvs, faces] = resources;
+    const unfoldBox = this.refs.unfoldBox;
+    const shadeBox = this.refs.shadeBox;
+    const container = this.refs.container;
+    const component = this;
+    
+    const unfoldDuration = 1000.0;
+    var camera, scene, renderer, controls, material;
+    var unfolded = false;
+    var unfoldStart = -unfoldDuration*10.0;
+
+    init();
+    animate(0.0);
+
+    function init() {
+      scene = new Scene();
+      camera = new PerspectiveCamera(50, width / height, 0.1, 100);
+      camera.position.z = 2.0;
+      scene.add(camera);
+      var geometry = new BufferGeometry();
+      geometry.addAttribute( 'position', new BufferAttribute(positions, 3 ) );
+      geometry.addAttribute( 'uv', new BufferAttribute(uvs, 2) );
+      geometry.setIndex(new BufferAttribute(faces, 1 ));
+      geometry.computeVertexNormals();
+      var texture = new TextureLoader().load(texture_url, update);
+      material = new ShaderMaterial( {
+        uniforms: {
+          viewAspect: {value: width/height},
+          unfolding_perc: { value: 0.0 },
+          shadeFlag: { value: 1.0 },
+          texture: { type: 't', value: texture },
+        },
+        side: DoubleSide,
+        vertexShader: vertexShaderString,
+        fragmentShader: fragmentShaderString
+      });
+      component.set({material: material});
+      var mesh = new Mesh(geometry, material);
+      scene.add(mesh);
+      scene.background = new Color( backgroundColor );
+      renderer = new WebGLRenderer({antialias: true});
+      renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+      renderer.setSize(width, height);
+      container.appendChild(renderer.domElement);
+      controls = new OrbitControls( camera, renderer.domElement );
+      // render on change only
+      controls.addEventListener('change', function() {
+        // fold mesh back if user wants to interact
+        unfoldBox.checked = false;
+        update();
+      });
+      document.querySelectorAll('.control').forEach(e=>{
+        e.addEventListener('change', update);
+      });
+    }
+    
+    function update() {
+      requestAnimationFrame(animate);
+    }
+    
+    function ease(x) {
+      x = Math.min(Math.max(x, 0.0), 1.0);
+      return x*x*(3.0 - 2.0*x);
+    }
+    
+    function animate(time) {
+      var unfoldFlag = unfoldBox.checked;
+      if (unfolded != unfoldFlag) {
+        unfolded = unfoldFlag;
+        unfoldStart = time - Math.max(unfoldStart+unfoldDuration-time, 0.0);
+      }
+      var unfoldTime = (time-unfoldStart) / unfoldDuration;
+      if (unfoldTime < 1.0) {
+        update();
+      }
+      var unfoldVal = ease(unfoldTime);
+      unfoldVal = unfolded ? unfoldVal : 1.0 - unfoldVal;
+      material.uniforms.unfolding_perc.value = unfoldVal;
+      // material.uniforms.shadeFlag.value = unfoldBox.checked ? 1.0 : 0.0;
+      controls.update();
       renderer.render(scene, camera);
     }
-    update_f = function() {
-      requestAnimationFrame(animate_f);
-    }
-    this.set({'update_f': update_f, 'animate_f': animate_f});
-    
-    this.refs.container.appendChild(renderer.domElement);
-    update_f();
     
     this.observe('shadedFlag', shadedFlag => {
-      console.log(shadedFlag)
-      const { material } = this.get();
-      material.uniforms.shadeFlag.value = shadedFlag ? 1.0 : 0.0;
-      update_f();
+      console.debug(shadedFlag)
+      // const { material } = this.get();
+      // material.uniforms.shadeFlag.value = shadedFlag ? 1.0 : 0.0;
+      // update();
     });
     
     this.observe('unfoldFlag', unfoldFlag => {
       const { material } = this.get();
       // material.uniforms.unfoldFlag.value = unfoldFlag ? 1.0 : 0.0;
-      update_f();
+      update();
+    });
+    
+    this.observe('texture_url', texture_url => {
+      const { material } = this.get();
+      console.debug(texture_url, material)
+      const texture = new TextureLoader().load(texture_url, update);
+      material.uniforms.texture = { type: 't', value: texture };
+      // update();
     });
   },
   data() {
     return {
       texture_url: null,
-      background: '#ffffff',
+      backgroundColor: '#ffffff',
       size: [400, 400],
-      raw_scene: new THREE.Scene(),
       shadedFlag: true,
       unfoldFlag: false,
       unfoldDuration: 1000.0,
     }
   },
   computed: {
-    camera: (scene, size) => {
-      const camera = new THREE.PerspectiveCamera(50, size[0] / size[1], 0.1, 100);
-      camera.position.z = 2.0;
-      scene.add(camera);
-      return camera ;
-    },
-    controls: (camera) => {
-      const controls = new OrbitControls( camera );
-      controls.addEventListener('change', function() {
-        // fold mesh back if user wants to interact
-        unfoldBox.checked = false;
-        update_f();
-      });
-      controls.enableZoom = false;
-      return controls;
-    },
-    geometry: (resources) => {
-      const geometry = new THREE.BufferGeometry();
-      geometry.addAttribute( 'position', new THREE.BufferAttribute(resources[0], 3 ) );
-      geometry.addAttribute( 'uv', new THREE.BufferAttribute(resources[1], 2) );
-      geometry.setIndex(new THREE.BufferAttribute(resources[2], 1 ));
-      geometry.computeVertexNormals();
-      return geometry;
-    },
-    texture: (texture_url, update_f) => {
-      return new THREE.TextureLoader().load(texture_url, update_f);
-    },
-    raw_material: (size) => {
-      const material = new THREE.ShaderMaterial( {
-        uniforms: {
-          viewAspect: {value: size[0]/size[1]},
-          unfolding_perc: { value: 0.0 },
-          shadeFlag: { value: 1.0 },
-          // texture: { type: 't', value: texture },
-        },
-        side: THREE.DoubleSide,
-        vertexShader: vertexShaderString,
-        fragmentShader: fragmentShaderString
-      });
-      return material;
-    },
-    material: (raw_material, texture) => {
-      raw_material.uniforms.texture = { type: 't', value: texture };
-      return raw_material;
-    },
-    mesh: (geometry, material) => {
-      const mesh = new THREE.Mesh(geometry, material);
-      return mesh;
-    },
-    scene: (raw_scene, mesh, background) => {
-      const oldMesh = raw_scene.getObjectByName('mesh');
-      if (oldMesh) raw_scene.remove(oldMesh);
-      mesh.name = 'mesh';
-      raw_scene.add(mesh);
-      raw_scene.background = new THREE.Color( background );
-      return raw_scene;
-    },
-    renderer: (size) => {
-      const renderer = new THREE.WebGLRenderer({antialias: true});
-      renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-      renderer.setSize(...size);
-      return renderer;
-    },
+    
   },
   methods: {
     
