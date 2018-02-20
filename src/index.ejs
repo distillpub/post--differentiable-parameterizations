@@ -61,6 +61,24 @@
   <p>
     This cites our <d-cite key="olah2017feature">Feature visualization</d-cite> article.
   </p>
+
+  <h2 id='introduction'>Introduction</h2>
+  <p>
+Deep Neural Networks are essentially very entangled non-linear functions. Despite being highly non-linear, they remain differentiable functions for which the computation of partial derivatives is not only possible, but highly efficient using parallel architectures such as GPUs. The computation of the derivatives with respect to the parameters enables the learning of the desired functions. The learning is usually intended as the propagation of the gradients of the target function through the network together with a corresponding change of the network parameters. However, other functions can be propagated either from the output or the activations of hidden layers towards the input [deconv]. This approach allows for an indirect representation in the input of the non-linear functions that are computed by the network. 
+  </p>
+
+  <p>
+By exploring the resulting representations, which usually come in the form of images for Convolutional Neural Networks, we can get a deeper understanding of the decisions made by the network. DeepDream [] and the work from Olah et al. [feature_viz] are just few examples of the use of emergent generative capabilities that improve network interpretability.
+Moreover, these techniques power one of the most widespread artistic applications of these models which is known as “artistic image style transfer”. In this application, which was pioneered by Gatys et al.[1], an image is generated so that it preserves the content of an input image and the style of a different one [footnote with an example?]. 
+  </p>
+  
+  <p>
+It is interesting to note that, for all the experiments presented in this article, we use neural networks that were trained to perform different tasks such as image classification. This observation distinguishes these networks from models that are explicitly designed to perform generative tasks such as Generative Adversarial Networks (GANs) [] or Variational Autoencoders (VAEs) [].  Contrary to generative models, we achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized images. To this end, the definition of the loss function is critical to achieve different artistic results and we propose different formulations that we believe will inspire researchers and artists.
+  </p>
+  
+  <p>
+In this article we explore some of more exotic image parameterization methods and their influence to the result. We also show how flexibility of neural input space optimization allows us to expand the application of these techniques beyond 2d images. TO DO: refine when the set of experiments is clearly defined and we have a complete story
+  </p>
   
   <h2 id='experiment-aligned'>Aligned Neuron Interpolation</h2>
   
