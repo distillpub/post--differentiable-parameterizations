@@ -108,8 +108,28 @@ In this article we explore some of more exotic image parameterization methods an
   
   <d-figure class="base-grid" id='StyleTransferExamples'></d-figure>
   
-  <h2 id='experiment-featureviz-rgba'>Feature Visualization with Transparency</h2>
+  <h2 id='experiment-featureviz-rgba'>Generation of Semi-Transparent Patterns</h2>
+  <p>
+To the best of our knowledge, existing techniques optimize only input spaces that come in the same form as the input used to originally train the network. Hence, for convolutional neural networks, the input usually correspond to a 3-channel image. In this section we investigate how to extend differentiable generative optimizations for channels that are not used for the training of the network. More specifically, we aim at creating semi-transparent images by optimizing the alpha channel in combination with the RGB channels
+  </p>
+
+  <p>
+Pixels in the <b>alpha channel</b> assumes values ranging from 0, when they are fully transparent, to 1 if they are completely opaque. 
+Our goal is to enforce a certain amount of transparency in the generated image, while performing on optimization that reveals the patterns detected by a neuron, or by a convex combination of neurons. 
+To this end, we optimize for RGB image multiplied by the alpha channel to visualize the feature.
+At the same time, we minimize the squared loss for the divergence of the average alpha value to a desired threshold $\alpha_t$, where a value of $\alpha_t=0.25$ is used in our examples.
+  </p>
+
+<img src="/tmp_images/draft_alpha_example.png">
+
+  <p>
+As you can see in the example above, the RGB image and the alpha channel are combined to create the image that is optimized for a desired channel or layer.
+  </p>
   
+  <p>  
+While this approach can be seen as an artistic content generation technique, it holds also results in the interpretability of neural networks. 
+As a matter of fact, only the most dominant patterns detected by the desired neuron will be visible after the optimization.
+  </p>
 
   
   <h2 id='experiment-featureviz-3d'>Efficient Texture Optimization through 3D Rendering</h2>
