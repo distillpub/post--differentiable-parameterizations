@@ -44,6 +44,9 @@
 </d-title>
 
 <d-article>
+
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
   
   <nav>
     <!-- This TOC is for development and will be removed before publication. -->
@@ -58,26 +61,32 @@
     <d-toc id='toc-dev-only'></d-toc>
   </nav>
 
-  <p>
-    This cites our <d-cite key="olah2017feature">Feature visualization</d-cite> article.
-  </p>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
 
   <h2 id='introduction'>Introduction</h2>
   <p>
-Deep Neural Networks are essentially very entangled non-linear functions. Despite being highly non-linear, they remain differentiable functions for which the computation of partial derivatives is not only possible, but highly efficient using parallel architectures such as GPUs. The computation of the derivatives with respect to the parameters enables the learning of the desired functions. The learning is usually intended as the propagation of the gradients of the target function through the network together with a corresponding change of the network parameters. However, other functions can be propagated either from the output or the activations of hidden layers towards the input [deconv]. This approach allows for an indirect representation in the input of the non-linear functions that are computed by the network. 
-  </p>
-
-  <p>
-By exploring the resulting representations, which usually come in the form of images for Convolutional Neural Networks, we can get a deeper understanding of the decisions made by the network. DeepDream [] and the work from Olah et al. [feature_viz] are just few examples of the use of emergent generative capabilities that improve network interpretability.
-Moreover, these techniques power one of the most widespread artistic applications of these models which is known as “artistic image style transfer”. In this application, which was pioneered by Gatys et al.[1], an image is generated so that it preserves the content of an input image and the style of a different one [footnote with an example?]. 
+Deep Neural Networks are, essentially, very entangled non-linear functions. Despite being highly non-linear, they remain differentiable functions for which the computation of partial derivatives is not only possible, but very efficient on parallel architectures<d-cite key="krizhevsky2012"></d-cite>. The computation of the derivatives with respect to the parameters enables the learning of a desired function. Network's parameters, also called weights, are modified by a tiny amount along the gradient until, after a number of iterations, the output of the network and the desired function match.
   </p>
   
   <p>
-It is interesting to note that, for all the experiments presented in this article, we use neural networks that were trained to perform different tasks such as image classification. This observation distinguishes these networks from models that are explicitly designed to perform generative tasks such as Generative Adversarial Networks (GANs) [] or Variational Autoencoders (VAEs) [].  Contrary to generative models, we achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized images. To this end, the definition of the loss function is critical to achieve different artistic results and we propose different formulations that we believe will inspire researchers and artists.
+However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>. This approach allows for the creation of indirect representation of the non-linear functions computed by the network directly in the input space. We will refer to the output of these optimizations as <b>Differentiable Image Representations</b> when the input space is an image.
   </p>
   
   <p>
-In this article we explore some of more exotic image parameterization methods and their influence to the result. We also show how flexibility of neural input space optimization allows us to expand the application of these techniques beyond 2d images. TO DO: refine when the set of experiments is clearly defined and we have a complete story
+By exploring Differentiable Image representations we can better understand the decisions made by Convolutional Neural Networks (CNNs). DeepDream<d-cite key="mordvintsev2015inceptionism"></d-cite> and the work on Feature Visualization by Olah et al.<d-cite key="olah2017feature"></d-cite> are just few examples of the creation of Differentiable Image Representations  that improve neural networks’ interpretability.
+  </p>
+  
+  <p>
+Moreover, these techniques power one of the most widespread artistic applications of neural networks which is known as <b>artistic image style transfer</b>. In this application, which was pioneered by Gatys et al.<d-cite key="gatys2015"></d-cite>, the differentiable representation is an image that preserves the <b>content</b> of a desired image and the <b>style</b> of a different one.
+  </p>
+  
+  <p>
+In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of novel and artistic differentiable representations. The proposed techniques allow for a flexible definition of the optimization, as they do not require the creation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.  
+  </p>
+  
+  <p>
+Contrary to generative models, we achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized differentiable representations. To this end, the definition of the loss function is critical to achieve different artistic results and we propose different formulations that goes beyond the 2D domain and we believe will inspire researchers and computational artists in devising novel computational art.
   </p>
   
 <!------------------------------------------------------------>
