@@ -129,42 +129,39 @@ Contrary to generative models, we achieve generative capabilities through an ite
   
   <h2 id='experiment-featureviz-rgba'>Generation of Semi-Transparent Patterns</h2>
   <p>
-To the best of our knowledge, existing optimization techniques work on input-spaces that have the same shape as the input used to originally train the network.
-Hence, for convolutional neural networks, the input usually correspond to a 3-channel image. 
-In this section we investigate how to extend differentiable generative optimizations for channels that are not used for the training of the network. More specifically, we aim at creating semi-transparent images by optimizing the alpha channel in combination with the RGB channels.
+Existing optimization techniques work on an input-space that has the same shape as the input used to originally train the network.
+For networks trained to process images, the input usually corresponds to the RGB channels. 
+In this section we investigate how to extend differentiable optimizations for channels that were not used to train the network. More specifically, we aim at creating semi-transparent images by optimizing the alpha channel of an image in combination with its RGB channels.
   </p>
   
-
   <p>
 Pixels in the <b>alpha channel</b> assumes values ranging from 0, when they are fully transparent, to 1 if they are completely opaque. 
-Our goal is to enforce a certain amount of transparency in the generated image, while performing on optimization that reveals the patterns detected by a neuron, a convex combination of neurons or a layer. 
-To this end, we optimize for RGB image multiplied by the alpha channel to visualize the feature.
-At the same time, we minimize the squared loss for the divergence of the average alpha value to a desired threshold $\alpha_t$, where a value of $\alpha_t=0.25$ is used in our examples.
+Our goal is to reveal one or more features detected by the network<d-cite key="olah2017feature"></d-cite> while imposing a desired amount of transparency in the generated image.
+To this end, we optimize for the feature to be visualized in the RGB image multiplied by its alpha channel and, at the same time, we minimize the squared loss of the average alpha value to a desired threshold $\alpha_t$. 
   </p>
 
 <img src="/tmp_images/draft_alpha_example.png">
 
-  <p>
-As you can see in the examples above, the RGB image and the alpha channel are optimized together in order to create a visualization of the desired feature.
-  </p>
-
   <p>  
-By simply multiplying the RGB channels with the alpha channel, we are de-facto imposing a black background for transparent areas.
-Therefore, if the target feature contains black, or dark colors in general, the optimization has two ways for optimizing the four channels.
-It may either generate a dark color in the RGB channels or reduce their transparency in the alpha channel.
-Since we constraint the level of opacity, given by $\alpha_t$ threshold, the optimization is incentivized to apply the latter strategy.
+By multiplying the RGB channels with the alpha channel, we are de-facto imposing a black background for transparent areas.
+Therefore, if the target feature detects black or dark colors, the optimization has two ways for optimizing the result.
+It may either generate a dark color in the RGB channels or reduce the transparency accordingly.
+  </p>  
+  <p>  
+Since we constraint the level of transparency, given by the $\alpha_t$ threshold, the optimization is incentivized to apply the latter of the two strategies.
 Unfortunately, this will lead to missing colors in the RGB channels.
 The same problem holds if different static colors are chosen as background.
-The optimization is never incentivized to propagate them to the RGB channels.
+The optimization is never incentivized to propagate the chosen color to the generated image.
   </p>
 
   <p>
-To solve this problem, we aim at changing the background colors for every pixel pixels at each iteration.
-In this way, we force the optimization to propagate the colors to the RBG channels and do not "cheat" by making use of the background.
+To solve this problem, we randomly change every background pixel at each iteration of the optimization.
+In this way, we force the optimization to propagate the colors to the RBG channels and do not "cheat" by making use of a static background.
+  </p>
+  <p>
 We experimented with two different strategies for generating the background.
 The first approach rely on a randomly generated background for each pixel, while the second one uses a user provided image which is randomly cropped and used as background.
-For the latter, we found that the chosen image must have a diverse palette or the same problem may arises. 
-As an example, compare the results that are generated using the Van Gogh’s Starry night with those created using the Monet’s Water Lilies. 
+For the latter, we found that the chosen image must have a diverse palette or the same problem may arise. 
   </p>
 
 
@@ -172,9 +169,9 @@ As an example, compare the results that are generated using the Van Gogh’s Sta
 
   
   <p>  
-In this section we shown how we can extend optimization techniques beyond the input space that was initially used for training the network.
+In this section we have shown how we can extend optimization techniques beyond the input space that was initially used for training the network.
 While this approach can be seen as an artistic content generation technique, it improves also the interpretability of the generated patterns. 
-As a matter of fact, only the most dominant patterns detected by the desired neuron will be visible after the optimization.
+As a matter of fact, only the most dominant patterns that activates the desired feature detector are visible after the optimization.
 
   </p>
 
