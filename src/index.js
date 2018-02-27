@@ -7,6 +7,9 @@ import AlignedInterpolationExamples from './diagrams/AlignedInterpolationExample
 import AlignedInterpolationAnimations from './diagrams/AlignedInterpolationAnimations.html';
 import SemiTransparentExamples from './diagrams/SemiTransparentExamples.html';
 import ThreeDStyleTransferExamples from './diagrams/3DStyleTransferExamples.html';
+import CPPNExamples     from "./diagrams/CPPNExamples.html";
+
+new CPPNExamples({target: document.getElementById("CPPN-Examples")});
 
 {
   const figure = document.getElementById('StyleTransferExamples');
