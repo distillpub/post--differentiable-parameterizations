@@ -70,23 +70,23 @@ Deep Neural Networks are, essentially, very entangled non-linear functions. Desp
   </p>
   
   <p>
-However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>. This approach allows for the creation of indirect representation of the non-linear functions computed by the network directly in the input space. We will refer to the output of these optimizations as <b>Differentiable Image Representations</b> when the input space is an image.
+However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>. This approach allows for the creation of indirect representation of the non-linear functions computed by the network directly in the input space. We will refer to the output of these optimizations as <b>Differentiable Image Parameterizations</b> as functions that map some latent state to a 2D raster image.
   </p>
   
   <p>
-By exploring Differentiable Image representations we can better understand the decisions made by Convolutional Neural Networks (CNNs). DeepDream<d-cite key="mordvintsev2015inceptionism"></d-cite> and the work on Feature Visualization by Olah et al.<d-cite key="olah2017feature"></d-cite> are just few examples of the creation of Differentiable Image Representations  that improve neural networks’ interpretability.
+By exploring differentiable image parameterizations we can better understand the decisions made by Convolutional Neural Networks (CNNs). DeepDream <d-cite key="mordvintsev2015inceptionism"></d-cite> and the work on Feature Visualization by Olah et al. <d-cite key="olah2017feature"></d-cite> are just few examples of the creation of differentiable image parameterizations  that improve neural networks’ interpretability.
   </p>
   
   <p>
-Moreover, these techniques power one of the most widespread artistic applications of neural networks which is known as <b>artistic image style transfer</b>. In this application, which was pioneered by Gatys et al.<d-cite key="gatys2015"></d-cite>, the differentiable representation is an image that preserves the <b>content</b> of a desired image and the <b>style</b> of a different one.
+Moreover, these techniques power one of the most widespread artistic applications of neural networks which is known as <b>artistic image style transfer</b>. In this application, which was pioneered by Gatys et al. <d-cite key="gatys2015"></d-cite>, the parameterization is an image that preserves the <b>content</b> of a desired image and the <b>style</b> of a different one.
   </p>
   
   <p>
-In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of novel and artistic differentiable representations. The proposed techniques allow for a flexible definition of the optimization, as they do not require the creation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.  
+In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of novel and artistic parameterizations. The proposed techniques allow for a flexible definition of the optimization, as they do not require the creation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.  
   </p>
   
   <p>
-Contrary to generative models, we achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized differentiable representations. To this end, the definition of the loss function is critical to achieve different artistic results and we propose different formulations that goes beyond the 2D domain and we believe will inspire researchers and computational artists in devising novel computational art.
+Contrary to generative models, we achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized differentiable parameterizations. To this end, the definition of the loss function is critical to achieve different artistic results and we propose different formulations that goes beyond the 2D domain and we believe will inspire researchers and computational artists in devising novel computational art.
   </p>
   
 <!------------------------------------------------------------>
@@ -200,15 +200,15 @@ We can observe that only the most dominant patterns that activates the desired f
 <!------------------------------------------------------------>
 
 
-  <h2 id='experiment-xy2rgb'>Compositional Pattern Producing Networks</h2>
+  <h2 id='experiment-xy2rgb'>Compositional Pattern Producing Networks as Differentiable Parameterization</h2>
   
   <p>
-In the previous sections we presented techniques that optimize the Differentiable Image Representation in the pixel or in the Fourier domain.
+In the previous sections we presented techniques that optimize the parameterizations in the pixel or in the Fourier domain.
 The target function is minimized by back propagating the gradients through the network and by making tiny changes to the values of the pixels or to the basis of the Fourier domain.
   </p>
   
   <p>
-In this section we investigate the possibility of creating a differentiable representation in the form of a <d-cite key="stanley2007cppn">Compositional Pattern Producing Network (CPPN)</d-cite>.
+In this section we investigate the possibility of creating a differentiable parameterizations in the form of a <d-cite key="stanley2007cppn">Compositional Pattern Producing Network (CPPN)</d-cite>.
 A CPPN is a neural network that approximates a function $\mathbf{c} = f(x,y)$ that computes a color $\mathbf{c}$ given the coordinate $x$ and $y$ in a 2-dimensional space.
 CPPNs generates images of arbitrary resolution by sampling the two dimensional space accordingly.
   </p>
@@ -222,7 +222,7 @@ These techniques have been used, for example, to demonstrate how neural networks
   </p>
   
   <p>
-Here we show that CPPNs works as differentiable representations for an optimization approach.
+Here we show that CPPNs works as parameterization for an optimization approach.
 The gradients of a target function, for example for a feature visualization task<d-cite key="olah2017feature"></d-cite>, are not used to optimize an image but rather the function $f(x,y)$ that the CPPN computes.
   </p>
   
@@ -233,7 +233,7 @@ From there, the gradient is further propagated through the CPPN and its weights 
       <img src="/tmp_images/xy2rgb_diagram.png"> 
   
   <p>
-In this sense, the CPPN acts as differential representation that adds a novel artistic angle to the feature visualization pipeline.
+In this sense, the CPPN acts as a parameterization that adds a novel artistic angle to the feature visualization pipeline.
 The images generated by the trained CPPN are affected by non-linear distortions that mimic a sort of magnifying lens.
   </p>
   
@@ -243,7 +243,7 @@ The images generated by the trained CPPN are affected by non-linear distortions 
 Moreover, the evolution of the patterns generated by the CPPN are artistic artifacts themselves.
 For the pixel and the Fourier domain parameterizations, the patterns slowly fade-in from a randomly initialized image during the optimization.
 With the proposed CPPN parameterization bright colors are visible from the start.
-These colors warp and merge in interesting ways until they mix form the final image.
+These colors warp and merge in interesting ways until they mix to form the final image.
   </p>
 
   <p>
@@ -260,7 +260,7 @@ TODO: Evolution
   <img src="/tmp_images/3d_examples.png"> 
           
   <p>  
-In previous sections we generated artistic images using various differentiable representations.
+In previous sections we generated artistic images and animations using various parameterization.
 Would it be possible to extend this approach also for the creation of artistic 3D objects without building ad-hoc networks <d-cite key="wu20153d"></d-cite><d-cite key="qi2016volumetric"></d-cite>? In this section we present a generative approach that makes use of the 3D rendering pipeline as a mean to generate artistic textures for 3D objects.
   </p>
  
@@ -273,7 +273,7 @@ You can use the following WebGL [webgl] view to familiarize with these concepts.
   </p>
   <d-figure class="base-grid" id="3DStyleTransferExamples"></d-figure>
     </p>
-Our goal is to generate a texture by visualizing a combination of features learned by a network trained for an object recognition task [featureviz]. A simple and straightforward way to achieve this result is to use, as texture to color the object, an image that is obtained by optimizing for one or more features in a layer [feature-viz]. The resulting image is then used as texture for the object.
+We aim at generating textures with a Feature Visualization approach<d-cite key="olah2017feature"></d-cite>. A simple and straightforward way to achieve this result is to use, as texture to color the object, an image that is obtained by optimizing for one or more features in a layer. The resulting image is then used as texture for the object.
 </p>
 
 
@@ -290,10 +290,10 @@ Convolutional networks, like the one used in this experiment [googlelenet], are 
   </p>
   <p>
 All the above mentioned problems arise from the fact that the optimization of the texture does not consider the underlying UV-mapping, which in the end is responsible for the appearance of the textured object.
-Here we propose a different approach that overcomes this limitation through an optimization that is driven by the images generated by the renderer and, therefore, are closer to what a user will sees.
+Here we propose a different approach that overcomes this limitation through an optimization that is driven by the images generated by the 3D renderer and, therefore, are closer to what a user will sees.
   </p>
   <p>
-We start the process by randomly initializing the texture $T$ as before.
+We start the process by randomly initializing the texture $T$ with a Fourier parameterization.
 At every training iteration we sample a random camera position $p$, which is oriented towards the center of mass of the object, and we render the textured object as an image $R_p$.
 We then backpropagate the gradient of the desired function, i.e. the feature of interest, to $R_p$.
 However, an update of $R_p$  does not correspond to an update to the texture that we aim at optimizing. Hence, we need to propagate the changes to $R_p$ to the texture $T$.
@@ -301,9 +301,9 @@ The propagation is easily implemented by applying a reverse UV-mapping, as for e
 By modifying $T$, during the following optimization iterations, the rendered image $R_p$ will incorporate changes in the texture performed in the previous iterations.
   </p>  
   <p>  
-Compared to existing methods [], our approach disentangle the generation of the texture from the 3D position of the mesh.
+Compared to existing methods<d-cite key="kato2017neural3D"></d-cite>, our approach disentangle the generation of the texture from the 3D position of the mesh.
 This characteristic allows for the generation of very detailed texture for very detailed meshes.
-The only additional step compared to a traditional backpropagation pipeline, consists in the rendering of the image $R_p$, which is efficiently computed on the GPU using OpenGL [].
+The only additional step compared to a traditional backpropagation pipeline, consists in the rendering of the image $R_p$, which is efficiently computed on the GPU using OpenGL<d-cite key="Shreiner2013OpenGL"></d-cite>.
   </p>  
 
 <!------------------------------------------------------------>
@@ -326,6 +326,28 @@ The procedure is then iterated until the desired blend of content and style is o
 
   </p>   
 
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+
+  <h2 id='conclusions'>Conclusions</h2>
+  <p>  
+In this article we explored several novel differentiable parameterizations that generates different kind of artistic artifacts such as images, animations and 3D objects.
+However, we believe that we explored only a small fraction of the possible image parameterizations for the creation of neural artistic content and exciting new possibilities lie ahead.
+  </p> 
+
+  <p>
+TODO: Images of the paintings and bunny!
+  </p>
+   
+  <p>  
+Potential future research directions may include combining the described approaches in creative ways.
+An application that comes to mind is the extension of the texture synthesis approach to material or reflectance model synthesis.
+  <p>  
+  
+  </p>  
+Another interesting direction is to go beyond differential parameterizations. 
+One possible approach to this is proposed by Kato et al.<d-cite key="kato2017neural3D"></d-cite> to extend optimization techniques to mesh vertex positions. We also think that, by augmenting gradient optimization techniques with evolution strategies<d-cite key="wierstra2014naturalEvolutionStrategies"></d-cite>, interesting new research opportunities open for image or scene parameterization. 
+  </p>  
 
 
 </d-article>
