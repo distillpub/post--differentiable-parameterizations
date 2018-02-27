@@ -1,0 +1,68 @@
+<figure class="base-grid">
+  <figcaption>
+    <p>
+      Examples of the optimization of semi transparent images for different layers and units. Results generated using different backgrounds are presented
+    </p>
+  </figcaption>
+  <div class="container">
+    <ImageArray ref:imageArray></ImageArray>
+  </div>
+</figure>
+
+
+<style>
+
+  figure {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  figcaption {
+    grid-column: kicker;
+  }
+  
+  .container {
+    grid-column: text-start / page-end;
+  }
+  
+  .interpolation-sprite {
+    background-image: url("images/semi-transparent-examples.jpg");
+  }
+  
+</style>
+
+<script>
+  import ImageArray from '../components/ImageArray';
+  
+  const imageArrayData = {
+    src_class: "interpolation-sprite",
+    icon_src_class: "interpolation-sprite",
+    icon_x: 0,
+    label_func: (n, i) => {
+      switch(n){
+        case 0: return  "No Background";
+        case 1: return  "Random Noise";
+        case 2: return  "Water Lilies";
+        case 3: return  "Starry Night";
+        case 4: return  "Kandinsky";
+        case 5: return  "Pollock";
+      }
+    },
+    n_images: 6,
+    n_icons: 9,
+    sprite_size: 128, 
+    size: 112,
+    icon_scale: 1,
+    hover_scale: 1,
+    selected: 1,
+    backwards: false
+  }
+  
+  export default {
+    oncreate() {
+      this.refs.imageArray.set(imageArrayData);
+    },
+    components: { ImageArray }
+  }
+
+</script>
