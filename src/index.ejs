@@ -157,9 +157,13 @@ Our goal is to reveal one or more features detected by the network<d-cite key="o
 To this end, we optimize for the feature to be visualized in the RGB image multiplied by its alpha channel and, at the same time, we minimize the squared loss of the average alpha value to a desired threshold $\alpha_t$. 
 
   </p>
-  <p>
-    <img src="/tmp_images/draft_alpha_example.png">
-  </p>
+  
+<figure class="base-grid shaded-figure">
+  <figcaption style="grid-column: kicker;">
+    The image is parameterized as the combination of the RGB and alpha channel.
+  </figcaption>
+  <d-figure style="grid-column: text-start / screen-end; overflow: visible; contain: unset;" id="SemiTransparentCombination"></d-figure>
+</figure>
 
   <p>  
 By multiplying the RGB channels with the alpha channel, we are de-facto imposing a black background for transparent areas.

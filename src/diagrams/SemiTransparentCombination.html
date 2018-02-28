@@ -1,0 +1,241 @@
+<div class="linear-combinations">
+  
+  <div class="frow">
+      
+    <div id="icons-first" class="fcolumn">
+      <div class="icons">
+        {{#each range(6) as i}}
+          <div class="icon {{(x == i)? 'selected' : ''}}" on:click='set({x: i})'>
+            <Sprite src_class={{sprite_class}} size=44 sprite_size=256 y=0 x={{i}} sprite_scale=0.5/>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+    
+    <div id="sprite-first" class="fcolumn">
+      <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=1 x={{x}} sprite_scale=1/>
+      <span class="figcaption">RGB channels</span>
+    </div>
+    
+    <div class="operator">
+    </div>
+    
+    <div id="sprite-second" class="fcolumn">
+      <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=2 x={{x}} sprite_scale=1/>
+      <span class="figcaption">Alpha channel</span>
+    </div>
+  
+    
+  </div>
+  
+  <div class="frow" style="">
+    <div class="result c fcolumn">
+      <div class="img-container">
+        <div class="top">
+          <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=0 x={{x}} sprite_scale=1/>
+        </div>
+        <img src="images/checkerboard.png">
+      </div>
+      <span class="figcaption">Combined image</span>
+    </div>
+  </div>
+</div>
+
+
+<style>
+
+  /* FRow & FColumn */
+
+  .frow {
+    display: flex; 
+    flex-flow: row; 
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .fcolumn {
+    display: flex;
+    flex-flow: column;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    z-index: 2;
+  }
+
+  /*.fcolumn > * {
+    margin-bottom: 10px;
+  }*/
+
+  /*.fcolumn > *:last-child {
+    margin-bottom: 0;
+  }*/
+
+  /* -end FRow & FColumn end- */
+
+  /* Icons */
+  .icons {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-bottom: 7px;
+    max-width: 100px;
+    /*border-bottom: 1px solid #dddddd;*/
+  }
+
+  .icons .icon {
+    cursor: pointer;
+    padding-bottom: 6px;
+    margin-bottom: 11px;
+    
+    /*margin-left: 3px;*/
+    margin-right: 6px;
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .icons .icon.selected {
+    opacity: 100%;
+    padding-bottom: 3px;
+    border-bottom: 3px solid #ff6600;
+  }
+
+  .icon div {
+    opacity: 0.666;
+    image-rendering: auto;
+  }
+
+  .icon.selected div {
+    opacity: 1;
+  }
+
+  
+  /* linear Combinations */
+
+  .linear_combinations_sprite {
+    background-image: url('images/alpha-combination.png')
+  }
+
+  
+  #caption {
+    max-width: 200px;
+  }
+  
+  #icons-first {
+    order: 1
+  }
+  #sprite-first {
+    order: 2
+  }
+  #sprite-second {
+    order: 5
+  }
+  #icons-second {
+    order: 4
+  }
+  
+  .result {
+    z-index: 3;
+  }
+  
+  .operator {
+    display: none;
+  }
+  
+  .img-container { 
+    position: relative; 
+  }
+  
+  .img-container .top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  
+  @media (min-width: 1024px) {
+    
+    .fcolumn {
+      margin-left: 10px;
+    }
+    
+    .fcolumn:first-of-type {
+      margin-left: 0;
+    }
+
+    .fcolumn:last-of-type {
+      margin-right: 0;
+    }
+    
+    #icons-first {
+      order: 1
+    }
+    #sprite-first {
+      order: 2; 
+      margin-right: 0;
+    }
+    #sprite-second {
+      order: 4;
+      margin-left: 0;
+    } 
+    #icons-second {
+      order: 5
+    }
+    
+    .operator {
+      display: block;
+      background-image: url(images/join_arrow.svg);
+      background-position: center 70%;
+      background-repeat: no-repeat;
+      background-size: 280%;
+      min-width: 60px;
+      height: 180px;
+      overflow: visible;
+      order: 3;
+      opacity: 0.33;
+    }
+    
+    .result.c {
+      top: -64px;
+      margin-left: 240px;
+      position: relative;
+    }
+    
+    .result.c > div {
+      border: 2px solid white;
+      box-shadow: 0px 5px 20px hsla(0,0%,0%,0.3);
+    }
+    
+    #sprite-second > span {
+      text-align: right;
+    }
+    
+    .linear-combinations {
+      margin-bottom: -84px;
+    }
+  }
+
+  
+</style>
+
+
+<script>
+  import Sprite from '../components/Sprite.html';
+  // const join_svg = require('svg-inline-loader?classPrefix!../join.svg');
+  
+  function range(n){
+    return Array(n).fill().map((_, i) => i);
+  }
+
+  export default {
+    data() {
+      return {
+        sprite_class: 'linear_combinations_sprite',
+        x: 5,
+        background: 1,
+        // svg: join_svg
+      }
+    },
+    computed: {},
+    components: {Sprite},
+    methods: {},
+    helpers: {range}
+  }
+</script>

@@ -5,9 +5,11 @@ require('file-loader!./index.ejs')
 import StyleTransferExamples from './diagrams/StyleTransferExamples.html';
 import AlignedInterpolationExamples from './diagrams/AlignedInterpolationExamples.html';
 import AlignedInterpolationAnimations from './diagrams/AlignedInterpolationAnimations.html';
+import SemiTransparentCombination    from "./diagrams/SemiTransparentCombination.html";
 import SemiTransparentExamples from './diagrams/SemiTransparentExamples.html';
 import ThreeDStyleTransferExamples from './diagrams/3DStyleTransferExamples.html';
 import CPPNExamples     from "./diagrams/CPPNExamples.html";
+
 
 new CPPNExamples({target: document.getElementById("CPPN-Examples")});
 
@@ -33,6 +35,13 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
 }
 
 {
+  const figure = document.getElementById("SemiTransparentCombination")
+  figure.addEventListener("ready", function() {
+    new SemiTransparentCombination({target: figure});
+  });
+}
+
+{
   const figure = document.getElementById('SemiTransparentExamples');
   figure.addEventListener("ready", function() {
     const semiTransparentExamples = new SemiTransparentExamples({target: figure});
@@ -45,4 +54,5 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
     const styleTransferExamples = new ThreeDStyleTransferExamples({target: figure});
   });
 }
+
 
