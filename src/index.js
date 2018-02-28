@@ -2,16 +2,17 @@
 require('file-loader!./index.ejs')
 
 
-import StyleTransferExamples from './diagrams/StyleTransferExamples.html';
-import AlignedInterpolationExamples from './diagrams/AlignedInterpolationExamples.html';
+import StyleTransferExamples          from './diagrams/StyleTransferExamples.html';
+import AlignedInterpolationExamples   from './diagrams/AlignedInterpolationExamples.html';
 import AlignedInterpolationAnimations from './diagrams/AlignedInterpolationAnimations.html';
-import SemiTransparentCombination    from "./diagrams/SemiTransparentCombination.html";
-import SemiTransparentExamples from './diagrams/SemiTransparentExamples.html';
-import ThreeDStyleTransferExamples from './diagrams/3DStyleTransferExamples.html';
-import CPPNExamples     from "./diagrams/CPPNExamples.html";
+import SemiTransparentCombination     from "./diagrams/SemiTransparentCombination.html";
+import SemiTransparentExamples        from './diagrams/SemiTransparentExamples.html';
+import ThreeDStyleTransferExamples    from './diagrams/3DStyleTransferExamples.html';
+import CPPNExamples                   from "./diagrams/CPPNExamples.html";
+import CPPNAnimations                 from "./diagrams/CPPNAnimations.html";
 
 
-new CPPNExamples({target: document.getElementById("CPPN-Examples")});
+
 
 {
   const figure = document.getElementById('StyleTransferExamples');
@@ -45,6 +46,15 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
   const figure = document.getElementById('SemiTransparentExamples');
   figure.addEventListener("ready", function() {
     const semiTransparentExamples = new SemiTransparentExamples({target: figure});
+  });
+}
+
+new CPPNExamples({target: document.getElementById("CPPN-Examples")});
+
+{
+  const figure = document.getElementById('CPPNAnimations');
+  figure.addEventListener("ready", function() {
+    const cppnAnimations = new CPPNAnimations({target: figure});
   });
 }
 
