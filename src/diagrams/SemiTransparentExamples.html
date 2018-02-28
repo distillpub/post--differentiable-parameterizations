@@ -26,13 +26,13 @@
   }
   
   .interpolation-sprite {
-    background-image: url("images/semi-transparent-examples.jpg");
+    background-image: url("images/semi-transparent-examples.png");
   }
   
-</style>
+</style> 
 
 <script>
-  import ImageArray from '../components/ImageArray';
+  import ImageArray from '../components/ImageArrayBackground';
   
   const imageArrayData = {
     src_class: "interpolation-sprite",
@@ -41,20 +41,20 @@
     label_func: (n, i) => {
       switch(n){
         case 0: return  "No Background";
-        case 1: return  "Random Noise";
-        case 2: return  "Water Lilies";
-        case 3: return  "Starry Night";
-        case 4: return  "Kandinsky";
-        case 5: return  "Pollock";
+        case 1: return  "Water Lilies";
+        case 2: return  "Starry Night";
+        case 3: return  "Kandinsky";
+        case 4: return  "Pollock";
+        case 5: return  "Random Noise";
       }
     },
     n_images: 6,
-    n_icons: 9,
-    sprite_size: 128, 
-    size: 112,
+    n_icons: 6,
+    sprite_size: 180, 
+    size: 140,
     icon_scale: 1,
     hover_scale: 1,
-    selected: 1,
+    selected: 5,
     backwards: false
   }
   

@@ -31,10 +31,7 @@
   <div class="frow" style="">
     <div class="result c fcolumn">
       <div class="img-container">
-        <div class="top">
-          <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=0 x={{x}} sprite_scale=1/>
-        </div>
-        <img src="images/checkerboard.png">
+        <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=0 x={{x}} sprite_scale=1/>
       </div>
       <span class="figcaption">Combined image</span>
     </div>
@@ -140,15 +137,9 @@
   }
   
   .img-container { 
-    position: relative; 
+    background-image: url('images/checkerboard.png')
   }
   
-  .img-container .top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-  }
   
   @media (min-width: 1024px) {
     

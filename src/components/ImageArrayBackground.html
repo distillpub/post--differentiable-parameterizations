@@ -1,0 +1,132 @@
+
+<div class="icons">
+  {{#each icon_ns as n}}
+    <div class="icon {{(selected == n)? 'selected' : ''}}"
+         on:click='set({selected: n})'
+      >
+        <Sprite bind:src_class=icon_src_class 
+        size=44 
+        sprite_size={{icon_scale*sprite_size}} 
+        y={{(1-icon_scale)/2 + n/icon_scale}} 
+        x={{(1-icon_scale)/2 + icon_x/icon_scale}} 
+        hover_scale={{44/sprite_size/icon_scale}} />
+
+    </div>
+  {{/each}}
+</div>
+<div class="images">
+  {{#each image_ns as n}}
+  <div class="img-container">
+    <Sprite bind:src_class 
+    bind:size 
+    bind:sprite_size 
+    bind:y=selected 
+    x={{n}} 
+      hover={{false}}  />
+      <!--
+    <br style="clear:left">
+    <figcaption style="max-width: {{size}}px;" >{{{label_func(n, selected)}}}</figcaption>
+    -->
+  </div>
+  {{/each}}
+</div>
+
+
+<style>
+.img-container { 
+  background-image: url('images/checkerboard.png')
+}
+
+.icons {
+  display: inline-flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.icons .icon {
+  cursor: pointer;
+  padding-bottom: 5px;
+  margin-bottom: -1px;
+  
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.icons .icon:first-of-type {
+  margin-left: 0px;
+}
+
+.icons .icon:last-of-type {
+  margin-right: 0px;
+}
+
+.icons .icon.selected {
+  border-bottom: 3px solid #ff6600;
+}
+
+.icon div {
+  opacity: 0.666;
+  image-rendering: auto;
+}
+
+.icon:hover div {
+  opacity: 0.8;
+}
+
+.icon.selected div {
+  opacity: 1;
+}
+
+.images {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  /*justify-content: space-between;*/
+  top: 0px;
+}
+.images > div {
+  /*width: 180px;*/
+  margin-right: 5px;
+}
+.images > div:last-child {
+  margin-right: 0;
+}
+.images div img {
+  width: 100%;
+  height: 100%;
+}
+
+figcaption {
+  margin-top: 6px;
+  /*margin-bottom: 6px;*/
+}
+</style>
+
+<script>
+  import Sprite from "./Sprite.html";
+  import { range } from "../util.js";
+  
+  export default {
+    data() {
+      return {
+        n_icons: 4,
+        n_images: 6,
+        selected: 0,
+        sprite_size: 128,
+        size: 160,
+        src_class: "",
+        label_func: n => "Image " + n,
+        icon_src_class: "",
+        icon_scale: 0.5,
+        backwards: false
+      }
+    },
+    computed: {
+      icon_ns: (n_icons, backwards) => range(n_icons, backwards),
+      image_ns: n_images => range(n_images, false)
+    },
+    components: {Sprite}
+  }
+</script>
