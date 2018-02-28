@@ -3,11 +3,10 @@
     <div class="example">
       <!--<span class="description">Edges</span>-->
       <div class="images">
-        {{#each range(6) as y}}
-          <Sprite src_class='sprite_hero' x={{x}} y={{y}} bind:size bind:sprite_scale hover=true/>
+        {{#each range(10) as y}}
+          <Sprite src_class='sprite_hero' x={{x*10+y}} y=0 bind:size bind:sprite_scale bind:sprite_size hover=true/>
         {{/each}}
       </div>
-      <span class="description"> {{names[x]}} </span>
     </div>
   {{/each}}
 </div>
@@ -15,7 +14,7 @@
 <style>
 
   .sprite_hero {
-    background-image: url("images/cppn-examples.png");
+    background-image: url("images/cppn-examples.jpg");
   }
 
   .cppn-examples {
@@ -79,7 +78,7 @@
     }
     
     .cppn-examples .example {
-      margin-right: 10px;
+      margin-right: 5px;
     }
     
     .cppn-examples .example:last-of-type {
@@ -94,7 +93,7 @@
   
   @media (min-width: 1400px) {    
     .cppn-examples .example {
-      margin-right: 15px;
+      margin-right: 0px; /* changed here to remove verticale space*/
     }
     
     .cppn-examples .example .images {
@@ -119,14 +118,8 @@
       return {
         ns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29],
         size: 100,
-        sprite_scale: 1.0,
-        names: [
-          "layer conv2d0",
-          "layer mixed3a",
-          "layer mixed4a",
-          "layers mixed4b & mixed4c",
-          "layers mixed4d & mixed4e",
-        ]
+        sprite_size: 256,
+        sprite_scale: 0.8,
       }
     },
     oncreate: function() {
