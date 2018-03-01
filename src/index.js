@@ -67,6 +67,13 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
 }
 
 {
+  const figure = document.getElementById('RegularBunny');
+  figure.addEventListener("ready", function() {
+    const styleTransferExamples = new ThreeDStyleTransferExamples({target: figure});
+  });
+}
+
+{
   const figure = document.getElementById('3DStyleTransferExamples');
   figure.addEventListener("ready", function() {
     const styleTransferExamples = new ThreeDStyleTransferExamples({target: figure});

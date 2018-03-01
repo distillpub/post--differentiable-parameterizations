@@ -1,4 +1,4 @@
-<div class='grid' on:click='set({paused: paused?false:true})'>
+<div class='grid' on:mouseover='set({paused: false})' on:mouseout='set({paused: true})'>
   {{#each range(3) as x}}
     <div class="animation">
       <SpriteAnimation :run :paused :interval_seconds :n_images :width :height offset={{x}}  image_url={{sprite_url}}/>
@@ -26,7 +26,7 @@
   export default {
     data() {
       return {
-        paused: false,
+        paused: true,
         run: true,
         interval_seconds: 3.0,
         n_images: 15,

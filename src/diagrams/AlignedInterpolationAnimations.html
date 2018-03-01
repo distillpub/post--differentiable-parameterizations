@@ -1,10 +1,10 @@
-<div class='grid' on:mouseover='set({run: true})' on:mouseout='set({run: false})'>
+<div class='grid' on:mouseover='set({paused: false})' on:mouseout='set({paused: true})'>
   <div class="animation">
-    <SpriteAnimation :run :interval_seconds :n_images image_url={{naive_image_url}}></SpriteAnimation>
+    <SpriteAnimation :run :paused :interval_seconds :n_images image_url={{naive_image_url}}></SpriteAnimation>
     <span class="figcaption">Independently optimized images</span>
   </div>
   <div>
-    <SpriteAnimation :run :interval_seconds :n_images image_url={{aligned_image_url}}></SpriteAnimation>
+    <SpriteAnimation :run :paused :interval_seconds :n_images image_url={{aligned_image_url}}></SpriteAnimation>
     <span class="figcaption">Images optimized with alignment</span>
   </div>
 </div>
@@ -27,7 +27,8 @@
   export default {
     data() {
       return {
-        run: false,
+        run: true,
+        paused: true,
         interval_seconds: 2.0,
         n_images: 15,
         naive_image_url: 'images/interpolation-animation-naive.jpg',
