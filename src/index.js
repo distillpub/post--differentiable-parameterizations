@@ -11,6 +11,7 @@ import ThreeDStyleTransferExamples    from './diagrams/3DStyleTransferExamples.h
 import CPPNExamples                   from "./diagrams/CPPNExamples.html";
 import CPPNAnimations                 from "./diagrams/CPPNAnimations.html";
 import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
+import BunnyFeatureExamples           from "./diagrams/BunnyFeatureExamples.html";
 
 
 
@@ -50,6 +51,7 @@ import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
   });
 }
 
+//Add event listener
 new CPPNExamples({target: document.getElementById("CPPN-Examples")});
 
 {
@@ -65,6 +67,10 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
     const cppnInterpolations = new CPPNInterpolation({target: figure});
   });
 }
+
+//Add event listener
+new BunnyFeatureExamples({target: document.getElementById("BunnyFeatureExamples")});
+
 
 {
   const figure = document.getElementById('RegularBunny');

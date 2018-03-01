@@ -138,8 +138,8 @@ In a way, we may think as parameterizations as the clay that a artist can use to
 </h2>
   
   <p>
-Neural artistic style transfer<d-cite key="gatys2015"></d-cite> was one of the first and, by far, one of the most widespread application of generative artistic capabilities of convolutional neural networks. 
-Almost all iterative style transfer implementations utilize a variant of the VGG neural network architecture<d-cite key="simonyan2014vgg"></d-cite> while attempts at using different architectures seem to produce less visually appealing results 
+Neural artistic style transfer<d-cite key="gatys2015"></d-cite> is one of the first and, by far, one of the most widespread application of generative artistic capabilities of convolutional neural networks. 
+Almost all iterative style transfer implementations utilize a variant of the <b>VGG neural network</b> architecture<d-cite key="simonyan2014vgg"></d-cite> while attempts at using different architectures seem to produce less visually appealing results 
 <d-footnote>
 Examples of experiments performed by using different architectures can be find on <a href="https://medium.com/mlreview/getting-inception-architectures-to-work-with-style-transfer-767d53475bf8">Medium</a>, <a href="https://www.reddit.com/r/MachineLearning/comments/7rrrk3/d_eat_your_vggtables_or_why_does_neural_style/">Reddit</a> and <a href="https://twitter.com/hardmaru/status/954173051330904065">Twitter</a>.
 </d-footnote>. 
@@ -148,8 +148,8 @@ Examples of experiments performed by using different architectures can be find o
   <p>
 Various hypothesis have been made to explain the difference in performance between VGG and other models.
 A possible explanation is that, being the VGG architecture bigger than others, it manages to capture more information that is not related to the task at hand and that is discarded by other models.
-While this information does not give greater performance, it improves the generalization of the VGG architecture to a task like artistic style transfer.
-Another possible cause is that other models perform more aggressive downsampling, in the form of max-pooling layers, compared to the VGG network. 
+While this information does not give, for example, greater classification accuracy, it improves the generalization of the VGG architecture to a task like artistic style transfer.
+Another possible reason is that other models perform more aggressive downsampling, in the form of max-pooling layers, compared to the VGG network. 
   </p>
   
   <p>
@@ -310,9 +310,13 @@ Moreover, the non-linearities in the network can be leveraged to create interest
 
   
   <h2 id='experiment-featureviz-3d'>Efficient Texture Optimization through 3D Rendering</h2>
-  <p>
-    <img src="/tmp_images/3d_examples.png"> 
-  </p>
+
+  <figure class="base-grid">
+    <div style="grid-column: screen; padding-left: 16px; padding-right: 16px;" id="BunnyFeatureExamples"></div>
+    <figcaption style="grid-column: text;">
+      Results of a feature visualization approach<d-cite key="olah2017feature"></d-cite> for texture synthesis.
+    </figcaption>
+  </figure>
           
   <p>  
 In previous sections we generated artistic images and animations using various parameterization.
@@ -340,7 +344,7 @@ First, seams are clearly visible on the rendered texture [footnote: The seem on 
   </p>
   <p>
 Second, the generated patterns are randomly oriented on different parts of the textured object.
-Convolutional networks, like the GoogLeNet used in this experiment<d-cite key="szegedy2015googlenet"></d-cite>, are known to have poor rotation-invariance<d-cite key="goodfellow2016deepLearning"></d-cite>. While this is not a problem per-se, as orientation usually matters in a object recognition problem, it does not work well if the texture patches are not consistently oriented in the underlying UV-mapping.
+Convolutional networks, like the GoogLeNet used in this experiment<d-cite key="szegedy2015googlenet"></d-cite>, are known to have poor rotation-invariance<d-cite key="Goodfellow2016deepLearning"></d-cite>. While this is not a problem per-se, as orientation usually matters in a object recognition problem, it does not work well if the texture patches are not consistently oriented in the underlying UV-mapping.
 
   </p>
   <p>
