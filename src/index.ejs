@@ -134,13 +134,45 @@ In a way, we may think as parameterizations as the clay that a artist can use to
 
 <!-- =================================================== -->
 
-  <h2 id='experiment-styletransfer'>Style Transfer on non-VGG architectures</h2>
+  <h2 id='experiment-styletransfer'>Good parameterizations generalize style transfer for non-VGG networks
+</h2>
   
   <p>
-    Explanation
+Neural artistic style transfer<d-cite key="gatys2015"></d-cite> was one of the first and, by far, one of the most widespread application of generative artistic capabilities of convolutional neural networks. 
+Almost all iterative style transfer implementations utilize a variant of the VGG neural network architecture<d-cite key="simonyan2014vgg"></d-cite> while attempts at using different architectures seem to produce less visually appealing results 
+<d-footnote>
+Examples of experiments performed by using different architectures can be find on <a href="https://medium.com/mlreview/getting-inception-architectures-to-work-with-style-transfer-767d53475bf8">Medium</a>, <a href="https://www.reddit.com/r/MachineLearning/comments/7rrrk3/d_eat_your_vggtables_or_why_does_neural_style/">Reddit</a> and <a href="https://twitter.com/hardmaru/status/954173051330904065">Twitter</a>.
+</d-footnote>. 
   </p>
   
-  <d-figure class="base-grid" id='StyleTransferExamples'></d-figure>
+  <p>
+Various hypothesis have been made to explain the difference in performance between VGG and other models.
+A possible explanation is that, being the VGG architecture bigger than others, it manages to capture more information that is not related to the task at hand and that is discarded by other models.
+While this information does not give greater performance, it improves the generalization of the VGG architecture to a task like artistic style transfer.
+Another possible cause is that other models perform more aggressive downsampling, in the form of max-pooling layers, compared to the VGG network. 
+  </p>
+  
+  <p>
+Here we demonstrate that the parameterization used to represent the image is as important, if not more important, than the model chosen.
+We show that artistic style transfer images produced by the GoogleNet<d-cite key="szegedy2015googlenet"></d-cite> architecture can be as good as those produced by the VGG network if the right parameterization is chosen.
+  </p>
+  
+<d-figure class="base-grid" id='StyleTransferExamples'></d-figure>
+  
+  <p>
+Previous work on feature visualization<d-cite key="olah2017feature"></d-cite> showed that adopting a different parameterization works as preconditioner for the optimization, making it more robust to local minima.
+Olah et al.<d-cite key="olah2017feature"></d-cite> showed that high frequency artifacts in optimization results are avoided by working in a decorrelated and whitened space and by enforcing geometric robustness
+<d-footnote>
+Geometric robustness is achieved by stochastically jitter, rotate and scale the image before applying the optimization step.
+</d-footnote>. 
+For images, this means that the gradient descent must not be performed in the pixel space, but rather in the space of the Fourier basis where frequencies are scaled so that they all have equal energy.
+  </p>
+   
+  <p>
+Before we proceed in developing more exotic parameterizations, it is good to reflect on what we discussed so far.
+Differentiable image parameterizations are a key aspect of optimization techniques for artistic content generation.
+Underestimating the role of a properly chosen parameterization makes the difference between a poor artistic artifact and a good one.
+  </p>
 
 <!-- =================================================== -->
   
