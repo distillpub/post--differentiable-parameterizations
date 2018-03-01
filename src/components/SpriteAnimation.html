@@ -8,6 +8,7 @@
   --interval_seconds: {{interval_seconds}}s;
   --alternate: {{alternate ? 'alternate' : ''}};
   --infinite: {{infinite ? 'infinite' : ''}};
+  --play_state: {{paused? 'paused' : 'running'}};
 '></div>
 
 <style> 
@@ -16,6 +17,7 @@
     height: var(--height);
     background: var(--image_url) left center;
     animation: play var(--interval_seconds) steps(var(--n_images)) var(--infinite) var(--alternate);
+    animation-play-state: var(--play_state);
   }
   @keyframes play {
     0%   { background-position: 0px var(--animation-offset); }
@@ -36,7 +38,8 @@ export default {
       interval_seconds: 1.0,
       alternate: true,
       infinite: true,
-      run: true
+      run: true,
+      paused: false
     }
   }
 }

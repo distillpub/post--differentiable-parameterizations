@@ -10,6 +10,7 @@ import SemiTransparentExamples        from './diagrams/SemiTransparentExamples.h
 import ThreeDStyleTransferExamples    from './diagrams/3DStyleTransferExamples.html';
 import CPPNExamples                   from "./diagrams/CPPNExamples.html";
 import CPPNAnimations                 from "./diagrams/CPPNAnimations.html";
+import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
 
 
 
@@ -55,6 +56,13 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
   const figure = document.getElementById('CPPNAnimations');
   figure.addEventListener("ready", function() {
     const cppnAnimations = new CPPNAnimations({target: figure});
+  });
+}
+
+{
+  const figure = document.getElementById('CPPNInterpolations');
+  figure.addEventListener("ready", function() {
+    const cppnInterpolations = new CPPNInterpolation({target: figure});
   });
 }
 
