@@ -1,18 +1,23 @@
 <div class='meshview'>
+  <div ref:container class='container' 
+       style='--width:{{width}}px;--height:{{height}}px;'
+       >
+  </div>
   <div class='controls'>
-    <input ref:unfoldBox id="unfoldBox" type="checkbox" class="control" bind:value='unfoldFlag'/>
+    <input ref:unfoldBox id="unfoldBox" type="checkbox" class="control" bind:checked='unfoldFlag'/>
     <label for="unfoldBox">Unfold</label>
-    <input ref:shadeBox id="shadeBox" type="checkbox" class="control" bind:value='shadedFlag'/>
+    <input ref:shadeBox id="shadeBox" type="checkbox" class="control" bind:checked='shadedFlag'/>
     <label for='shadeBox'>Shade</label>
   </div>
-  <div ref:container class='container'></div>
 </div>
 
 <style>
   .container {
-    width: 400px;
-    height: 400px;
-    border: 1px solid #ddd;
+    width:  var(--width);
+    height: var(--height);
+    /*border: 1px solid #ddd;*/
+    margin-left: auto;
+    margin-right: auto;
   }
 </style>
 
@@ -55,8 +60,7 @@ const fragmentShaderString = `
 
 export default {
   oncreate() {
-    const { texture_url, backgroundColor, resources, size } = this.get();
-    const [width, height] = size;
+    const { texture_url, backgroundColor, resources, width, height } = this.get();
     const [positions, uvs, faces] = resources;
     const unfoldBox = this.refs.unfoldBox;
     const shadeBox = this.refs.shadeBox;
@@ -135,7 +139,7 @@ export default {
       var unfoldVal = ease(unfoldTime);
       unfoldVal = unfolded ? unfoldVal : 1.0 - unfoldVal;
       material.uniforms.unfolding_perc.value = unfoldVal;
-      // material.uniforms.shadeFlag.value = unfoldBox.checked ? 1.0 : 0.0;
+      material.uniforms.shadeFlag.value = shadeBox.checked ? 1.0 : 0.0;
       controls.update();
       renderer.render(scene, camera);
     }
@@ -151,7 +155,8 @@ export default {
     return {
       texture_url: null,
       backgroundColor: '#ffffff',
-      size: [400, 400],
+      width: 400,
+      height: 400,
       shadedFlag: true,
       unfoldFlag: false,
       unfoldDuration: 1000.0,

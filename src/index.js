@@ -11,9 +11,12 @@ import ThreeDStyleTransferExamples    from './diagrams/3DStyleTransferExamples.h
 import CPPNExamples                   from "./diagrams/CPPNExamples.html";
 import CPPNAnimations                 from "./diagrams/CPPNAnimations.html";
 import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
+import BunnyModel                     from "./diagrams/BunnyModel.html";
 import BunnyFeatureExamples           from "./diagrams/BunnyFeatureExamples.html";
 
 
+import OrbitControls from 'three-orbitcontrols';
+import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer } from 'three';
 
 
 {
@@ -73,9 +76,9 @@ new BunnyFeatureExamples({target: document.getElementById("BunnyFeatureExamples"
 
 
 {
-  const figure = document.getElementById('RegularBunny');
+  const figure = document.getElementById('BunnyModel');
   figure.addEventListener("ready", function() {
-    const styleTransferExamples = new ThreeDStyleTransferExamples({target: figure});
+    const bunnyModel = new BunnyModel({target: figure});
   });
 }
 

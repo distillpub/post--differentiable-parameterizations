@@ -1,27 +1,13 @@
 <figure class="grid">
-  
-  <div class="THREEjsview">
-    <div class="controls">
-      <select bind:value='texture_file'>
-        {{ #each texture_files as file }}
-          <option value="{{ file }}">{{ file }}</option>
-        {{ /each }}
-      </select>
-    </div>
+  <div class="THREEjsview centered">
     {{#await resourcePromise}}
       <p>wait for it...</p>
     {{then resources}}
-      <THREEjsView ref:view resources={{resources}} :texture_url></THREEjsView>
+      <THREEjsView ref:view resources={{resources}} :texture_url :width :height :backgroundColor></THREEjsView>
     {{catch error}}
       <p>well that's odd</p>
     {{/await}}
   </div>
-  
-  <div class="texture grid">
-    <img src={{texture_url}}/>
-    texture
-  </div>
-
 </figure>
 
 <style>
@@ -29,9 +15,13 @@
     grid-column: text;
     grid-auto-flow: column;
   }
-</style>
+  .centered{
+    text-align: center;
+  }
+ </style>
 
 <script>
+
 import THREEjsView from '../components/THREEjsView';
 
 export default {
@@ -44,10 +34,12 @@ export default {
       faces_file: 'face.3d',
       positions_file: 'position.3d',
       uvs_file: 'uv.3d',
-      // texture_file: 'texture1.jpg',
-      texture_files: ['texture1.jpg', 'texture2.jpg', 'texture3.jpg', 'texture4.jpg', 'bunny-texture.png'],
+      texture_file: 'bunny-texture.png',
       resourcesReady: false,
       texture_index: 0,
+      backgroundColor: '#f8f8f8',
+      width: 700,
+      height: 400
     }
   },
   computed: {

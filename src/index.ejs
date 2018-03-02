@@ -68,7 +68,7 @@ Deep Neural Networks are, essentially, very entangled non-linear functions<d-cit
   </p>
   
   <p>
-However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>. This approach allows for the creation of indirect representation of the non-linear functions computed by the network directly in the input space. We will refer to the output of these optimizations as <b>Differentiable Image Parameterizations</b> as functions that map some latent state to a 2D raster image.
+However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>. This approach allows for the creation of indirect representation of the non-linear functions computed by the network directly in the input space. We will refer to the output of these optimizations as <b>Differentiable Image Parameterizations</b> as functions that map some network's latent state to a 2D raster image.
   </p>
   
   <p>
@@ -80,11 +80,12 @@ Moreover, these techniques power one of the most widespread artistic application
   </p>
   
   <p>
-In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of novel and artistic parameterizations. The proposed techniques allow for a flexible definition of the optimization, as they do not require the creation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.  
+In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of novel and artistic results. The proposed techniques allow for a flexible definition of the optimization, as they do not require the creation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.  
   </p>
   
   <p>
-Contrary to generative models, we achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized differentiable parameterizations. To this end, the definition of the loss function is critical to achieve different artistic results and we propose different formulations that goes beyond the 2D domain and we believe will inspire researchers and computational artists in devising novel computational art.
+Contrary to generative models, we achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized parameterizations. To this end, the definition of the loss function propagated to the parameterization is critical to achieve different artistic results. 
+We propose different formulations that goes beyond the 2D domain and we believe will inspire researchers and computational artists in devising novel and exciting computational art.
   </p>
   
 <!-- =================================================== -->
@@ -165,7 +166,9 @@ Olah et al.<d-cite key="olah2017feature"></d-cite> showed that high frequency ar
 <d-footnote>
 Geometric robustness is achieved by stochastically jitter, rotate and scale the image before applying the optimization step.
 </d-footnote>. 
-For images, this means that the gradient descent must not be performed in the pixel space, but rather in the space of the Fourier basis where frequencies are scaled so that they all have equal energy.
+  </p>
+  <p>
+For images, this means that the gradient descent must not be performed in the pixel space, but rather in the space of the Fourier basis where frequencies are scaled so that they all have equal energy. By adopting this parameterization, the style transfer loss function proposed by Gatys<d-cite key="gatys2015"></d-cite> produces convincing results like the ones presented above for non-VGG architectures.
   </p>
    
   <p>
@@ -288,14 +291,13 @@ These colors warp and merge in interesting ways until they mix to form the final
   <p>
 As the gradient of the loss function is propagated in the CPPN, its weights are adjusted accordingly.
 Because the CPPN is a neural network containing non-linearities, a small change in the weights does not not correspond to a small change in the visual aspect of the resulting image.
-That is the reason why during training the resulting can change a lot.
   </p>
  
    <p>
-We can take advante of this property to create a different type of animation.
-For example, we can morph one image into another by linearly interpolating the weights of their CPPNs representations.
+We can take advante of this property to create a different type of animation by interpolating two parameterizatios.
+Compared to the <a href="#experiment-aligned">animations that we previously introduced</a>, instead of interpolating pixels colors, we can morph one image into another by linearly interpolating the weights of their CPPNs representations.
 Each frame of the following animations is obtained by generating an image with the interpolated CPPN.
-Because a linear transition in the weight space does not correspond to a linear transition in the pixel space, the images wildly warp.
+Because a linear transition in the weight space does not correspond to a linear transition in the pixel space, the images warp wildly.
   </p>
  
   <d-figure id='CPPNInterpolations'></d-figure>
@@ -330,7 +332,7 @@ Before we can describe our approach, we first need to understand how a 3D object
   <p>
 You can use the following WebGL view to familiarize with these concepts. The view shows the 3D model of the famous Stanford Bunny<d-cite key="turk2005stanfordBunny"></d-cite> and the associated texture. You can interact with the model by rotating, zooming and panning. Moreover, you can unfold the object to its two-dimensional texture representation. This unfolding reveals the UV mapping used to store the texture in the texture image. Note how the texture is divided in several patches that allows for a complete and undistorted coverage of the object.
   </p>
-  <d-figure class="base-grid" id="RegularBunny"></d-figure>
+  <d-figure class="base-grid" id="BunnyModel"></d-figure>
     <p>
 We aim at generating textures with a Feature Visualization approach<d-cite key="olah2017feature"></d-cite>. A simple and straightforward way to achieve this result is to use, as texture to color the object, an image that is obtained by optimizing for one or more features in a layer. The resulting image is then used as texture for the object.
 </p>
@@ -415,7 +417,15 @@ One possible approach to this is proposed by Kato et al.<d-cite key="kato2017neu
 <d-appendix>
   <h3>Acknowledgments</h3>
   <p>
-    TODO: Thank all the people who have contributed somehow.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dapibus enim eget lacus accumsan consectetur. In et semper enim, dignissim malesuada neque. Nulla tristique vestibulum nibh, non aliquam nisi sodales ut. 
+  </p>
+
+  <p>
+Nam vitae erat tortor. Phasellus eu pulvinar lectus. Praesent facilisis accumsan augue gravida mattis. Integer neque lacus, maximus quis tincidunt sed, auctor eget est. Vestibulum sollicitudin massa sapien, ac feugiat risus feugiat sed.
+  </p>
+
+  <p>
+Etiam eu imperdiet ante. Aenean suscipit nunc tellus, at placerat tellus gravida in. Phasellus faucibus magna in pulvinar pulvinar. Praesent erat nulla, dictum ornare sem id, venenatis porta augue. Phasellus scelerisque nulla semper ante hendrerit, sed feugiat velit pellentesque.
   </p>
 
   <h3>Author Contributions</h3>
