@@ -2,6 +2,8 @@
   <figcaption>
     <p>
       Examples of the optimization of semi transparent images for different layers and units. Results generated using different backgrounds are presented
+      TODO: Describe which backgound was used for each sample.
+      TODO: Allow to select between light/dark/checkerboard backgound, also show the alpha mask.
     </p>
   </figcaption>
   <div class="container">
@@ -16,24 +18,24 @@
     margin-top: 0;
     margin-bottom: 0;
   }
-  
+
   figcaption {
     grid-column: kicker;
   }
-  
+
   .container {
     grid-column: text-start / page-end;
   }
-  
+
   .interpolation-sprite {
     background-image: url("images/semi-transparent-examples.png");
   }
-  
-</style> 
+
+</style>
 
 <script>
   import ImageArray from '../components/ImageArrayBackground';
-  
+
   const imageArrayData = {
     src_class: "interpolation-sprite",
     icon_src_class: "interpolation-sprite",
@@ -50,14 +52,14 @@
     },
     n_images: 6,
     n_icons: 6,
-    sprite_size: 180, 
+    sprite_size: 180,
     size: 140,
     icon_scale: 1,
     hover_scale: 1,
     selected: 5,
     backwards: false
   }
-  
+
   export default {
     oncreate() {
       this.refs.imageArray.set(imageArrayData);
