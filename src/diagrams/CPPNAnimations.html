@@ -1,0 +1,41 @@
+<div class='grid' on:mouseover='set({paused: false})' on:mouseout='set({paused: true})'>
+  {{#each range(3) as x}}
+    <div class="animation">
+      <SpriteAnimation :run :paused :interval_seconds :n_images :width :height offset={{x}}  image_url={{sprite_url}}/>
+    </div>
+  {{/each}}
+</div>
+
+
+<style>
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+  }
+  .animation {
+    display: inline;
+  }
+</style>
+
+
+<script>
+  import SpriteAnimation from '../components/SpriteAnimation';
+  function range(n){
+    return Array(n).fill().map((_, i) => i);
+  }
+  export default {
+    data() {
+      return {
+        paused: true,
+        run: true,
+        interval_seconds: 3.0,
+        n_images: 15,
+        width: 224,
+        height: 224,
+        sprite_url: 'images/cppn-animations.jpg',
+      }
+    },
+    components: { SpriteAnimation },
+    helpers: { range }
+  }
+</script>

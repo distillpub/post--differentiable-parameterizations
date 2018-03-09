@@ -3,10 +3,12 @@
   --height: {{height}}px;
   --n_images: {{n_images}};
   --background-position: -{{run ? n_images * width : 0}}px;
+  --animation-offset: -{{offset*height}}px;
   --image_url: url({{image_url}});
   --interval_seconds: {{interval_seconds}}s;
   --alternate: {{alternate ? 'alternate' : ''}};
   --infinite: {{infinite ? 'infinite' : ''}};
+  --play_state: {{paused? 'paused' : 'running'}};
 '></div>
 
 <style> 
@@ -15,9 +17,11 @@
     height: var(--height);
     background: var(--image_url) left center;
     animation: play var(--interval_seconds) steps(var(--n_images)) var(--infinite) var(--alternate);
+    animation-play-state: var(--play_state);
   }
   @keyframes play {
-    100% { background-position: var(--background-position); }
+    0%   { background-position: 0px var(--animation-offset); }
+    100% { background-position: var(--background-position) var(--animation-offset); }
   }
 </style>
 
@@ -28,12 +32,14 @@ export default {
     return {
       width: 128,
       height: 128,
+      offset: 0,
       n_images: 5,
       image_url: null,
       interval_seconds: 1.0,
       alternate: true,
       infinite: true,
-      run: true
+      run: true,
+      paused: false
     }
   }
 }

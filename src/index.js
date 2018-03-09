@@ -2,10 +2,22 @@
 require('file-loader!./index.ejs')
 
 
-import StyleTransferExamples from './diagrams/StyleTransferExamples.html';
-import AlignedInterpolationExamples from './diagrams/AlignedInterpolationExamples.html';
+import StyleTransferExamples          from './diagrams/StyleTransferExamples.html';
+import AlignedInterpolationExamples   from './diagrams/AlignedInterpolationExamples.html';
 import AlignedInterpolationAnimations from './diagrams/AlignedInterpolationAnimations.html';
-import ThreeDStyleTransferExamples from './diagrams/3DStyleTransferExamples.html';
+import SemiTransparentCombination     from "./diagrams/SemiTransparentCombination.html";
+import SemiTransparentExamples        from './diagrams/SemiTransparentExamples.html';
+import ThreeDStyleTransferExamples    from './diagrams/3DStyleTransferExamples.html';
+import CPPNExamples                   from "./diagrams/CPPNExamples.html";
+import CPPNAnimations                 from "./diagrams/CPPNAnimations.html";
+import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
+import BunnyModel                     from "./diagrams/BunnyModel.html";
+import BunnyFeatureExamples           from "./diagrams/BunnyFeatureExamples.html";
+
+
+import OrbitControls from 'three-orbitcontrols';
+import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer } from 'three';
+
 
 {
   const figure = document.getElementById('StyleTransferExamples');
@@ -28,6 +40,47 @@ import ThreeDStyleTransferExamples from './diagrams/3DStyleTransferExamples.html
   });
 }
 
+{
+  const figure = document.getElementById("SemiTransparentCombination")
+  figure.addEventListener("ready", function() {
+    new SemiTransparentCombination({target: figure});
+  });
+}
+
+{
+  const figure = document.getElementById('SemiTransparentExamples');
+  figure.addEventListener("ready", function() {
+    const semiTransparentExamples = new SemiTransparentExamples({target: figure});
+  });
+}
+
+//Add event listener
+new CPPNExamples({target: document.getElementById("CPPN-Examples")});
+
+{
+  const figure = document.getElementById('CPPNAnimations');
+  figure.addEventListener("ready", function() {
+    const cppnAnimations = new CPPNAnimations({target: figure});
+  });
+}
+
+{
+  const figure = document.getElementById('CPPNInterpolations');
+  figure.addEventListener("ready", function() {
+    const cppnInterpolations = new CPPNInterpolation({target: figure});
+  });
+}
+
+//Add event listener
+new BunnyFeatureExamples({target: document.getElementById("BunnyFeatureExamples")});
+
+
+{
+  const figure = document.getElementById('BunnyModel');
+  figure.addEventListener("ready", function() {
+    const bunnyModel = new BunnyModel({target: figure});
+  });
+}
 
 {
   const figure = document.getElementById('3DStyleTransferExamples');
@@ -35,3 +88,5 @@ import ThreeDStyleTransferExamples from './diagrams/3DStyleTransferExamples.html
     const styleTransferExamples = new ThreeDStyleTransferExamples({target: figure});
   });
 }
+
+
