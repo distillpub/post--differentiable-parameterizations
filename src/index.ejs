@@ -68,24 +68,28 @@ Deep Neural Networks are, essentially, very entangled non-linear functions<d-cit
   </p>
 
   <p>
-However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>. This approach allows for the creation of indirect representation of the non-linear functions computed by the network directly in the input space. We will refer to the output of these optimizations as <b>Differentiable Image Parameterizations</b> as functions that map some network's latent state to a 2D raster image. (TODO: rewrite)
+However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>.
+We will refer to the space in which the input is optimized as its <b>Differentiable Image Parameterizations</b>.
+The most common and simple parameterization is the image pixel space, where the changes propagated troughout the network correspond to changes in the color of each pixel.
   </p>
 
   <p>
-By exploring differentiable image parameterizations we can better understand the decisions made by Convolutional Neural Networks (CNNs). DeepDream <d-cite key="mordvintsev2015inceptionism"></d-cite> and the work on Feature Visualization by Olah et al. <d-cite key="olah2017feature"></d-cite> are just few examples of the creation of differentiable image parameterizations  that improve neural networks’ interpretability.
+Depending on which function is propagated, the parameterization will map some network's latent state to a 2D raster image.
+For example, DeepDream<d-cite key="mordvintsev2015inceptionism"></d-cite> and <b>feature visualization</b><d-cite key="olah2017feature"></d-cite> objective functions can be used to map in the chosen parameterization the visual patterns that the network learned to detect.
+By optimizing for different objective functions, <b>artistic image style transfer</b> can be implemented.
+This application was pioneered by Gatys et al. <d-cite key="gatys2015"></d-cite> and is one of the most widespread applications of neural networks for the generation of artistic contents.
+The resulting parameterization creates a raster image that preserves the content of a desired image and the style of a different one.
   </p>
 
   <p>
-Moreover, these techniques power one of the most widespread artistic applications of neural networks which is known as <b>artistic image style transfer</b>. In this application, which was pioneered by Gatys et al. <d-cite key="gatys2015"></d-cite>, the parameterization is an image that preserves the <b>content</b> of a desired image and the <b>style</b> of a different one.
+In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of artistic results. The proposed techniques achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized parameterizations.
+Hence, we do not require the creation ad-hoc feed-forward networks<d-cite key="li2017universal"></d-cite> that learn to emulate the iterative process or the implementation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.
   </p>
 
   <p>
-In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of novel and artistic results. The proposed techniques allow for a flexible definition of the optimization, as they do not require the creation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>. (TODO: Should also mention work on feed forward style transfer, that learns a generator net to emulate iterative process.)
-  </p>
-
-  <p>
-Contrary to generative models, we achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized parameterizations. To this end, the definition of the loss function propagated to the parameterization is critical to achieve different artistic results.
-We propose different formulations that goes beyond the 2D domain and we believe will inspire researchers and computational artists in devising novel and exciting computational art.
+We propose different parameterizations for images and extensions that allow for the creation of artistic 3D models.
+We believe that our examples will inspire researchers and computational artists in devising novel and exciting computational art.
+To further facilitate the development, we release the code used for generating our examples as <a href="https://colab.research.google.com/">CoLab</a> notebooks.
   </p>
 
 <!-- =================================================== -->

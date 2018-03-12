@@ -70,8 +70,6 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
   });
 }
 
-
-
 {
   const figure = document.getElementById('BunnyModel');
   figure.addEventListener("ready", function() {
