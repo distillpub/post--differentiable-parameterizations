@@ -1,13 +1,11 @@
 <div class='meshview'>
-  <div ref:container class='container' 
+  <div ref:container class='container'
        style='--width:{{width}}px;--height:{{height}}px;'
        >
   </div>
   <div class='controls'>
     <input ref:unfoldBox id="unfoldBox" type="checkbox" class="control" bind:checked='unfoldFlag'/>
     <label for="unfoldBox">Unfold</label>
-    <input ref:shadeBox id="shadeBox" type="checkbox" class="control" bind:checked='shadedFlag'/>
-    <label for='shadeBox'>Shade</label>
   </div>
 </div>
 
@@ -31,7 +29,7 @@ const vertexShaderString = `
   uniform float shadeFlag;
   varying vec2 text_coord;
   varying float shading;
-  
+
   void main () {
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     vec4 plane_position = vec4((uv.x*2.0-1.0)/viewAspect, (uv.y*2.0-1.0), 0, 1);
@@ -51,7 +49,7 @@ const fragmentShaderString = `
   varying vec2  text_coord;
   varying float shading;
   uniform sampler2D texture;
-  
+
   void main() {
     gl_FragColor = texture2D(texture, text_coord);
     gl_FragColor.rgb *= (shading/2.0) + 0.5;
@@ -66,7 +64,7 @@ export default {
     const shadeBox = this.refs.shadeBox;
     const container = this.refs.container;
     const component = this;
-    
+
     const unfoldDuration = 1000.0;
     var camera, scene, renderer, controls, material;
     var unfolded = false;
@@ -116,16 +114,16 @@ export default {
         e.addEventListener('change', update);
       });
     }
-    
+
     function update() {
       requestAnimationFrame(animate);
     }
-    
+
     function ease(x) {
       x = Math.min(Math.max(x, 0.0), 1.0);
       return x*x*(3.0 - 2.0*x);
     }
-    
+
     function animate(time) {
       var unfoldFlag = unfoldBox.checked;
       if (unfolded != unfoldFlag) {
@@ -139,11 +137,11 @@ export default {
       var unfoldVal = ease(unfoldTime);
       unfoldVal = unfolded ? unfoldVal : 1.0 - unfoldVal;
       material.uniforms.unfolding_perc.value = unfoldVal;
-      material.uniforms.shadeFlag.value = shadeBox.checked ? 1.0 : 0.0;
+      material.uniforms.shadeFlag.value = 1.0;
       controls.update();
       renderer.render(scene, camera);
     }
-    
+
     this.observe('texture_url', texture_url => {
       const { material } = this.get();
       console.debug(texture_url, material)
@@ -163,10 +161,10 @@ export default {
     }
   },
   computed: {
-    
+
   },
   methods: {
-    
+
   }
 }
 </script>

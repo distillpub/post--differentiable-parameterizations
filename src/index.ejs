@@ -313,13 +313,6 @@ Moreover, the non-linearities in the network can be leveraged to create interest
 
   <h2 id='experiment-featureviz-3d'>Efficient Texture Optimization through 3D Rendering</h2>
 
-  <figure class="base-grid">
-    <div style="grid-column: screen; padding-left: 16px; padding-right: 16px;" id="BunnyFeatureExamples"></div>
-    <figcaption style="grid-column: text;">
-      Results of a feature visualization approach<d-cite key="olah2017feature"></d-cite> for texture synthesis.
-    </figcaption>
-  </figure>
-
   <p>
 In previous sections we generated artistic images and animations using various parameterization.
 Would it be possible to extend this approach also for the creation of artistic 3D objects without building ad-hoc networks <d-cite key="wu20153d"></d-cite><d-cite key="qi2016volumetric"></d-cite>? In this section we present a generative approach that makes use of the 3D rendering pipeline as a mean to generate artistic textures for 3D objects.
@@ -330,7 +323,7 @@ Before we can describe our approach, we first need to understand how a 3D object
   </p>
 
   <p>
-You can use the following WebGL view to familiarize with these concepts. The view shows the 3D model of the famous Stanford Bunny<d-cite key="turk2005stanfordBunny"></d-cite> and the associated texture (TODO: cite http://alice.loria.fr/index.php/software/7-data/37-unwrapped-meshes.html). You can interact with the model by rotating, zooming and panning. Moreover, you can unfold the object to its two-dimensional texture representation. This unfolding reveals the UV mapping used to store the texture in the texture image. Note how the texture is divided in several patches that allows for a complete and undistorted coverage of the object.
+You can use the following WebGL view to familiarize with these concepts. The view shows the 3D model of the famous Stanford Bunny<d-cite key="turk2005stanfordBunny"></d-cite> and the associated texture<d-cite key="levy2002least"></d-cite>. You can interact with the model by rotating, zooming and panning. Moreover, you can unfold the object to its two-dimensional texture representation. This unfolding reveals the UV mapping used to store the texture in the texture image. Note how the texture is divided in several patches that allows for a complete and undistorted coverage of the object.
   </p>
   <d-figure class="base-grid" id="BunnyModel"></d-figure>
     <p>
