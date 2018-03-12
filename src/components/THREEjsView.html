@@ -21,7 +21,7 @@
 
 <script>
 import OrbitControls from 'three-orbitcontrols';
-import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer } from 'three';
+import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer, Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry, Camera } from 'three';
 
 const vertexShaderString = `
   uniform float viewAspect;
@@ -43,7 +43,6 @@ const vertexShaderString = `
     text_coord = uv;
   }
 `;
-
 const fragmentShaderString = `
   uniform float unfolding_perc;
   varying vec2  text_coord;
@@ -56,6 +55,40 @@ const fragmentShaderString = `
   }
 `;
 
+const vertexShaderTextureString = `
+  void main () {
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+const fragmentShaderTextureString = `
+  uniform float fade_in_perc;
+  uniform float width;
+  uniform float height;
+  uniform sampler2D texture;
+  uniform vec3 background_color;
+
+  //a bit cluncky
+  void main() {
+    vec2 uv;
+    if(width/height > 1.){
+      uv.x = (gl_FragCoord.x-(width-height)/2.)/height;
+      uv.y = gl_FragCoord.y/height;
+      if(uv.x > 1. || uv.x < 0.){
+        gl_FragColor = vec4(background_color,1);
+        return;
+      }
+    }else{
+      uv.x = gl_FragCoord.x/width;
+      uv.y = (gl_FragCoord.y-(height-width)/2.)/width;
+      if(uv.y > 1. || uv.y < 0.){
+        gl_FragColor = vec4(background_color,1);
+        return;
+      }
+    }
+    gl_FragColor = mix(vec4(background_color,1.),texture2D(texture, uv),fade_in_perc);
+  }
+`;
+
 export default {
   oncreate() {
     const { texture_url, backgroundColor, resources, width, height } = this.get();
@@ -65,19 +98,25 @@ export default {
     const container = this.refs.container;
     const component = this;
 
-    const unfoldDuration = 1000.0;
+    const unfoldDuration  = 1500.0;
+    const preFadeDuration = 200.0;
+    const fadeInDuration  = 500.0;
     var camera, scene, renderer, controls, material;
+    var sceneTexture, cameraTexture, materialTexture;
+
     var unfolded = false;
-    var unfoldStart = -unfoldDuration*10.0;
+    var animationStart = -unfoldDuration*10.0;
 
     init();
     animate(0.0);
 
     function init() {
+      //scene contain the 3D model
       scene = new Scene();
       camera = new PerspectiveCamera(50, width / height, 0.1, 100);
       camera.position.z = 2.0;
       scene.add(camera);
+
       var geometry = new BufferGeometry();
       geometry.addAttribute( 'position', new BufferAttribute(positions, 3 ) );
       geometry.addAttribute( 'uv', new BufferAttribute(uvs, 2) );
@@ -98,15 +137,39 @@ export default {
       component.set({material: material});
       var mesh = new Mesh(geometry, material);
       scene.add(mesh);
-      scene.background = new Color( backgroundColor );
+
+      //SceneTexture draws the background texture
+      sceneTexture = new Scene();
+      materialTexture = new ShaderMaterial( {
+        uniforms: {
+          width: {value: width},
+          height: {value: height},
+          fade_in_perc: { value: 0.0 },
+          texture: { type: 't', value: texture },
+          background_color: { value: new Color( backgroundColor )}
+        },
+        vertexShader: vertexShaderTextureString,
+        fragmentShader: fragmentShaderTextureString
+      });
+      var backgroundTexture = new Mesh(
+        new PlaneGeometry(2, 2, 0),
+        materialTexture
+      );
+      cameraTexture = new Camera();
+      sceneTexture.add(cameraTexture);
+      sceneTexture.add(backgroundTexture);
+
+      //Renderer initialization
       renderer = new WebGLRenderer({antialias: true});
       renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
       controls = new OrbitControls( camera, renderer.domElement );
-      // render on change only
+      //Disable the autoClear option to draw the two scenes together
+      renderer.autoClear = false;
+      //render on change only
       controls.addEventListener('change', function() {
-        // fold mesh back if user wants to interact
+        // fold mesh back if the user interacts with the model
         unfoldBox.checked = false;
         update();
       });
@@ -128,25 +191,42 @@ export default {
       var unfoldFlag = unfoldBox.checked;
       if (unfolded != unfoldFlag) {
         unfolded = unfoldFlag;
-        unfoldStart = time - Math.max(unfoldStart+unfoldDuration-time, 0.0);
+        animationStart = time - Math.max(animationStart+unfoldDuration+preFadeDuration+fadeInDuration-time, 0.0);
       }
-      var unfoldTime = (time-unfoldStart) / unfoldDuration;
-      if (unfoldTime < 1.0) {
+      var animationTime = (time-animationStart) / (unfoldDuration+preFadeDuration+fadeInDuration);
+      var unfoldTime = (time-animationStart-(unfolded?0:fadeInDuration+preFadeDuration)) / unfoldDuration;
+      var fadeInTime = (time-animationStart-(unfolded?unfoldDuration+preFadeDuration:0)) / fadeInDuration;
+      if (animationTime < 1.0) {
         update();
       }
+      //3D model
       var unfoldVal = ease(unfoldTime);
       unfoldVal = unfolded ? unfoldVal : 1.0 - unfoldVal;
       material.uniforms.unfolding_perc.value = unfoldVal;
       material.uniforms.shadeFlag.value = 1.0;
+
+      //Background texture
+      var fadeIndVal = ease(fadeInTime);
+      fadeIndVal = unfolded ? fadeIndVal : 1.0 - fadeIndVal;
+      materialTexture.uniforms.fade_in_perc.value = fadeIndVal;
+
+      //Camera controls
       controls.update();
+
+      //Render the two scenes
+      renderer.clear();
+      renderer.render(sceneTexture, cameraTexture);
+      renderer.clearDepth();
       renderer.render(scene, camera);
     }
 
     this.observe('texture_url', texture_url => {
+      //A new texture is loaded
       const { material } = this.get();
       console.debug(texture_url, material)
       const texture = new TextureLoader().load(texture_url, update);
       material.uniforms.texture = { type: 't', value: texture };
+      materialTexture.uniforms.texture = { type: 't', value: texture };
     });
   },
   data() {
