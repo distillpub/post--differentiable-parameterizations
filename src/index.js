@@ -8,6 +8,7 @@ import AlignedInterpolationAnimations from './diagrams/AlignedInterpolationAnima
 import SemiTransparentCombination     from "./diagrams/SemiTransparentCombination.html";
 import SemiTransparentExamples        from './diagrams/SemiTransparentExamples.html';
 import ThreeDStyleTransferExamples    from './diagrams/3DStyleTransferExamples.html';
+import ThreeDFeatureVizExamples       from './diagrams/3DFeatureVizExamples.html';
 import CPPNExamples                   from "./diagrams/CPPNExamples.html";
 import CPPNAnimations                 from "./diagrams/CPPNAnimations.html";
 import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
@@ -82,5 +83,12 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
   const figure = document.getElementById('3DStyleTransferExamples');
   figure.addEventListener("ready", function() {
     const styleTransferExamples = new ThreeDStyleTransferExamples({target: figure});
+  });
+}
+
+{
+  const figure = document.getElementById('3DFeatureVizExamples');
+  figure.addEventListener("ready", function() {
+    const styleTransferExamples = new ThreeDFeatureVizExamples({target: figure});
   });
 }

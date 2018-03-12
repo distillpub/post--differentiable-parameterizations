@@ -1,0 +1,77 @@
+<figure class="grid">
+  
+  <div class="THREEjsview">
+    <div class="controls">
+      <select bind:value='texture_file'>
+        {{ #each texture_files as file }}
+          <option value="{{ file }}">{{ file }}</option>
+        {{ /each }}
+      </select>
+    </div>
+    {{#await resourcePromise}}
+      <p>wait for it...</p>
+    {{then resources}}
+      <THREEjsView ref:view resources={{resources}} :texture_url></THREEjsView>
+    {{catch error}}
+      <p>well that's odd</p>
+    {{/await}}
+  </div>
+  
+  <div class="texture grid">
+    <img src={{texture_url}}/>
+    texture
+  </div>
+
+</figure>
+
+<style>
+  figure {
+    grid-column: text;
+    grid-auto-flow: column;
+  }
+</style>
+
+<script>
+import THREEjsView from '../components/THREEjsView';
+
+export default {
+  components: { THREEjsView },
+  oncreate() {
+  },
+  data() {
+    return {
+      model_folder: 'models/bunny',
+      faces_file: 'face.3d',
+      positions_file: 'position.3d',
+      uvs_file: 'uv.3d',
+      // texture_file: 'texture1.jpg',
+      texture_files: ['texture1.jpg', 'texture2.jpg', 'texture3.jpg', 'texture4.jpg', 'bunny-texture.png'],
+      resourcesReady: false,
+      texture_index: 0,
+    }
+  },
+  computed: {
+    texture_url: (model_folder, texture_file) => {
+      return model_folder + '/' + texture_file;
+    },
+    resources: (model_folder, faces_file, positions_file, uvs_file) => {
+      return new Map([
+        ['positions', [model_folder + '/' + positions_file, Float32Array]],
+        ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
+        ['faces', [model_folder + '/' + faces_file, Uint16Array]],
+      ]);
+    },
+    resourcePromise: (resources) => {
+      return Promise.all([...resources].map(([resource, [path, DType]]) => {
+        return fetch(path).then((response) => {
+          return response.arrayBuffer();
+        }).then((arrayBuffer) => {
+          return new DType(arrayBuffer);
+        });
+      }));
+    }
+  },
+  methods: {
+  }
+}
+</script>
