@@ -1,18 +1,40 @@
-<:Window on:resize='resize()' on:DOMContentLoaded='resize()' />
-
 <div ref:container class="container" on:mousemove="mousemove(event)">
-  <img src={{right}}>
-  <div class="resizeable" style="width: {{overlayWidth}}px">
-    <img src={{left}} style="width: {{width}}px">
+  <img class="background" src={{right}}>
+  <div class="right label">Correlated</div>
+  <div class="resizeable" style="width: {{overlayPercentage}}%">
+    <div class="left label">Decorrelated</div>
+    <img src={{left}}>
   </div>
-  <div ref:handle class="handle" style="left: {{overlayWidth-1}}px"></div>
+  <div ref:handle class="handle" style="left: {{overlayPercentage}}%"></div>
 </div>
 
 
 <style>
 
+  .label {
+    position: absolute;
+    top: 0;
+    background: rgba(0,0,0,0.33);
+    color: rgba(255,255,255,0.8);
+    padding: 4px 8px 4px 8px;
+    font-size: 12px;
+    line-height: 1.0;
+  }
+  
+  .label.left {
+    left: 0;
+    border-bottom-right-radius: 4px;
+  }
+  .label.right {
+    right: 0;
+    border-bottom-left-radius: 4px;
+  }
+
   .container {
+    position: relative;
+    z-index: 0;
     cursor: ew-resize;
+    user-select: none;
   }
   
   .container img {
@@ -21,62 +43,63 @@
     display: block;
   }
   
-  .handle {
-    position: absolute;
-    width: 2px;
-    height: 100%;
-    background-color: hsla(0, 100%, 100%, 0.5);
+  img.background {
   }
   
-  /*.handle::after {
+  .handle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background-color: white;
+    opacity: 0.67;
+  }
+  
+  .handle::after {
     position: absolute;
     top: 50%;
-    width: 24px;
-    height: 24px;
-    margin: -12px 0 0 -11px;
-    content: ' ';
-    background: hsla(0, 100%, 100%, 0.5);;
+    width: 17px;
+    height: 17px;
+    transform: translate(-8px, -8px);
+    content: '';
+    background: white;
     border-radius: 50%;
-  } */
+  }
   
   .resizeable {
     position: absolute;
-    top:0;
+    top: 0;
     left: 0;
     height: 100%;
     width: 50%;
     overflow: hidden;
+  }
+  .resizeable img {
+    height: 100%;
+    width: auto;
   }
 </style>
 
 
 <script>
 
+function clamp(value, min, max) {
+  return Math.max(Math.min(value, max), min);
+}
+
 export default {
-  oncreate() {
-    // TODO: discuss with shancarter@ why this is needed
-    requestAnimationFrame(() => { this.resize(); });
-  },
   data() {
     return {
-      width: null,
-      overlayWidthRatio: 0.5
+      overlayPercentage: 67
     }
-  },
-  computed: {
-    overlayWidth: (overlayWidthRatio, width) => overlayWidthRatio * width
   },
   methods: {
     mousemove(event) {
       const bbox = this.refs.container.getBoundingClientRect();
-      const overlayWidth = event.clientX - bbox.left;
+      const overlayWidth = clamp(event.clientX - bbox.left, 0, bbox.width);
       const overlayWidthRatio = overlayWidth / bbox.width;
-      this.set({overlayWidthRatio: overlayWidthRatio, width: bbox.width});
-    },
-    resize() {
-      const bbox = this.refs.container.getBoundingClientRect();
-      console.debug("resize bboix", bbox);
-      this.set({width: bbox.width});
+      this.set({overlayPercentage: overlayWidthRatio*100});
     }
   }
 }

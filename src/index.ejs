@@ -122,17 +122,17 @@ The result does not only reveal the transition from one pattern to another, but 
   <p>
 Visual alignment is obtained by combining a low-resolution shared parameterization $ P_{\text{shared}}$ and high-resolution parameterization $P_{\text{unique}}^i$ that is unique to each frame $i$.
 Each individual frame $i$ of the animation is then parameterized as a combination $P^i$ of the two, $P^i = N(P_{\text{unique}}^i + P_{\text{shared}})$, where $N$ is usually the logistic function.
-  <p>
+  </p>
 
   <div>
     <%= require('!svg-inline-loader!../static/images/lowres-tensor.svg') %>
   </div>
 
-  </p>
-Intuitively, the shared parameterization provides a common reference for the displacement of major patterns, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
+  <p>
+    Intuitively, the shared parameterization provides a common reference for the displacement of major patterns, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
   </p>
 
-    </p>
+  <p>
 This first example shows a first glimpse of the creative power of custom and properly designed image parameterizations.
 In a way, we may think as parameterizations as the clay that a artist can use to sculpt computational art.
   </p>

@@ -1,87 +1,272 @@
-<figure class="grid">
-  <ImageComparison left={{imageURLWhitened}} right={{imageURLUnwhitened}}></ImageComparison>
-  <img src="images/style-transfer-mockup.png"/>
-  <figcaption>
-    Explanation 
-  </figcaption>
+<figure class="l-body">
+<div class="frow">
+  
+  <div id="icons-first" class="icons-column fcolumn">
+    <div class="icons">
+      {{#each contentImages as contentImage, i}}
+        <div class="icon {{(contentIndex == i)? 'selected' : ''}}" on:click='set({contentIndex: i})'>
+          <div style="background-image: url({{contentImage.src}})"></div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+  
+  <div id="sprite-first" class="sprite fcolumn">
+    <div style="background-image: url({{contentImage.src}})"></div>
+  </div>
+  
+  <div id="sprite-second" class="sprite fcolumn">
+    <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
+  </div>
+  
+  <div id="icons-second" class="icons-column fcolumn">
+    <div class="icons">
+      {{#each styleImages as styleImage, i}}
+        <div class="icon {{(styleIndex == i)? 'selected' : ''}}" on:click='set({styleIndex: i})'>
+          <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+  
+</div>
+
+<div class="l-body">
+  <ImageComparison id="image-comparison" left={{styletransferImages[0]}} right={{styletransferImages[1]}}></ImageComparison>
+</div>
+
+<div class="l-body figcaption">
+  Styletransfer of "{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}}) onto "{{contentImage.title}}" by {{contentImage.artist}}.
+</div>
 </figure>
 
 
 <style>
-  figure {
-    grid-column: page;
-    grid-auto-flow: column;
-  }
+
+/* FRow & FColumn */
+
+.frow {
+  display: flex; 
+  flex-flow: row; 
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-left: -5px;
+  margin-right: -5px;
+}
+
+.fcolumn {
+  display: flex;
+  flex-flow: column;
+  flex-grow: 1;
+  margin-bottom: 10px;
+  z-index: 2;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.fcolumn > * {
+  margin-bottom: 10px;
+}
+
+.fcolumn > *:last-child {
+  margin-bottom: 0;
+}
+
+/* .fcolumn:first-of-type {
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+.fcolumn:last-of-type {
+  margin-left: 10px;
+  margin-right: 0;
+} */
+
+/* -end FRow & FColumn end- */
+
+/* Icons */
+.icons {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  max-width: calc(44px * 2 + 6px);
+  /*border-bottom: 1px solid #dddddd;*/
+}
+
+.icons .icon {
+  cursor: pointer;
+  padding-bottom: 6px;
+  margin-bottom: 11px;
   
-  img {
-    width: 447px;
-  }
+  /*margin-left: 3px;*/
+  /* margin-right: 6px; */
+  border-bottom: 1px solid #dddddd;
+}
+
+.icons .icon.selected {
+  opacity: 100%;
+  padding-bottom: 3px;
+  border-bottom: 3px solid #ff6600;
+}
+
+.icon div {
+  opacity: 0.5;
+  image-rendering: auto;
+  width: 44px; 
+  height: 44px; 
+  background-size: cover;
+  background-position: center;
+}
+
+.icon.selected div {
+  opacity: 1;
+}
+
+/* -end Icons end- */
+
+.sprite span {
+  
+}
+
+.sprite div {
+  /* flex: 1 1; */
+  position: relative;
+  /* width: 1vw; */
+  /* height: 10vw; */
+  /* height: 0; */
+  /* padding-top: 100%; */
+  background-size: cover;
+  background-position: center;
+  /* object-fit: contain; */
+}
+
+.sprite div:before {
+  content: "";
+	display: block;
+	padding-top: 100%; 	/* initial ratio of 1:1*/
+}
+
+.icons-column {
+  flex-grow: 0;
+}
+
+.rotated {
+  transform: rotate(90deg);
+}
+
 </style>
 
 <script>
   import { range } from '../util';
   import ImageComparison from '../components/ImageComparison'
   
+  function canonical_name_part(url) {
+    const basename = url.split('/').pop();
+    return basename.replace('-cropped', '').replace('.jpg', '')
+  }
+  
   export default {
     components: { ImageComparison },
     computed: {
-      imageURLWhitened: (n) => "images/content/architecture.jpg",
-      imageURLUnwhitened: (n) => "images/content/bridge.jpg",
+      contentImage: (contentImages, contentIndex) => contentImages[contentIndex],
+      styleImage: (styleImages, styleIndex) => styleImages[styleIndex],
+      styletransferImages: (contentImage, styleImage) => {
+        const styleNamePart = canonical_name_part(styleImage.src);
+        const contentNamePart = canonical_name_part(contentImage.src);
+        const basename = styleNamePart + '-' + contentNamePart;
+        const folderName = 'images/styletransfer/';
+        const decorrelatedURL = folderName + basename + '-decorrelated.jpg';
+        const correlatedURL = folderName + basename + '.jpg';
+        return [decorrelatedURL, correlatedURL];
+      }
     },
     data() {
       return {
-        n: 10,
-        style_images: [
+        contentIndex: 0,
+        styleIndex: 0,
+        contentImages: [
           { 
-            src: 'images/styles/kandinsky-composition-vii.jpg', 
-            title: 'Composition VII', 
-            artist: 'Wassily Kandinsky',
-            year: 1913
-          }, 
-          { 
-            src: 'images/styles/picasso-self-portrait.jpg', 
-            title: 'Self-Portrait', 
-            artist: 'Pablo Picasso',
-            year: 1907
+            src: 'images/content/food.jpg',
+            title: 'Food'
           },
           { 
-            src: 'images/styles/picasso-self-portrait.jpg', 
-            title: 'Seated female nude', 
-            artist: 'Pablo Picasso',
-            year: 1910
+            src: 'images/content/girl.jpg',
+            title: 'Girl'
           },
           { 
-            src: 'images/styles/munch-the-scream.jpg', 
-            title: 'The Scream', 
-            artist: 'Edvard Munch',
-            year: 1893
+            src: 'images/content/architecture.jpg',
+            title: 'Architecture'
           },
           { 
-            src: 'images/styles/matisse-woman-with-a-hat.jpg', 
+            src: 'images/content/bridge.jpg',
+            title: 'Bridge'
+          },
+          { 
+            src: 'images/content/utah.jpg',
+            title: 'Utah'
+          },
+          { 
+            src: 'images/content/zurich.jpg',
+            title: 'Zurich'
+          },
+        ],
+        styleImages: [
+          { 
+            src: 'images/styles/woman-cropped.jpg', 
             title: 'Woman with a Hat', 
             artist: 'Henri Matisse',
-            year: 1905
+            year: 1905,
+            rotated: true
           },
           { 
-            src: 'images/styles/turner-shipwreck.jpg', 
-            title: 'Shipwreck', 
-            artist: 'William Turner',
-            year: 1805
+            src: 'images/styles/starry-night-cropped.jpg', 
+            title: 'Starry Night', 
+            artist: 'Vincent van Gogh',
+            year: 1889,
+            rotated: false
+          }, 
+          { 
+            src: 'images/styles/composition-cropped.jpg', 
+            title: 'Composition VII', 
+            artist: 'Wassily Kandinsky',
+            year: 1913,
+            rotated: false
+          }, 
+          { 
+            src: 'images/styles/picasso-cropped.jpg', 
+            title: 'Self-Portrait', 
+            artist: 'Pablo Picasso',
+            year: 1907,
+            rotated: true
           },
           { 
-            src: 'images/styles/hokusai-great-wave.jpg', 
+            src: 'images/styles/scream-cropped.jpg', 
+            title: 'The Scream', 
+            artist: 'Edvard Munch',
+            year: 1893,
+            rotated: true
+          },
+          { 
+            src: 'images/styles/wave-cropped.jpg', 
             title: 'The Great Wave off Kanagawa', 
             artist: 'Katsushika Hokusai',
-            year: 1831
+            year: 1831,
+            rotated: false
           },
           { 
-            src: 'images/styles/dubois-pillet-vue-de-paris.jpg', 
-            title: 'Vue de Paris', 
-            artist: 'Albert Dubois-Pillet',
-            year: 1885
+            src: 'images/styles/parade-cropped.jpg', 
+            title: 'The large one parades on red bottom', 
+            artist: 'Fernand Leger',
+            year: 1953,
+            rotated: false
           },
         ]
       };
     },
+    helpers: {
+      range,
+    }
   }
 </script>
