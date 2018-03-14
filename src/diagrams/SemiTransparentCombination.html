@@ -1,7 +1,6 @@
 <div class="linear-combinations">
-  
+
   <div class="frow">
-      
     <div id="icons-first" class="fcolumn">
       <div class="icons">
         {{#each range(6) as i}}
@@ -11,23 +10,21 @@
         {{/each}}
       </div>
     </div>
-    
+
     <div id="sprite-first" class="fcolumn">
       <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=1 x={{x}} sprite_scale=1/>
       <span class="figcaption">RGB channels</span>
     </div>
-    
+
     <div class="operator">
     </div>
-    
+
     <div id="sprite-second" class="fcolumn">
       <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=2 x={{x}} sprite_scale=1/>
       <span class="figcaption">Alpha channel</span>
     </div>
-  
-    
   </div>
-  
+
   <div class="frow" style="">
     <div class="result c fcolumn">
       <div class="img-container">
@@ -44,8 +41,8 @@
   /* FRow & FColumn */
 
   .frow {
-    display: flex; 
-    flex-flow: row; 
+    display: flex;
+    flex-flow: row;
     flex-wrap: wrap;
     justify-content: flex-start;
   }
@@ -82,7 +79,7 @@
     cursor: pointer;
     padding-bottom: 6px;
     margin-bottom: 11px;
-    
+
     /*margin-left: 3px;*/
     margin-right: 6px;
     border-bottom: 1px solid #dddddd;
@@ -103,18 +100,18 @@
     opacity: 1;
   }
 
-  
+
   /* linear Combinations */
 
   .linear_combinations_sprite {
     background-image: url('images/alpha-combination.png')
   }
 
-  
+
   #caption {
     max-width: 200px;
   }
-  
+
   #icons-first {
     order: 1
   }
@@ -127,26 +124,26 @@
   #icons-second {
     order: 4
   }
-  
+
   .result {
     z-index: 3;
   }
-  
+
   .operator {
     display: none;
   }
-  
-  .img-container { 
+
+  .img-container {
     background-image: url('images/checkerboard.png')
   }
-  
-  
+
+
   @media (min-width: 1024px) {
-    
+
     .fcolumn {
       margin-left: 10px;
     }
-    
+
     .fcolumn:first-of-type {
       margin-left: 0;
     }
@@ -154,22 +151,22 @@
     .fcolumn:last-of-type {
       margin-right: 0;
     }
-    
+
     #icons-first {
       order: 1
     }
     #sprite-first {
-      order: 2; 
+      order: 2;
       margin-right: 0;
     }
     #sprite-second {
       order: 4;
       margin-left: 0;
-    } 
+    }
     #icons-second {
       order: 5
     }
-    
+
     .operator {
       display: block;
       background-image: url(images/join_arrow.svg);
@@ -182,35 +179,35 @@
       order: 3;
       opacity: 0.33;
     }
-    
+
     .result.c {
       top: -64px;
       margin-left: 240px;
       position: relative;
     }
-    
+
     .result.c > div {
       border: 2px solid white;
       box-shadow: 0px 5px 20px hsla(0,0%,0%,0.3);
     }
-    
+
     #sprite-second > span {
       text-align: right;
     }
-    
+
     .linear-combinations {
       margin-bottom: -84px;
     }
   }
 
-  
+
 </style>
 
 
 <script>
   import Sprite from '../components/Sprite.html';
   // const join_svg = require('svg-inline-loader?classPrefix!../join.svg');
-  
+
   function range(n){
     return Array(n).fill().map((_, i) => i);
   }

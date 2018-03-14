@@ -362,7 +362,14 @@ The propagation is easily implemented by applying a reverse UV-mapping, as for e
 By modifying the texture, during the following optimization iterations, the rendered image will incorporate the changes applied in the previous iterations.
   </p>
 
-<d-figure class="base-grid" id="3DFeatureVizExamples"></d-figure>
+
+<figure class="base-grid shaded-figure">
+  <figcaption style="grid-column: kicker;">
+    Textures are generated with feature visualization objective function.
+    Seams in the textures are hardly visible and the patterns are correctly oriented.
+  </figcaption>
+    <d-figure style="grid-column: text-start / screen-end; overflow: visible; contain: unset;" id="3DFeatureVizExamples"></d-figure>
+</figure>
 
 <p>
 The resulting textures are consistently optimized along the cuts, hence removing the seams and enforcing an uniform orientation for the rendered object.
@@ -395,14 +402,13 @@ The procedure is then iterated until the desired blend of content and style is o
   </p>
 
   <d-figure class="base-grid" id="3DStyleTransferExamples"></d-figure>
-
-Because every view is optimized independently, the optimization is forced to add all the style elements in every single render.
+<p>
+Because every view is optimized independently, the optimization is forced to add all the style elements at every iteration.
 For example, if we use as style image the Van Gogh's "Starry Night" painting, stars will be added in every single view.
 We found that more pleasing results, as those presented above, are obtained by introducing a sort of "memory" of the style of previous views.
 To this end, the style loss is computed as the weighted average of the loss at the current an previous iteration.
 (TODO: refine... maybe example?)
-
-
+</p>
 
 <!-- =================================================== -->
 

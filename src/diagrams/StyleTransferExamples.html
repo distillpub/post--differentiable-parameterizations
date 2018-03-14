@@ -1,6 +1,7 @@
 <figure class="l-body">
+
 <div class="frow">
-  
+
   <div id="icons-first" class="icons-column fcolumn">
     <div class="icons">
       {{#each contentImages as contentImage, i}}
@@ -10,15 +11,15 @@
       {{/each}}
     </div>
   </div>
-  
+
   <div id="sprite-first" class="sprite fcolumn">
     <div style="background-image: url({{contentImage.src}})"></div>
   </div>
-  
+
   <div id="sprite-second" class="sprite fcolumn">
     <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
   </div>
-  
+
   <div id="icons-second" class="icons-column fcolumn">
     <div class="icons">
       {{#each styleImages as styleImage, i}}
@@ -28,11 +29,6 @@
       {{/each}}
     </div>
   </div>
-  
-</div>
-
-<div class="l-body">
-  <ImageComparison id="image-comparison" left={{styletransferImages[0]}} right={{styletransferImages[1]}}></ImageComparison>
 </div>
 
 <div class="l-body figcaption">
@@ -46,8 +42,8 @@
 /* FRow & FColumn */
 
 .frow {
-  display: flex; 
-  flex-flow: row; 
+  display: flex;
+  flex-flow: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-left: -5px;
@@ -99,7 +95,7 @@
   cursor: pointer;
   padding-bottom: 6px;
   margin-bottom: 11px;
-  
+
   /*margin-left: 3px;*/
   /* margin-right: 6px; */
   border-bottom: 1px solid #dddddd;
@@ -114,8 +110,8 @@
 .icon div {
   opacity: 0.5;
   image-rendering: auto;
-  width: 44px; 
-  height: 44px; 
+  width: 44px;
+  height: 44px;
   background-size: cover;
   background-position: center;
 }
@@ -127,7 +123,7 @@
 /* -end Icons end- */
 
 .sprite span {
-  
+
 }
 
 .sprite div {
@@ -161,12 +157,12 @@
 <script>
   import { range } from '../util';
   import ImageComparison from '../components/ImageComparison'
-  
+
   function canonical_name_part(url) {
     const basename = url.split('/').pop();
     return basename.replace('-cropped', '').replace('.jpg', '')
   }
-  
+
   export default {
     components: { ImageComparison },
     computed: {
@@ -187,77 +183,77 @@
         contentIndex: 0,
         styleIndex: 0,
         contentImages: [
-          { 
+          {
             src: 'images/content/food.jpg',
             title: 'Food'
           },
-          { 
+          {
             src: 'images/content/girl.jpg',
             title: 'Girl'
           },
-          { 
+          {
             src: 'images/content/architecture.jpg',
             title: 'Architecture'
           },
-          { 
+          {
             src: 'images/content/bridge.jpg',
             title: 'Bridge'
           },
-          { 
+          {
             src: 'images/content/utah.jpg',
             title: 'Utah'
           },
-          { 
+          {
             src: 'images/content/zurich.jpg',
             title: 'Zurich'
           },
         ],
         styleImages: [
-          { 
-            src: 'images/styles/woman-cropped.jpg', 
-            title: 'Woman with a Hat', 
+          {
+            src: 'images/styles/woman-cropped.jpg',
+            title: 'Woman with a Hat',
             artist: 'Henri Matisse',
             year: 1905,
             rotated: true
           },
-          { 
-            src: 'images/styles/starry-night-cropped.jpg', 
-            title: 'Starry Night', 
+          {
+            src: 'images/styles/starry-night-cropped.jpg',
+            title: 'Starry Night',
             artist: 'Vincent van Gogh',
             year: 1889,
             rotated: false
-          }, 
-          { 
-            src: 'images/styles/composition-cropped.jpg', 
-            title: 'Composition VII', 
+          },
+          {
+            src: 'images/styles/composition-cropped.jpg',
+            title: 'Composition VII',
             artist: 'Wassily Kandinsky',
             year: 1913,
             rotated: false
-          }, 
-          { 
-            src: 'images/styles/picasso-cropped.jpg', 
-            title: 'Self-Portrait', 
+          },
+          {
+            src: 'images/styles/picasso-cropped.jpg',
+            title: 'Self-Portrait',
             artist: 'Pablo Picasso',
             year: 1907,
             rotated: true
           },
-          { 
-            src: 'images/styles/scream-cropped.jpg', 
-            title: 'The Scream', 
+          {
+            src: 'images/styles/scream-cropped.jpg',
+            title: 'The Scream',
             artist: 'Edvard Munch',
             year: 1893,
             rotated: true
           },
-          { 
-            src: 'images/styles/wave-cropped.jpg', 
-            title: 'The Great Wave off Kanagawa', 
+          {
+            src: 'images/styles/wave-cropped.jpg',
+            title: 'The Great Wave off Kanagawa',
             artist: 'Katsushika Hokusai',
             year: 1831,
             rotated: false
           },
-          { 
-            src: 'images/styles/parade-cropped.jpg', 
-            title: 'The large one parades on red bottom', 
+          {
+            src: 'images/styles/parade-cropped.jpg',
+            title: 'The large one parades on red bottom',
             artist: 'Fernand Leger',
             year: 1953,
             rotated: false

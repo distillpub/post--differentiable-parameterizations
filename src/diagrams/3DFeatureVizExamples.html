@@ -1,26 +1,27 @@
-<figure class="grid">
-  
-  <div class="THREEjsview">
-    <div class="controls">
-      <select bind:value='texture_file'>
-        {{ #each texture_files as file }}
-          <option value="{{ file }}">{{ file }}</option>
-        {{ /each }}
-      </select>
+<figure class="features-3d">
+<div class="frow">
+  <div class="frow">
+    <div id="icons-column" class="fcolumn">
+      <div class="icons">
+        {{#each range(4) as i}}
+          <div class="icon {{(x == i)? 'selected' : ''}}" on:click='set({x: i})'>
+            <Sprite src_class={{sprite_class}} size=88 sprite_size=256 y=0 x={{i}} sprite_scale=0.5/>
+          </div>
+        {{/each}}
+      </div>
     </div>
+  </div>
+
+  <div class="THREEjsview">
     {{#await resourcePromise}}
-      <p>wait for it...</p>
+      <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsView ref:view resources={{resources}} :texture_url></THREEjsView>
+      <THREEjsView ref:view resources={{resources}} texture_url={{texture_url_id}} :backgroundColor :width :height></THREEjsView>
     {{catch error}}
-      <p>well that's odd</p>
+      <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
   </div>
-  
-  <div class="texture grid">
-    <img src={{texture_url}}/>
-    texture
-  </div>
+</div>
 
 </figure>
 
@@ -29,30 +30,137 @@
     grid-column: text;
     grid-auto-flow: column;
   }
+
+  .selection_sprite {
+    background-image: url('images/alpha-combination.png')
+  }
+
+
+    /* FRow & FColumn */
+
+    .frow {
+      display: flex;
+      flex-flow: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .fcolumn {
+      display: flex;
+      flex-flow: column;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      z-index: 2;
+    }
+
+    /* Icons */
+    .icons {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      margin-bottom: 7px;
+      max-width: 100px;
+      /*border-bottom: 1px solid #dddddd;*/
+    }
+
+    .icons .icon {
+      cursor: pointer;
+      padding-bottom: 6px;
+      margin-bottom: 11px;
+
+      /*margin-left: 3px;*/
+      margin-right: 6px;
+      border-bottom: 1px solid #dddddd;
+    }
+
+    .icons .icon.selected {
+      opacity: 100%;
+      padding-bottom: 3px;
+      border-bottom: 3px solid #ff6600;
+    }
+
+    .icon div {
+      opacity: 0.666;
+      image-rendering: auto;
+    }
+
+    .icon.selected div {
+      opacity: 1;
+    }
+
+    #icons-column {
+      order: 1
+    }
+
+    .result {
+      z-index: 3;
+    }
+
+
+    .img-container {
+      background-image: url('images/checkerboard.png')
+    }
+
+
+    @media (min-width: 1024px) {
+
+      .fcolumn {
+        margin-left: 10px;
+      }
+
+      .fcolumn:first-of-type {
+        margin-left: 0;
+      }
+
+      .fcolumn:last-of-type {
+        margin-right: 0;
+      }
+
+      #icons-column {
+        order: 1
+      }
+
+      .features-3d {
+        margin-bottom: 0px;
+      }
+    }
+
 </style>
 
 <script>
 import THREEjsView from '../components/THREEjsView';
+import Sprite from '../components/Sprite.html';
+
+function range(n){
+  return Array(n).fill().map((_, i) => i);
+}
 
 export default {
-  components: { THREEjsView },
+  components: { THREEjsView, Sprite },
   oncreate() {
   },
   data() {
     return {
       model_folder: 'models/bunny',
+      sprite_class: 'selection_sprite',
       faces_file: 'face.3d',
       positions_file: 'position.3d',
       uvs_file: 'uv.3d',
-      // texture_file: 'texture1.jpg',
-      texture_files: ['texture1.jpg', 'texture2.jpg', 'texture3.jpg', 'texture4.jpg', 'bunny-texture.png'],
+      texture_files: ['texture1.jpg', 'texture2.jpg', 'texture3.jpg', 'texture4.jpg'],
       resourcesReady: false,
+      backgroundColor: '#f8f8f8',
       texture_index: 0,
+      x: 0,
+      width: 600,
+      height: 400
     }
   },
   computed: {
     texture_url: (model_folder, texture_file) => {
       return model_folder + '/' + texture_file;
+    },
+    texture_url_id: (model_folder,texture_files,x) => {
+      return model_folder + '/' + texture_files[x];
     },
     resources: (model_folder, faces_file, positions_file, uvs_file) => {
       return new Map([
@@ -72,6 +180,7 @@ export default {
     }
   },
   methods: {
-  }
+  },
+  helpers: {range}
 }
 </script>
