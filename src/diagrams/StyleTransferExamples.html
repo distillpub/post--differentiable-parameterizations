@@ -1,5 +1,4 @@
 <figure class="l-body">
-
 <div class="frow">
 
   <div id="icons-first" class="icons-column fcolumn">
@@ -29,6 +28,11 @@
       {{/each}}
     </div>
   </div>
+
+</div>
+
+<div class="l-body">
+  <ImageComparison id="image-comparison" left={{styletransferImages[0]}} right={{styletransferImages[1]}}></ImageComparison>
 </div>
 
 <div class="l-body figcaption">
@@ -38,9 +42,7 @@
 
 
 <style>
-
 /* FRow & FColumn */
-
 .frow {
   display: flex;
   flex-flow: row;
@@ -49,7 +51,6 @@
   margin-left: -5px;
   margin-right: -5px;
 }
-
 .fcolumn {
   display: flex;
   flex-flow: column;
@@ -59,27 +60,21 @@
   margin-left: 5px;
   margin-right: 5px;
 }
-
 .fcolumn > * {
   margin-bottom: 10px;
 }
-
 .fcolumn > *:last-child {
   margin-bottom: 0;
 }
-
 /* .fcolumn:first-of-type {
   margin-left: 0;
   margin-right: 10px;
 }
-
 .fcolumn:last-of-type {
   margin-left: 10px;
   margin-right: 0;
 } */
-
 /* -end FRow & FColumn end- */
-
 /* Icons */
 .icons {
   display: flex;
@@ -90,7 +85,6 @@
   max-width: calc(44px * 2 + 6px);
   /*border-bottom: 1px solid #dddddd;*/
 }
-
 .icons .icon {
   cursor: pointer;
   padding-bottom: 6px;
@@ -100,13 +94,11 @@
   /* margin-right: 6px; */
   border-bottom: 1px solid #dddddd;
 }
-
 .icons .icon.selected {
   opacity: 100%;
   padding-bottom: 3px;
   border-bottom: 3px solid #ff6600;
 }
-
 .icon div {
   opacity: 0.5;
   image-rendering: auto;
@@ -115,17 +107,13 @@
   background-size: cover;
   background-position: center;
 }
-
 .icon.selected div {
   opacity: 1;
 }
-
 /* -end Icons end- */
-
 .sprite span {
 
 }
-
 .sprite div {
   /* flex: 1 1; */
   position: relative;
@@ -137,21 +125,17 @@
   background-position: center;
   /* object-fit: contain; */
 }
-
 .sprite div:before {
   content: "";
 	display: block;
 	padding-top: 100%; 	/* initial ratio of 1:1*/
 }
-
 .icons-column {
   flex-grow: 0;
 }
-
 .rotated {
   transform: rotate(90deg);
 }
-
 </style>
 
 <script>
