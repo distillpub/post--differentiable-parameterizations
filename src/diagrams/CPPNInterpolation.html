@@ -1,20 +1,17 @@
 <div class='grid' on:mouseover='set({paused: false})' on:mouseout='set({paused: true})'>
   {{#each range(3) as x}}
-    <div class="animation">
-      <SpriteAnimation :run :paused :interval_seconds :n_images :width :height offset={{x}}  image_url={{sprite_url}}/>
-    </div>
+    <SpriteAnimation :run :paused :interval_seconds :n_images :width :height offset={{x}}  image_url={{sprite_url}}/>
   {{/each}}
 </div>
 
 
 <style>
-  .grid {
-    grid-template-columns: 1fr 1fr;
-    grid-auto-flow: column;
-  }
-  .animation {
-    display: inline;
-  }
+.grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 10px;
+  grid-auto-columns: min-content;
+}
 </style>
 
 
