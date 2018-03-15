@@ -1,57 +1,56 @@
-<figure class="l-body grid">
+<figure id="style-transfer-examples" class="l-page grid">
   
-<div class="grid row">
+<div id="input-content" class="input-wrapper">
   <h4>Content Image</h4>
-  <h4>Style Image</h4>
-</div>
-
-<div class="grid row">
+  <div class="input-chooser">
+    <ExampleSelector items={{contentImages}} bind:index='contentIndex'></ExampleSelector>
+    <!-- <div class="icons">
+      {{#each contentImages as contentImage, i}}
+        <div class="icon {{(contentIndex == i)? 'selected' : ''}}" on:click='set({contentIndex: i})'>
+          <div style="background-image: url({{contentImage.src}})"></div>
+        </div>
+      {{/each}}
+    </div> -->
   
-  <div class="grid">
-    <div id="icons-first" class="icons-column">
-      <div class="icons">
-        {{#each contentImages as contentImage, i}}
-          <div class="icon {{(contentIndex == i)? 'selected' : ''}}" on:click='set({contentIndex: i})'>
-            <div style="background-image: url({{contentImage.src}})"></div>
-          </div>
-        {{/each}}
-      </div>
-    </div>
-    
     <div id="sprite-first" class="sprite">
       <div style="background-image: url({{contentImage.src}})"></div>
-      <span class="figcaption">Photograph by {{contentImage.artist}}</span>
+      <!-- <span class="figcaption">Photograph by {{contentImage.artist}}</span> -->
     </div>
   </div>
-  
-  <div class="grid">
-    <div id="icons-second" class="icons-column">
-      <div class="icons">
-        {{#each styleImages as styleImage, i}}
-          <div class="icon {{(styleIndex == i)? 'selected' : ''}}" on:click='set({styleIndex: i})'>
-            <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
-          </div>
-        {{/each}}
-      </div>
-    </div>
-    
-    <div id="sprite-second" class="sprite">
-      <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
-      <span class="figcaption">"{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}})</span>
-    </div>
-  </div>
-
 </div>
 
-<div class="grid row">
+<div id="input-style" class="input-wrapper">
+  <h4>Style Image</h4>
+  <div class="input-chooser">
+    <ExampleSelector items={{styleImages}} bind:index='styleIndex'></ExampleSelector>
+    <!-- <div class="icons">
+      {{#each styleImages as styleImage, i}}
+        <div class="icon {{(styleIndex == i)? 'selected' : ''}}" on:click='set({styleIndex: i})'>
+          <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
+        </div>
+      {{/each}}
+    </div> -->
+  
+    <div id="sprite-second" class="sprite">
+      <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
+      <!-- <span class="figcaption">"{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}})</span> -->
+    </div>
+  </div>
+</div>
+
+
+<img class="arrow" src="images/vertical-join-arrow.svg"/>
+
+<div id="output">
+  <h4>Final image Optimization</h4>
   <ImageComparison id="image-comparison" left={{styletransferImages[0]}} right={{styletransferImages[1]}}></ImageComparison>
 </div>
 
-<div class="grid row"><span class="figcaption">
-  Styletransfer of "{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}}) onto "{{contentImage.title}}" by {{contentImage.artist}}.
-</span></div>
-
 </figure>
+
+<span class="figcaption l-body">
+  Styletransfer of "{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}}) onto a photograph by {{contentImage.artist}}.
+</span>
 
 
 <style>
@@ -61,10 +60,47 @@
   grid-auto-flow: row;
   grid-gap: 10px;
   grid-auto-columns: 1fr;
+  align-items: flex-start;
+  grid-template: 
+    "style content" auto
+    "output output" auto / 1fr 1fr;
 }
 
 .row {
   grid-auto-flow: column;
+}
+
+#input-style {
+  grid-area: style;
+}
+
+#input-content {
+  grid-area: content;
+}
+
+#output {
+  display: grid;
+  grid-area: output;
+  grid-gap: inherit;
+}
+
+.input-wrapper {
+  display: grid;
+  grid-gap: inherit;
+  align-items: flex-start;
+  grid-auto-rows: min-content;
+  z-index: 1;
+}
+
+.input-chooser {
+  display: grid;
+  grid-gap: inherit;
+  align-items: flex-start;
+}
+
+.arrow {
+  display: none;
+  z-index: 0;
 }
 
 h4 {
@@ -74,60 +110,6 @@ h4 {
   font-weight: 700;
 }
 
-
-.captions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 10px;
-}
-
-.caption {
-  margin-bottom: 10px;
-}
-
-.caption-first {
-  text-align: right;
-}
-
-
-/* Icons */
-.icons {
-  grid-column: min-content;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
-  /* margin-bottom: 7px; */
-  max-width: calc(49px * 6);
-  /*border-bottom: 1px solid #dddddd;*/
-}
-.icons .icon {
-  cursor: pointer;
-  padding-bottom: 6px;
-  /*margin-left: 3px;*/
-  /* margin-right: 6px; */
-  border-bottom: 1px solid #dddddd;
-}
-.icons .icon.selected {
-  opacity: 100%;
-  padding-bottom: 3px;
-  border-bottom: 3px solid #ff6600;
-}
-.icon div {
-  opacity: 0.5;
-  image-rendering: auto;
-  width: 44px;
-  height: 44px;
-  background-size: cover;
-  background-position: center;
-}
-.icon.selected div {
-  opacity: 1;
-}
-/* -end Icons end- */
-.sprite span {
-
-}
 .sprite div {
   /* flex: 1 1; */
   position: relative;
@@ -137,24 +119,52 @@ h4 {
   /* padding-top: 100%; */
   background-size: cover;
   background-position: center;
-  /* object-fit: contain; */
 }
 .sprite div:before {
   content: "";
 	display: block;
 	padding-top: 100%;
 }
-.icons-column {
-  /* grid-column: min-content; */
-}
 .rotated {
   transform: rotate(90deg);
+}
+
+.figcaption {
+  margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+  .input-chooser {
+    grid-auto-flow: column;
+    grid-template-columns: 94px auto;
+  }
+}
+
+@media (min-width: 1180px) {
+  .grid {
+    grid-template: 
+      "style arrow output" auto
+      "content arrow output" auto / min-content 34px 2fr;
+  }
+  .sprite {
+    min-width: 210px; /* magic number */
+  }
+  .arrow {
+    display: initial;
+    position: absolute;
+    left: -20px;
+    top: 106px;
+    z-index: 0;
+    grid-area: arrow;
+    width: unset;
+  }
 }
 </style>
 
 <script>
   import { range } from '../util';
   import ImageComparison from '../components/ImageComparison'
+  import ExampleSelector from '../components/ExampleSelector'
 
   function canonical_name_part(url) {
     const basename = url.split('/').pop();
@@ -162,7 +172,7 @@ h4 {
   }
 
   export default {
-    components: { ImageComparison },
+    components: { ImageComparison, ExampleSelector },
     computed: {
       contentImage: (contentImages, contentIndex) => contentImages[contentIndex],
       styleImage: (styleImages, styleIndex) => styleImages[styleIndex],
@@ -199,7 +209,7 @@ h4 {
           {
             src: 'images/content/bridge.jpg',
             title: 'Bridge',
-            artist: 'Public Domain'
+            artist: 'Public Domain Archive'
           },
           {
             src: 'images/content/utah.jpg',

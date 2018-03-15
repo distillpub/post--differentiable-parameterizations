@@ -9,6 +9,7 @@ d-figure.base-grid {
 
 d-figure {
   margin-bottom: 1em;
+  position: relative;
 }
 
 d-figure > figure {
@@ -21,4 +22,12 @@ d-figure > figure {
   border-top: 1px solid hsla(0, 0%, 0%, 0.1);
   border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
   padding: 30px 0;
+}
+
+.pointer {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  top: 26px;
+  left: -48px;
 }

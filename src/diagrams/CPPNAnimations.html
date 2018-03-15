@@ -1,4 +1,5 @@
 <div class='grid' on:mouseover='set({paused: false})' on:mouseout='set({paused: true})'>
+  <img class="pointer" src="images/pointer.svg">
   {{#each range(3) as x}}
     <SpriteAnimation :run :paused :interval_seconds :n_images :width :height offset={{x}}  image_url={{sprite_url}}/>
   {{/each}}

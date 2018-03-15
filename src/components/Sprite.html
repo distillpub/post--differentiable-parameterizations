@@ -66,47 +66,47 @@
 </style>
 
 <script>
-  export default {
-    data() {
-      return {
-        src_class: "mixed4d",
-        sprite_size: 200,
-        sprite_scale: 1.0,
-        size: 100,
-        x: 0, // specified in Sprite subclasses
-        y: 0,
-        shift: [0.5,0.5],
-        hover: false,
-        hover_scale: 1,
-        transition_background: false,
-        border: false,
-        pixelated: false
-      }
-    },
-    computed: {
-      corner_x: (sprite_size, x, sprite_scale) => sprite_size*x,
-      corner_y: (sprite_size, y, sprite_scale) => sprite_size*y,
-      offset_x: (sprite_size, sprite_scale, corner_x, shift, size, ratio) => {
-        return corner_x + sprite_size * shift[0] * (1-sprite_scale);
-      },
-      offset_y: (sprite_size, sprite_scale, corner_y, shift, size, ratio) => {
-        return corner_y + sprite_size * shift[1] * (1-sprite_scale);
-      },
-      final_sprite_size: (sprite_scale, sprite_size) => sprite_scale * sprite_size,
-      ratio: (size, final_sprite_size) => size/final_sprite_size,
-      margin: (final_sprite_size, size) => -(final_sprite_size-size)/2,
-      transition_css: (transition_background) => {
-        let css = `width 0.1s ease-out, height 0.1s ease-out, margin 0.1s ease-out, transform 0.1s ease-out`;
-        if (transition_background) {
-          css += `, background-position 0.1s ease-out`;
-        }
-        return css;
-      },
-      border_css: (border) => border ? '2px solid white' : 'none',
-      hover_class: (hover) => hover ? 'hoverable' : ''
-    },
-    oncreate() {
-      // this.observe('x', (x1, x2) => console.log(this))
+export default {
+  data() {
+    return {
+      src_class: "mixed4d",
+      sprite_size: 200,
+      sprite_scale: 1.0,
+      size: 100,
+      x: 0, // specified in Sprite subclasses
+      y: 0,
+      shift: [0.5,0.5],
+      hover: false,
+      hover_scale: 1,
+      transition_background: false,
+      border: false,
+      pixelated: false
     }
+  },
+  computed: {
+    corner_x: (sprite_size, x, sprite_scale) => sprite_size*x,
+    corner_y: (sprite_size, y, sprite_scale) => sprite_size*y,
+    offset_x: (sprite_size, sprite_scale, corner_x, shift, size, ratio) => {
+      return corner_x + sprite_size * shift[0] * (1-sprite_scale);
+    },
+    offset_y: (sprite_size, sprite_scale, corner_y, shift, size, ratio) => {
+      return corner_y + sprite_size * shift[1] * (1-sprite_scale);
+    },
+    final_sprite_size: (sprite_scale, sprite_size) => sprite_scale * sprite_size,
+    ratio: (size, final_sprite_size) => size/final_sprite_size,
+    margin: (final_sprite_size, size) => -(final_sprite_size-size)/2,
+    transition_css: (transition_background) => {
+      let css = `width 0.1s ease-out, height 0.1s ease-out, margin 0.1s ease-out, transform 0.1s ease-out`;
+      if (transition_background) {
+        css += `, background-position 0.1s ease-out`;
+      }
+      return css;
+    },
+    border_css: (border) => border ? '2px solid white' : 'none',
+    hover_class: (hover) => hover ? 'hoverable' : ''
+  },
+  oncreate() {
+    // this.observe('x', (x1, x2) => console.log(this))
   }
+}
 </script>
