@@ -1,11 +1,16 @@
-<div ref:container class="container" on:mousemove="mousemove(event)">
-  <img class="background" src={{right}}>
+<:Window on:mouseup='set({dragging: false})'/>
+
+<div ref:container class="container" 
+     on:mousemove="mousemove(event)">
+  <img ref:imgBackground class="background" src={{right}} on:click="toggle()">
   <div class="right label">Correlated</div>
   <div class="resizeable" style="width: {{overlayPercentage}}%">
     <div class="left label">Decorrelated</div>
-    <img src={{left}}>
+    <img ref:imgForeground src={{left}} on:click="toggle()">
   </div>
-  <div ref:handle class="handle" style="left: {{overlayPercentage}}%"></div>
+  <div ref:handle class="handle" 
+       style="left: {{overlayPercentage}}%"
+       on:mousedown="set({dragging: true})"></div>
 </div>
 
 
@@ -33,27 +38,28 @@
   .container {
     position: relative;
     z-index: 0;
-    cursor: ew-resize;
     user-select: none;
+    overflow: hidden;
   }
   
   .container img {
     width: 100%;
     height: auto;
     display: block;
+    cursor: pointer;
   }
   
-  img.background {
-  }
   
   .handle {
     position: absolute;
     top: 0;
     left: 50%;
-    width: 2px;
+    width: 3px;
     height: 100%;
     background-color: white;
-    opacity: 0.67;
+    cursor: ew-resize;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.75);
+    opacity: 0.8;
   }
   
   .handle::after {
@@ -61,8 +67,8 @@
     top: 50%;
     width: 17px;
     height: 17px;
-    transform: translate(-8px, -8px);
-    content: '';
+    transform: translate(-7px, -8px);
+    content: url('data:image/svg+xml; utf8, <svg width="16px" height="16px" viewBox="-0.5 6 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square" stroke-opacity="0.33"><path d="M8,2.5 L8,14.5" id="Line-Copy-5" stroke="#000000"></path><path d="M5,2.5 L5,14.5" id="Line-Copy-4" stroke="#000000"></path><path d="M11,2.5 L11,14.5" id="Line-Copy-3" stroke="#000000"></path></g>    </svg>');
     background: white;
     border-radius: 50%;
   }
@@ -84,6 +90,9 @@
 
 <script>
 
+import { tween } from 'svelte-extras';
+import { quadOut } from 'eases-jsnext';
+
 function clamp(value, min, max) {
   return Math.max(Math.min(value, max), min);
 }
@@ -91,16 +100,39 @@ function clamp(value, min, max) {
 export default {
   data() {
     return {
-      overlayPercentage: 67
+      overlayPercentage: 67,
+      dragging: false
+    }
+  },
+  oncreate() {
+    const imgTags = [this.refs.imgForeground, this.refs.imgBackground];
+    for (const imgTag of imgTags) {
+      // imgTag.on('dragstart', (event) => event.preventDefault() );
     }
   },
   methods: {
     mousemove(event) {
+      const dragging = this.get('dragging');
+      if (!dragging) return;
       const bbox = this.refs.container.getBoundingClientRect();
-      const overlayWidth = clamp(event.clientX - bbox.left, 0, bbox.width);
-      const overlayWidthRatio = overlayWidth / bbox.width;
-      this.set({overlayPercentage: overlayWidthRatio*100});
-    }
+      let overlayWidthRatio = 100 * (event.clientX - bbox.left) / bbox.width;
+      overlayWidthRatio = clamp(overlayWidthRatio, 2, 98);
+      this.set({overlayPercentage: overlayWidthRatio});
+    },
+    toggle() {
+      const overlay = this.get('overlayPercentage');
+      let newOverlay;
+      if ([15, 85].includes(overlay)) {
+        newOverlay = overlay == 85 ? 15 : 85;
+      } else {
+        newOverlay = overlay < 50 ? 15 : 85;
+      }
+      this.tween('overlayPercentage', newOverlay, {
+        duration: 300,
+        easing: quadOut
+      });
+    },
+    tween
   }
 }
 </script>

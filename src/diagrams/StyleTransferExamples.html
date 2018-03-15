@@ -1,95 +1,109 @@
-<figure class="l-body">
-<div class="frow">
+<figure class="l-body grid">
+  
+<div class="grid row">
+  <h4>Content Image</h4>
+  <h4>Style Image</h4>
+</div>
 
-  <div id="icons-first" class="icons-column fcolumn">
-    <div class="icons">
-      {{#each contentImages as contentImage, i}}
-        <div class="icon {{(contentIndex == i)? 'selected' : ''}}" on:click='set({contentIndex: i})'>
-          <div style="background-image: url({{contentImage.src}})"></div>
-        </div>
-      {{/each}}
+<div class="grid row">
+  
+  <div class="grid">
+    <div id="icons-first" class="icons-column">
+      <div class="icons">
+        {{#each contentImages as contentImage, i}}
+          <div class="icon {{(contentIndex == i)? 'selected' : ''}}" on:click='set({contentIndex: i})'>
+            <div style="background-image: url({{contentImage.src}})"></div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+    
+    <div id="sprite-first" class="sprite">
+      <div style="background-image: url({{contentImage.src}})"></div>
+      <span class="figcaption">Photograph by {{contentImage.artist}}</span>
     </div>
   </div>
-
-  <div id="sprite-first" class="sprite fcolumn">
-    <div style="background-image: url({{contentImage.src}})"></div>
-  </div>
-
-  <div id="sprite-second" class="sprite fcolumn">
-    <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
-  </div>
-
-  <div id="icons-second" class="icons-column fcolumn">
-    <div class="icons">
-      {{#each styleImages as styleImage, i}}
-        <div class="icon {{(styleIndex == i)? 'selected' : ''}}" on:click='set({styleIndex: i})'>
-          <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
-        </div>
-      {{/each}}
+  
+  <div class="grid">
+    <div id="icons-second" class="icons-column">
+      <div class="icons">
+        {{#each styleImages as styleImage, i}}
+          <div class="icon {{(styleIndex == i)? 'selected' : ''}}" on:click='set({styleIndex: i})'>
+            <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+    
+    <div id="sprite-second" class="sprite">
+      <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
+      <span class="figcaption">"{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}})</span>
     </div>
   </div>
 
 </div>
 
-<div class="l-body">
+<div class="grid row">
   <ImageComparison id="image-comparison" left={{styletransferImages[0]}} right={{styletransferImages[1]}}></ImageComparison>
 </div>
 
-<div class="l-body figcaption">
+<div class="grid row"><span class="figcaption">
   Styletransfer of "{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}}) onto "{{contentImage.title}}" by {{contentImage.artist}}.
-</div>
+</span></div>
+
 </figure>
 
 
 <style>
-/* FRow & FColumn */
-.frow {
-  display: flex;
-  flex-flow: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-left: -5px;
-  margin-right: -5px;
+
+.grid {
+  display: grid;
+  grid-auto-flow: row;
+  grid-gap: 10px;
+  grid-auto-columns: 1fr;
 }
-.fcolumn {
-  display: flex;
-  flex-flow: column;
-  flex-grow: 1;
+
+.row {
+  grid-auto-flow: column;
+}
+
+h4 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 8px;
+  margin: 0;
+  font-weight: 700;
+}
+
+
+.captions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10px;
+}
+
+.caption {
   margin-bottom: 10px;
-  z-index: 2;
-  margin-left: 5px;
-  margin-right: 5px;
 }
-.fcolumn > * {
-  margin-bottom: 10px;
+
+.caption-first {
+  text-align: right;
 }
-.fcolumn > *:last-child {
-  margin-bottom: 0;
-}
-/* .fcolumn:first-of-type {
-  margin-left: 0;
-  margin-right: 10px;
-}
-.fcolumn:last-of-type {
-  margin-left: 10px;
-  margin-right: 0;
-} */
-/* -end FRow & FColumn end- */
+
+
 /* Icons */
 .icons {
+  grid-column: min-content;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 7px;
-  max-width: calc(44px * 2 + 6px);
+  /* margin-bottom: 7px; */
+  max-width: calc(49px * 6);
   /*border-bottom: 1px solid #dddddd;*/
 }
 .icons .icon {
   cursor: pointer;
   padding-bottom: 6px;
-  margin-bottom: 11px;
-
   /*margin-left: 3px;*/
   /* margin-right: 6px; */
   border-bottom: 1px solid #dddddd;
@@ -128,10 +142,10 @@
 .sprite div:before {
   content: "";
 	display: block;
-	padding-top: 100%; 	/* initial ratio of 1:1*/
+	padding-top: 100%;
 }
 .icons-column {
-  flex-grow: 0;
+  /* grid-column: min-content; */
 }
 .rotated {
   transform: rotate(90deg);
@@ -169,27 +183,33 @@
         contentImages: [
           {
             src: 'images/content/food.jpg',
-            title: 'Food'
+            title: 'Food',
+            artist: 'Brooke Lark'
           },
           {
             src: 'images/content/girl.jpg',
-            title: 'Girl'
+            title: 'Girl',
+            artist: 'Diana Feil'
           },
           {
             src: 'images/content/architecture.jpg',
-            title: 'Architecture'
+            title: 'Architecture',
+            artist: 'Petr Kratochvil'
           },
           {
             src: 'images/content/bridge.jpg',
-            title: 'Bridge'
+            title: 'Bridge',
+            artist: 'Public Domain'
           },
           {
             src: 'images/content/utah.jpg',
-            title: 'Utah'
+            title: 'Utah',
+            artist: 'Alex Povolyashko'
           },
           {
             src: 'images/content/zurich.jpg',
-            title: 'Zurich'
+            title: 'Zurich',
+            artist: 'Andyindia'
           },
         ],
         styleImages: [
@@ -235,13 +255,13 @@
             year: 1831,
             rotated: false
           },
-          {
-            src: 'images/styles/parade-cropped.jpg',
-            title: 'The large one parades on red bottom',
-            artist: 'Fernand Leger',
-            year: 1953,
-            rotated: false
-          },
+          // { 
+          //   src: 'images/styles/parade-cropped.jpg', 
+          //   title: 'The large one parades on red bottom', 
+          //   artist: 'Fernand Leger',
+          //   year: 1953,
+          //   rotated: false
+          // },
         ]
       };
     },
