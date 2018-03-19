@@ -41,28 +41,103 @@
 
 <d-title>
   <h1>Differentiable Image Parameterizations</h1>
+  <p>Six examples of differentiable image parameterizations that allow solving previously intractable optimization tasks:</p>
+  <style>
+    .visual-toc {
+      counter-reset: toc-heading;
+      display: grid;
+      grid-auto-flow: dense;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 16px;
+      cursor: pointer;
+    }
+    @media (min-width: 1024px) {
+      .visual-toc {
+        grid-gap: 20px;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+      }
+    }
+    .visual-toc-item {
+      border: 1px solid #E5E5E5;
+      border-radius: 5px;
+      padding-bottom: 1em;
+      overflow: hidden;
+      text-decoration: none;
+      box-shadow: 0px 1px 10px rgba(0,0,0,0.05);
+      transition: box-shadow 0.5s, transform 0.5s;
+    }
+    .visual-toc-item:hover {
+      box-shadow: 0px 1px 10px rgba(0,0,0,0.15);
+      transform: scale(1.025);
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .visual-toc-img {
+      width: 100%;
+    }
+    .visual-toc-heading,
+    .visual-toc-subheading {
+      display: block;
+      line-height: 1.3em;
+      font-size: 85%;
+      padding: 0.5em 1em 0 1em;
+    }
+    .visual-toc-heading {
+      counter-increment: toc-heading;
+      color: #333;
+      font-weight: 600;
+      /* text-transform: uppercase; */
+    }
+    .visual-toc-heading::before{
+      display: block;
+      content: "Section " counter(toc-heading);
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: 0.6rem;
+      color: #666;
+    }
+    .visual-toc-subheading {
+      display: none;
+      color: #666;
+      font-size: 75%;
+    }
+  </style>
+  <nav class="l-page visual-toc">
+    <a href="#experiment-aligned" class="visual-toc-item">
+      <img class="visual-toc-img" src="images/vtoc-aligned-interpolation.png"/>
+      <span class="visual-toc-heading">Aligned Neuron Interpolation</span>
+      <span class="visual-toc-subheading">by using a shared parameterization</span>
+    </a>
+    <a href="#experiment-styletransfer" class="visual-toc-item">
+      <img class="visual-toc-img" src="images/vtoc-styletransfer.png"/>
+      <span class="visual-toc-heading">Style Transfer in the Fourier basis</span>
+      <span class="visual-toc-subheading">generalized to non-VGG architectures</span>
+    </a>
+    <a href="#experiment-featureviz-rgba" class="visual-toc-item">
+      <img class="visual-toc-img" src="images/vtoc-alpha.png"/>
+      <span class="visual-toc-heading">Feature Vis with transparency</span>
+      <span class="visual-toc-subheading">for activation maximization</span>
+    </a>
+    <a href="#experiment-xy2rgb" class="visual-toc-item">
+      <img class="visual-toc-img" src="images/vtoc-cppn.png"/>
+      <span class="visual-toc-heading">Feature Vis with CPPNs</span>
+      <span class="visual-toc-subheading">for activation maximization</span>
+    </a>
+    <a href="#experiment-featureviz-3d" class="visual-toc-item">
+      <img class="visual-toc-img" src="images/vtoc-3d-opt.png"/>
+      <span class="visual-toc-heading">Feature Vis in 3D</span>
+      <span class="visual-toc-subheading">for activation maximization</span>
+    </a>
+    <a href="#experiment-styletransfer-3d" class="visual-toc-item">
+      <img class="visual-toc-img" src="images/vtoc-3d-style.png"/>
+      <span class="visual-toc-heading">Style Transfer in 3D</span>
+      <span class="visual-toc-subheading">Aligned Neuron Interpolation</span>
+    </a>
+  </nav>
 </d-title>
 
 <d-article>
 
-<!-- =================================================== -->
-
-  <nav>
-    <!-- This TOC is for development and will be removed before publication. -->
-    <style>
-      d-toc#toc-dev-only ul {
-        padding-left: 24px;
-      }
-      d-toc#toc-dev-only li {
-        margin-bottom: -1.7em;
-      }
-    </style>
-    <d-toc id='toc-dev-only'></d-toc>
-  </nav>
-
-<!-- =================================================== -->
-
-  <h2 id='introduction'>Introduction</h2>
+  <!-- <h2 id='introduction'>Introduction</h2> -->
   <p>
 Deep Neural Networks are, essentially, very entangled non-linear functions<d-cite key="lecun2015deepLearning"></d-cite>. Despite being highly non-linear, they remain differentiable functions for which the computation of partial derivatives is not only possible, but very efficient on parallel architectures<d-cite key="krizhevsky2012"></d-cite>. The computation of the derivatives with respect to the parameters enables the learning of a desired function. Network's parameters, also called weights, are modified by a tiny amount along the gradient until, after a number of iterations, the output of the network and the desired function match.
   </p>
@@ -72,6 +147,9 @@ However, other differentiable functions can be propagated, either from the outpu
 We will refer to the space in which the input is optimized as its <b>Differentiable Image Parameterizations</b>.
 The most common and simple parameterization is the image pixel space, where the changes propagated troughout the network correspond to changes in the color of each pixel.
   </p>
+  
+  <%= require("../static/images/diagrams/general.svg")%>
+  <aside>All diagram styling should be considered work in progress :-)</aside>
 
   <p>
 Depending on which function is propagated, the parameterization will map some network's latent state to a 2D raster image.
@@ -265,9 +343,8 @@ Here we show that CPPNs works as parameterization for an optimization approach.
 The gradients of a target function, for example for a feature visualization task<d-cite key="olah2017feature"></d-cite>, are not used to optimize an image but rather the function $f(x,y)$ that the CPPN computes.
   </p>
 
-  <div>
-      <img src="/tmp_images/xy2rgb_diagram.png">
-  </div>
+  <%= require("../static/images/diagrams/cppn.svg")%>
+  <aside>All diagram styling should be considered work in progress :-)</aside>
 
   <p>
 To this end, the gradient objective function is propagated through the convolutional network to its RGB input.
@@ -346,9 +423,8 @@ Intuitively, we optimize not directly in the texture space, but rather through t
 The following diagram presents an overview of the proposed pipeline:
   </p>
 
-  <div>
-      <img src="/images/3d_feature.jpg">
-  </div>
+  <%= require("../static/images/diagrams/featurevis-3d.svg")%>
+  <aside>All diagram styling should be considered work in progress :-)</aside>
 
   <p>
 We start the process by randomly initializing the texture with a Fourier parameterization.
@@ -378,7 +454,7 @@ In the next section we will se how this framework can be reused for performing a
 
 <!-- =================================================== -->
 
-  <h2 id='experiment-featureviz-3d'>Style Transfer for Textures through 3D Rendering</h2>
+  <h2 id='experiment-styletransfer-3d'>Style Transfer for Textures through 3D Rendering</h2>
 
   <p>
 Once that we have a framework for the efficient backpropagation of the gradients in the UV-mapped texture, we can adapt existing style transfer techniques for 3D objects.
@@ -386,9 +462,8 @@ Similarly to the 2D case, we aim at redrawing the original object's texture with
 The following diagram depicts an overview of the approach:
   </p>
 
-  <div>
-      <img src="/images/3d_style.jpg">
-  </div>
+  <img style="width: 100%" src="images/diagrams/styletransfer-3d.png"/>
+  <aside>All diagram styling should be considered work in progress :-)</aside>
 
   <p>
 The algorithm works in similar way to the one presented in the previous section, starting from a randomly initialized texture.
