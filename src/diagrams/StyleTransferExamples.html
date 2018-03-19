@@ -3,18 +3,9 @@
 <div id="input-content" class="input-wrapper">
   <h4>Content Image</h4>
   <div class="input-chooser">
-    <ExampleSelector items={{contentImages}} bind:index='contentIndex'></ExampleSelector>
-    <!-- <div class="icons">
-      {{#each contentImages as contentImage, i}}
-        <div class="icon {{(contentIndex == i)? 'selected' : ''}}" on:click='set({contentIndex: i})'>
-          <div style="background-image: url({{contentImage.src}})"></div>
-        </div>
-      {{/each}}
-    </div> -->
-  
+    <ExampleSelector items={{contentImages}} bind:index='contentIndex'></ExampleSelector>  
     <div id="sprite-first" class="sprite">
       <div style="background-image: url({{contentImage.src}})"></div>
-      <!-- <span class="figcaption">Photograph by {{contentImage.artist}}</span> -->
     </div>
   </div>
 </div>
@@ -23,17 +14,8 @@
   <h4>Style Image</h4>
   <div class="input-chooser">
     <ExampleSelector items={{styleImages}} bind:index='styleIndex'></ExampleSelector>
-    <!-- <div class="icons">
-      {{#each styleImages as styleImage, i}}
-        <div class="icon {{(styleIndex == i)? 'selected' : ''}}" on:click='set({styleIndex: i})'>
-          <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
-        </div>
-      {{/each}}
-    </div> -->
-  
     <div id="sprite-second" class="sprite">
       <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
-      <!-- <span class="figcaption">"{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}})</span> -->
     </div>
   </div>
 </div>
@@ -49,7 +31,7 @@
 </figure>
 
 <span class="figcaption l-body">
-  Styletransfer of "{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}}) onto a photograph by {{contentImage.artist}}.
+  Styletransfer of "{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}}) onto a photograph by {{contentImage.artist}}. Move the slider to compare optimization in pixel space and in the fourier basis. Both images were created with the same optimization process and differ only in their parameterization.
 </span>
 
 

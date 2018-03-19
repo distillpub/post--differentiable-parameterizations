@@ -5,8 +5,8 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="join-arrow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path d="M0,1.5 L16,1.5 C24.836556,1.5 32,8.663444 32,17.5 L32,144 C32,152.836556 39.163444,160 48,160 L54,160" id="Path" stroke="#666666" stroke-width="1.5"></path>
-        <path d="M0,160 L16,160 C24.836556,160 32,167.163444 32,176 L32,302.5 C32,311.336556 39.163444,318.5 48,318.5 L54,318.5" id="Path-Copy" stroke="#666666" stroke-width="1.5" transform="translate(27.000000, 239.250000) scale(1, -1) translate(-27.000000, -239.250000) "></path>
-        <path d="M56.5,155.5 C57.6700729,158.752024 58.8528121,161.791806 61,164.5 L56.5,162.8125 L52,164.5 C54.1353015,161.789727 55.3412679,158.74999 56.5,155.5 Z" id="Shape" fill="#666666" fill-rule="nonzero" transform="translate(56.500000, 160.000000) rotate(-270.000000) translate(-56.500000, -160.000000) "></path>
+        <path d="M0,1.5 L16,1.5 C24.836556,1.5 32,8.663444 32,17.5 L32,144 C32,152.836556 39.163444,160 48,160 L54,160" id="Path" stroke="#cccccc" stroke-width="1.5"></path>
+        <path d="M0,160 L16,160 C24.836556,160 32,167.163444 32,176 L32,302.5 C32,311.336556 39.163444,318.5 48,318.5 L54,318.5" id="Path-Copy" stroke="#cccccc" stroke-width="1.5" transform="translate(27.000000, 239.250000) scale(1, -1) translate(-27.000000, -239.250000) "></path>
+        <path d="M56.5,155.5 C57.6700729,158.752024 58.8528121,161.791806 61,164.5 L56.5,162.8125 L52,164.5 C54.1353015,161.789727 55.3412679,158.74999 56.5,155.5 Z" id="Shape" fill="#cccccc" fill-rule="nonzero" transform="translate(56.500000, 160.000000) rotate(-270.000000) translate(-56.500000, -160.000000) "></path>
     </g>
 </svg>

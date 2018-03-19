@@ -165,6 +165,8 @@ export default {
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
       controls = new OrbitControls( camera, renderer.domElement );
+      controls.enablePan = false;
+      controls.enableZoom = false;
       //Disable the autoClear option to draw the two scenes together
       renderer.autoClear = false;
       //render on change only

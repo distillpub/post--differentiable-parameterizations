@@ -3,9 +3,9 @@
 <div ref:container class="container" 
      on:mousemove="mousemove(event)">
   <img ref:imgBackground class="background" src={{right}} on:click="toggle()">
-  <div class="right label">Correlated</div>
+  <div class="right label">Pixel Space</div>
   <div class="resizeable" style="width: {{overlayPercentage}}%">
-    <div class="left label">Decorrelated</div>
+    <div class="left label">Fourier Space</div>
     <img ref:imgForeground src={{left}} on:click="toggle()">
   </div>
   <div ref:handle class="handle" 
