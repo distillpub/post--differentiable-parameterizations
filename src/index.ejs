@@ -144,10 +144,10 @@ Deep Neural Networks are, essentially, very entangled non-linear functions<d-cit
 
   <p>
 However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>.
-We will refer to the space in which the input is optimized as its <b>Differentiable Image Parameterizations</b>.
+We will refer to the space in which the input is optimized as its <b>Differentiable Image Parameterization</b>.
 The most common and simple parameterization is the image pixel space, where the changes propagated troughout the network correspond to changes in the color of each pixel.
   </p>
-  
+
   <%= require("../static/images/diagrams/general.svg")%>
   <aside>All diagram styling should be considered work in progress :-)</aside>
 
@@ -161,13 +161,13 @@ The resulting parameterization creates a raster image that preserves the content
 
   <p>
 In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of artistic results. The proposed techniques achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized parameterizations.
-Hence, we do not require the creation ad-hoc feed-forward networks<d-cite key="li2017universal"></d-cite> that learn to emulate the iterative process or the implementation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.
+Hence, we do not require the creation of ad-hoc feed-forward networks<d-cite key="li2017universal"></d-cite> that learn to emulate the iterative process or the implementation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.
   </p>
 
   <p>
 We propose different parameterizations for images and extensions that allow for the creation of artistic 3D models.
 We believe that our examples will inspire researchers and computational artists in devising novel and exciting computational art.
-To further facilitate the development, we release the code used for generating our examples as <a href="https://colab.research.google.com/">CoLab</a> notebooks.
+To further facilitate the development of novel parameterizations, we release the code of our experiments as <a href="https://colab.research.google.com/">CoLab</a> notebooks.
   </p>
 
 <!-- =================================================== -->
@@ -177,7 +177,7 @@ To further facilitate the development, we release the code used for generating o
   <p>
 As an introductory example, we explore how <a href="https://distill.pub/2017/feature-visualization/#interpolation">aligned interpolation neuron visualizations</a> are created.
 Throughout this article we will often optimize a randomly initialized parameterization to generate the patterns that are detected by a neurons, channels or layers in a neural network.
-We refer to the result of this procedure as the optimization for a feature visualizations objective function<d-cite key="olah2017feature"></d-cite>, as it reveal the features that the network is detecting in different layers.
+We refer to the result of this procedure as the optimization for a feature visualizations objective function<d-cite key="olah2017feature"></d-cite>, as it reveals the features that the network is detecting in different layers.
   </p>
 
   <p>
@@ -264,7 +264,7 @@ Underestimating the role of a properly chosen parameterization makes the differe
   <h2 id='experiment-featureviz-rgba'>Generation of Semi-Transparent Patterns</h2>
   <p>
 Most of existing optimization techniques work on an input-space that has the same format as the input used to originally train the network.
-For networks trained to process images, the input usually corresponds to 2d array, where each pixel is represented by RGB channel values.
+For networks trained to process images, the input usually corresponds to a 2D array, where each pixel is represented by RGB channel values.
 In this section we investigate how to extend differentiable optimizations for channels that were not used to train the network. More specifically, we aim at creating semi-transparent images by optimizing the alpha channel of an image in combination with its RGB channels.
   </p>
 
@@ -360,7 +360,7 @@ To a certain degree, the generation of this images correspond to what an artist 
 <figure class="base-grid">
   <div style="grid-column: screen;" id="CPPN-Examples"></div>
   <figcaption style="grid-column: text;">
-    A <d-cite key="stanley2007cppn">Compositional Pattern Producing Network (CPPN)</d-cite> is used as differentiable parameterization for visualizing features at different layers<d-cite key="olah2017feature"></d-cite>. The resulting images have a novel artistic appeal as if the the original features are seen through a distorting lens.
+    A <d-cite key="stanley2007cppn">Compositional Pattern Producing Network (CPPN)</d-cite> is used as differentiable parameterization for visualizing features at different layers<d-cite key="olah2017feature"></d-cite>. The resulting images have a novel artistic appeal as if the the original features are constructed using beams of colored light deflected by prisms and mirrors.
   </figcaption>
 </figure>
 
@@ -377,14 +377,14 @@ By iteratively adjustign the weights, our immaginary prisms and beams are positi
 By playing with this metaphor, we can also create a new kind of animation.
 Imagine that we start from the one light-painting and we move the beams and prisms to create a new one.
 To achieve this result we can interpolate the weight of the CPPNs representations of the two light-paintings and generate a number of intermediate images.
-As before, changes in the parameter have a global effect and create interesting intermediate frames.
+As before, changes in the parameter have a global effect and create visually appealing intermediate frames.
   </p>
 
   <d-figure id='CPPNInterpolations'></d-figure>
 
   <p>
 In this section we presented a parameterization that goes beyond a standard image representation.
-Neural networks, a CPPN in this case, can be used to parameterize a image that is optimized for a given objective function.
+Neural networks, a CPPN in this case, can be used to parameterize an image that is optimized for a given objective function.
 More specifically, we combined a feature-visualization objective function with a CPPN parameterization to create computer generated light-paintings.
   </p>
 
@@ -399,7 +399,7 @@ Would it be possible to extend this approach also for the creation of artistic 3
 In this section we present a generative approach that makes use of the 3D rendering pipeline as a mean to generate artistic textures for 3D objects.
 Our technique is similar to the approach that Athalye et al.<d-cite key="athalye2017synthesizing"></d-cite> used for the creation of real-world adversarial examples, as we rely on the backpropagation of the objective function to randomly sampled views of the 3D model.
 We differ from existing approaches for artistic texture generation<d-cite key="kato2017neural3D"></d-cite>, as we do not modify the geometry of the object during back-propagation.
-By disentangling the generation of the texture from the position of their vertices, we can create very detailed texture for complex meshes.
+By disentangling the generation of the texture from the position of their vertices, we can create very detailed texture for complex objects.
   </p>
 
   <p>
@@ -459,7 +459,7 @@ In the next section we will se how this framework can be reused for performing a
   <p>
 Once that we have a framework for the efficient backpropagation of the gradients in the UV-mapped texture, we can adapt existing style transfer techniques for 3D objects.
 Similarly to the 2D case, we aim at redrawing the original object's texture with the style of a user-provided image.
-The following diagram depicts an overview of the approach:
+The following diagram presents an overview of the approach:
   </p>
 
   <img style="width: 100%" src="images/diagrams/styletransfer-3d.png"/>
@@ -486,7 +486,25 @@ Because every view is optimized independently, the optimization is forced to add
 For example, if we use as style image the Van Gogh's "Starry Night" painting, stars will be added in every single view.
 We found that more pleasing results, as those presented above, are obtained by introducing a sort of "memory" of the style of previous views.
 To this end, the style loss is computed as the weighted average of the loss at the current an previous iteration.
-(TODO: refine... maybe example?)
+</p>
+
+<p>
+The resulting textures combine elements models of the desired style, while preserving the characteristics of the original texture.
+Take as an example the model created by imposing Van Gogh's starry night as style image.
+The resulting texture contains the repetitive and vigorous brush strokes that characterize Van Gogh's work.
+However, despite the style image contains only cold tones, the resulting fur has a warm orange undertone as it is preserved from the original texture.
+Even more interesting is how the eyes of the bunny are preserved when different styles are transfered.
+For example, when the style is obtained from the Van Gogh's painting, the eyes are transformed in a star-like swirl, while if Kandinsky's work is used, they become abstract patterns that still resemble the original eyes.
+</p>
+
+<p>
+TODO: Picture of the printed bunny!
+</p>
+
+<p>
+Our approach combines well with modern digital fabrication techniques<d-cite key="gershenfeld2012make"></d-cite>.
+The geometry of the object is not part of its parameterization and, therefore, it is not modified during the optimization process.
+Hence, a faithful replica of the object can be 3D printed and, by adopting the latest color printing technologies<d-footnote>Full color sandstone was used to print and color our model.</d-footnote>, it can be textured accordingly to our generated style texture.
 </p>
 
 <!-- =================================================== -->
@@ -497,9 +515,7 @@ In this article we explored several novel differentiable parameterizations that 
 However, we believe that we explored only a small fraction of the possible image parameterizations for the creation of neural artistic content and exciting new possibilities lie ahead.
   </p>
 
-  <p>
-TODO: Images of the paintings and bunny!
-  </p>
+
 
   <p>
 Potential future research directions may include combining the described approaches in creative ways.
