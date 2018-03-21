@@ -3,9 +3,9 @@
   <div class="frow">
     <div id="icons-column" class="fcolumn">
       <div class="icons">
-        {{#each range(4) as i}}
+        {{#each range(8) as i}}
           <div class="icon {{(x == i)? 'selected' : ''}}" on:click='set({x: i})'>
-            <Sprite src_class={{sprite_class}} size=88 sprite_size=256 y=0 x={{i}} sprite_scale=0.5/>
+            <Sprite src_class={{sprite_class}} size=80 sprite_size=128 y=0 x={{i}} sprite_scale=0.8/>
           </div>
         {{/each}}
       </div>
@@ -32,7 +32,7 @@
   }
 
   .selection_sprite {
-    background-image: url('images/alpha-combination.png')
+    background-image: url('models/bunny/3Dfeatureviz/feature_sprite.jpg')
   }
 
 
@@ -59,7 +59,7 @@
       flex-wrap: wrap;
       flex-direction: row;
       margin-bottom: 7px;
-      max-width: 100px;
+      max-width: 180px;
       /*border-bottom: 1px solid #dddddd;*/
     }
 
@@ -142,11 +142,13 @@ export default {
   data() {
     return {
       model_folder: 'models/bunny',
+      texture_folder: 'models/bunny/3Dfeatureviz',
       sprite_class: 'selection_sprite',
       faces_file: 'face.3d',
       positions_file: 'position.3d',
       uvs_file: 'uv.3d',
-      texture_files: ['texture1.jpg', 'texture2.jpg', 'texture3.jpg', 'texture4.jpg'],
+      texture_files: ['texture_0.jpg', 'texture_1.jpg', 'texture_2.jpg', 'texture_3.jpg',
+                      'texture_4.jpg', 'texture_5.jpg', 'texture_6.jpg', 'texture_7.jpg'],
       resourcesReady: false,
       backgroundColor: '#f8f8f8',
       texture_index: 0,
@@ -156,8 +158,8 @@ export default {
     }
   },
   computed: {
-    texture_url: (model_folder,texture_files,x) => {
-      return model_folder + '/' + texture_files[x];
+    texture_url: (texture_folder,texture_files,x) => {
+      return texture_folder + '/' + texture_files[x];
     },
     resources: (model_folder, faces_file, positions_file, uvs_file) => {
       return new Map([
