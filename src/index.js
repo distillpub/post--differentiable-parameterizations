@@ -13,6 +13,7 @@ import CPPNExamples                   from "./diagrams/CPPNExamples.html";
 import CPPNAnimations                 from "./diagrams/CPPNAnimations.html";
 import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
 import BunnyModel                     from "./diagrams/BunnyModel.html";
+import BunnyModelTextureSpace         from "./diagrams/BunnyModelTextureSpace.html";
 
 import OrbitControls from 'three-orbitcontrols';
 import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer } from 'three';
@@ -74,6 +75,13 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
   const figure = document.getElementById('BunnyModel');
   figure.addEventListener("ready", function() {
     const bunnyModel = new BunnyModel({target: figure});
+  });
+}
+
+{
+  const figure = document.getElementById('BunnyModelTextureSpaceOptimization');
+  figure.addEventListener("ready", function() {
+    const bunnyModel = new BunnyModelTextureSpace({target: figure});
   });
 }
 

@@ -6,6 +6,8 @@
   <div class='controls'>
     <input ref:unfoldBox id="unfoldBox" type="checkbox" class="control" bind:checked='unfoldFlag'/>
     <label for="unfoldBox">Unfold</label>
+    <input ref:cameraPosId id ="cameraPosId" type="number" class="control" value="0" min="0" max="2">
+
   </div>
 </div>
 
@@ -21,7 +23,7 @@
 
 <script>
 import OrbitControls from 'three-orbitcontrols';
-import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer, Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry, Camera } from 'three';
+import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer, Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry, Camera, Quaternion } from 'three';
 
 const vertexShaderString = `
   uniform float viewAspect;
@@ -96,19 +98,27 @@ export default {
     const unfoldBox = this.refs.unfoldBox;
     const shadeBox = this.refs.shadeBox;
     const container = this.refs.container;
+    const cameraPosId = this.refs.cameraPosId;
     const component = this;
 
     const unfoldDuration  = 1500.0;
     const preFadeDuration = 200.0;
     const fadeInDuration  = 500.0;
+    const cameraMoveTime = 350;
+
     var camera, scene, renderer, controls, material;
     var sceneTexture, cameraTexture, materialTexture;
 
     var unfolded = false;
     var animationStart = -unfoldDuration*10.0;
+    var cameraAnimationStart = -cameraMoveTime *10.;
+    var initCameraLocation;
+    var camId = 0;
 
     init();
     animate(0.0);
+
+    var cameraPositions;
 
     function init() {
       //scene contain the 3D model
@@ -165,8 +175,18 @@ export default {
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
       controls = new OrbitControls( camera, renderer.domElement );
-      controls.enablePan = false;
+      controls.enablePan = true;
       controls.enableZoom = true;
+
+      // to pass
+      cameraPositions = [
+          //new Vector3(-0.658,0.297,-0.246),
+          new Vector3(-0.072,-0.354,0.627),
+          new Vector3(-1.20,-0.105,0.062),
+          new Vector3(0.614533221221188, -0.20237065729928297, 0.8685499623393961)
+        ];
+      initCameraLocation = new Vector3(0,0,0);
+
       //Disable the autoClear option to draw the two scenes together
       renderer.autoClear = false;
       //render on change only
@@ -174,6 +194,9 @@ export default {
         // fold mesh back if the user interacts with the model
         unfoldBox.checked = false;
         update();
+      });
+      document.querySelectorAll('.control').forEach(e=>{
+        e.addEventListener('change', update);
       });
       document.querySelectorAll('.control').forEach(e=>{
         e.addEventListener('change', update);
@@ -189,7 +212,28 @@ export default {
       return x*x*(3.0 - 2.0*x);
     }
 
-    function animate(time) {
+    function animate(time){
+      if(cameraPosId.value != camId){
+        camId = cameraPosId.value;
+        initCameraLocation.copy(camera.position);
+        cameraAnimationStart = time;
+        update();
+      }
+      if(time - cameraAnimationStart < cameraMoveTime){
+        //Forced camera movement
+        var interpFactor = ease((time - cameraAnimationStart)/cameraMoveTime);
+        //var tempVector = new Vector3(initCameraLocation);
+        //tempVector.lerp(initCameraLocation,cameraPositions[camId],interpFactor);
+        //tempVector.lerp(cameraPositions[camId],interpFactor);
+        var x = initCameraLocation.x * (1-interpFactor) + cameraPositions[camId].x*interpFactor;
+        var y = initCameraLocation.y * (1-interpFactor) + cameraPositions[camId].y*interpFactor;
+        var z = initCameraLocation.z * (1-interpFactor) + cameraPositions[camId].z*interpFactor;
+
+        //camera.position.set(tempVector.x,tempVector.y,tempVector.z);
+        camera.position.set(x,y,z);
+        update();
+      }
+
       var unfoldFlag = unfoldBox.checked;
       if (unfolded != unfoldFlag) {
         unfolded = unfoldFlag;
@@ -199,7 +243,7 @@ export default {
       var unfoldTime = (time-animationStart-(unfolded?0:fadeInDuration+preFadeDuration)) / unfoldDuration;
       var fadeInTime = (time-animationStart-(unfolded?unfoldDuration+preFadeDuration:0)) / fadeInDuration;
       if (animationTime < 1.0) {
-        update();
+        //update();
       }
       //3D model
       var unfoldVal = ease(unfoldTime);
