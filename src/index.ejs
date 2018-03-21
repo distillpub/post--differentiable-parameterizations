@@ -63,12 +63,13 @@
       padding-bottom: 1em;
       overflow: hidden;
       text-decoration: none;
-      box-shadow: 0px 1px 10px rgba(0,0,0,0.05);
-      transition: box-shadow 0.5s, transform 0.5s;
+      box-shadow: 0px 1px 5px rgba(0,0,0,0.05);
+      transition: box-shadow 0.35s, transform 0.35s;
+      transform: scale(1.0);
     }
     .visual-toc-item:hover {
       box-shadow: 0px 1px 10px rgba(0,0,0,0.15);
-      transform: scale(1.025);
+      transform: scale(1.02);
       transition: box-shadow 0.15s, transform 0.15s;
     }
     .visual-toc-img {
@@ -148,8 +149,7 @@ We will refer to the space in which the input is optimized as its <b>Differentia
 The most common and simple parameterization is the image pixel space, where the changes propagated troughout the network correspond to changes in the color of each pixel.
   </p>
 
-  <%= require("../static/images/diagrams/general.svg")%>
-  <aside>All diagram styling should be considered work in progress :-)</aside>
+  <img style="width: 100%" src="images/diagrams/general.png"/>
 
   <p>
 Depending on which function is propagated, the parameterization will map some network's latent state to a 2D raster image.
@@ -343,8 +343,7 @@ Here we show that CPPNs works as parameterization for an optimization approach.
 The gradients of a target function, for example for a feature visualization task<d-cite key="olah2017feature"></d-cite>, are not used to optimize an image but rather the function $f(x,y)$ that the CPPN computes.
   </p>
 
-  <%= require("../static/images/diagrams/cppn.svg")%>
-  <aside>All diagram styling should be considered work in progress :-)</aside>
+  <img style="width: 100%" src="images/diagrams/cppn.png"/>
 
   <p>
 To this end, the gradient objective function is propagated through the convolutional network to its RGB input.
@@ -423,8 +422,7 @@ Intuitively, we optimize not directly in the texture space, but rather through t
 The following diagram presents an overview of the proposed pipeline:
   </p>
 
-  <%= require("../static/images/diagrams/featurevis-3d.svg")%>
-  <aside>All diagram styling should be considered work in progress :-)</aside>
+  <img style="width: 100%" src="images/diagrams/featurevis-3d.png"/>
 
   <p>
 We start the process by randomly initializing the texture with a Fourier parameterization.
@@ -463,7 +461,6 @@ The following diagram presents an overview of the approach:
   </p>
 
   <img style="width: 100%" src="images/diagrams/styletransfer-3d.png"/>
-  <aside>All diagram styling should be considered work in progress :-)</aside>
 
   <p>
 The algorithm works in similar way to the one presented in the previous section, starting from a randomly initialized texture.
