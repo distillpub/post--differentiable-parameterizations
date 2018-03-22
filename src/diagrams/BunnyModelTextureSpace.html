@@ -9,13 +9,13 @@
           </div>
         {{/each}}
         <div class="icon {{(x == 1)? 'selected' : ''}}" on:click='set({x: 1})'>
-          Orientation
-        </div>
-        <div class="icon {{(x == 2)? 'selected' : ''}}" on:click='set({x: 2})'>
           Seams
         </div>
+        <div class="icon {{(x == 2)? 'selected' : ''}}" on:click='set({x: 2})'>
+          Orientation
+        </div>
         <div class="icon {{(x == 3)? 'selected' : ''}}" on:click='set({x: 3})'>
-          Resolution
+          Scaling
         </div>
       </div>
     </div>

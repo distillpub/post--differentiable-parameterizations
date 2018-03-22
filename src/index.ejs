@@ -413,10 +413,33 @@ You can use the following WebGL view to familiarize with these concepts. The vie
 
   <p>
 We aim at generating textures by optimizing for a feature-visualization objective function<d-cite key="olah2017feature"></d-cite>. A simple and straightforward way to achieve this result is to use, as texture to paint on the object, an image that is obtained by optimizing for one or more features in a layer.
-However, this approach generates a texture that does not consider the underlying UV-mapping and, therefore, will create seams in the rendered object.
+However, this approach generates a texture that does not consider the underlying UV-mapping and, therefore, will create visual artifacts in the rendered object.
   </p>
 
-<d-figure class="base-grid" id="BunnyModelTextureSpaceOptimization"></d-figure>
+<p>
+  By interacting with the following model, you can identify these artifacts and compare the result with our render-based approach.
+  First, seams are visible on the rendered texture, as the optimization is not aware of the underling UV-mapping and, therefore, does not optimize the texture consistently along the splitted patches of the texture.
+</p>
+
+<figure class="base-grid shaded-figure">
+  <figcaption style="grid-column: kicker;">
+    A Naïve approach optimizes the texture as an image with a feature visualization objective function.<br><br>
+    Because this optimization is not aware of the UV mapping used to render the object, it creates artifacts such as seams, badly oriented patterns and low resolution areas.<br><br>
+    You can use this model to compare the naïve approach with a render-based approach.
+  </figcaption>
+    <d-figure style="grid-column: text-start / screen-end; overflow: visible; contain: unset;" id="BunnyModelTextureSpaceOptimization"></d-figure>
+</figure>
+
+<p>
+  Second, the generated patterns are randomly oriented on different parts of the textured object.
+  In this example, the feature correspond to vertical and wigly patterns.
+  Beacause the texture patches are not consistently oriented in the underlying UV-mapping, the vertical pattern is lost in the rendered model.
+</p>
+<p>
+  Finally scaling artifacts can be seen in the rendered object, which correspond to areas where the same pattern is rendered at different scales.
+  In fact, the mapping does not enforce a 1:1 correspondence between triangle areas and their mapped triangle in the texture.
+  Therefore, a non uniform UV-mapping may lead to major changes in size of the rendered patterns.
+</p>
 
   <p>
 Here we adopt a different approach that overcomes this limitation by making use of the 3D rendering pipeline.
