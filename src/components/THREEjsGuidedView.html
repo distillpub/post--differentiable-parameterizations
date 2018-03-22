@@ -238,7 +238,6 @@ export default {
         camVector.multiplyScalar(interpLength+parabolicTrj);
 
         camera.position.set(camVector.x,camVector.y,camVector.z);
-        update();
       }
 
       var unfoldFlag = unfoldBox.checked;
@@ -249,7 +248,7 @@ export default {
       var animationTime = (time-animationStart) / (unfoldDuration+preFadeDuration+fadeInDuration);
       var unfoldTime = (time-animationStart-(unfolded?0:fadeInDuration+preFadeDuration)) / unfoldDuration;
       var fadeInTime = (time-animationStart-(unfolded?unfoldDuration+preFadeDuration:0)) / fadeInDuration;
-      if (animationTime < 1.0) {
+      if (animationTime < 1.0 || time - cameraAnimationStart < cameraMoveTime) {
         update();
       }
       //3D model
