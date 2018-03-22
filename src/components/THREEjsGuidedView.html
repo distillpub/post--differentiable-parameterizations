@@ -6,7 +6,6 @@
   <div class='controls'>
     <input ref:unfoldBox id="unfoldBox" type="checkbox" class="control" bind:checked='unfoldFlag'/>
     <label for="unfoldBox">Unfold</label>
-    <input ref:cameraPosId id ="cameraPosId" type="number" class="control" value="0" min="0" max="2">
 
   </div>
 </div>
@@ -53,7 +52,8 @@ const fragmentShaderString = `
 
   void main() {
     gl_FragColor = texture2D(texture, text_coord);
-    gl_FragColor.rgb *= (shading/2.0) + 0.5;
+    float ambient_light = 0.7;
+    gl_FragColor.rgb *= shading*(1.-ambient_light) + ambient_light;
   }
 `;
 
@@ -93,7 +93,7 @@ const fragmentShaderTextureString = `
 
 export default {
   oncreate() {
-    const { texture_url, backgroundColor, resources, width, height } = this.get();
+    var { texture_url, backgroundColor, resources, width, height, camId } = this.get();
     const [positions, uvs, faces] = resources;
     const unfoldBox = this.refs.unfoldBox;
     const shadeBox = this.refs.shadeBox;
@@ -104,7 +104,7 @@ export default {
     const unfoldDuration  = 1500.0;
     const preFadeDuration = 200.0;
     const fadeInDuration  = 500.0;
-    const cameraMoveTime = 350;
+    const cameraMoveTime = 400.0;
 
     var camera, scene, renderer, controls, material;
     var sceneTexture, cameraTexture, materialTexture;
@@ -113,7 +113,7 @@ export default {
     var animationStart = -unfoldDuration*10.0;
     var cameraAnimationStart = -cameraMoveTime *10.;
     var initCameraLocation;
-    var camId = 0;
+    var camPosId = 0;
 
     init();
     animate(0.0);
@@ -181,7 +181,8 @@ export default {
       // to pass
       cameraPositions = [
           //new Vector3(-0.658,0.297,-0.246),
-          new Vector3(-0.072,-0.354,0.627),
+          new Vector3(0,0,2),
+          new Vector3(-0.18450506289575683, 0.4089601767865173, 0.5124825272812676),
           new Vector3(-1.20,-0.105,0.062),
           new Vector3(0.614533221221188, -0.20237065729928297, 0.8685499623393961)
         ];
@@ -213,8 +214,8 @@ export default {
     }
 
     function animate(time){
-      if(cameraPosId.value != camId){
-        camId = cameraPosId.value;
+      if(camPosId != camId){
+        camPosId = camId;
         initCameraLocation.copy(camera.position);
         cameraAnimationStart = time;
         update();
@@ -222,15 +223,21 @@ export default {
       if(time - cameraAnimationStart < cameraMoveTime){
         //Forced camera movement
         var interpFactor = ease((time - cameraAnimationStart)/cameraMoveTime);
-        //var tempVector = new Vector3(initCameraLocation);
-        //tempVector.lerp(initCameraLocation,cameraPositions[camId],interpFactor);
-        //tempVector.lerp(cameraPositions[camId],interpFactor);
-        var x = initCameraLocation.x * (1-interpFactor) + cameraPositions[camId].x*interpFactor;
-        var y = initCameraLocation.y * (1-interpFactor) + cameraPositions[camId].y*interpFactor;
-        var z = initCameraLocation.z * (1-interpFactor) + cameraPositions[camId].z*interpFactor;
 
-        //camera.position.set(tempVector.x,tempVector.y,tempVector.z);
-        camera.position.set(x,y,z);
+        const lenghtInit = initCameraLocation.length();
+        const lenghtCamPos = cameraPositions[camId].length();
+
+        //lerp returns NaN
+        const x = initCameraLocation.x * (1-interpFactor) + cameraPositions[camId].x*interpFactor;
+        const y = initCameraLocation.y * (1-interpFactor) + cameraPositions[camId].y*interpFactor;
+        const z = initCameraLocation.z * (1-interpFactor) + cameraPositions[camId].z*interpFactor;
+        const interpLength = lenghtInit * (1-interpFactor) + lenghtCamPos * interpFactor;
+        const parabolicTrj = (1-(interpFactor*2-1)*(interpFactor*2-1))*0.7;
+        var camVector = new Vector3(x,y,z);
+        camVector.normalize();
+        camVector.multiplyScalar(interpLength+parabolicTrj);
+
+        camera.position.set(camVector.x,camVector.y,camVector.z);
         update();
       }
 
@@ -243,7 +250,7 @@ export default {
       var unfoldTime = (time-animationStart-(unfolded?0:fadeInDuration+preFadeDuration)) / unfoldDuration;
       var fadeInTime = (time-animationStart-(unfolded?unfoldDuration+preFadeDuration:0)) / fadeInDuration;
       if (animationTime < 1.0) {
-        //update();
+        update();
       }
       //3D model
       var unfoldVal = ease(unfoldTime);
@@ -274,6 +281,12 @@ export default {
       material.uniforms.texture = { type: 't', value: texture };
       materialTexture.uniforms.texture = { type: 't', value: texture };
     });
+
+    this.observe('camId', newCamId => {
+      //Guided camera position is changed
+      camId = newCamId;
+      update();
+    });
   },
   data() {
     return {
@@ -284,6 +297,7 @@ export default {
       shadedFlag: true,
       unfoldFlag: false,
       unfoldDuration: 1000.0,
+      camId: 0,
     }
   },
   computed: {
