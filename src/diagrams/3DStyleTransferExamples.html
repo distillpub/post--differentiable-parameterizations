@@ -1,31 +1,38 @@
 <figure class="style-3d">
 
 <div class="frow">
-  <div id="icons-row" class="frow">
-    <div class="icons">
-      {{#each range(4) as i}}
-        <div class="icon {{(x == i)? 'selected' : ''}}" on:click='set({x: i})'>
-          <div style="background-image: url({{styles[i].src}})"  class="{{styles[i].rotated? 'rotated' : ''}}"></div>
-        </div>
-      {{/each}}
+  <div>
+    <div id="icons-row" class="frow">
+      <div class="icons">
+        {{#each range(10) as i}}
+          <div class="icon {{(x == i)? 'selected' : ''}}" on:click='set({x: i})'>
+            <div style="background-image: url({{styles[i].src}})"  class="{{styles[i].rotated? 'rotated' : ''}}"></div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+    <div id="style-img" class="sprite frow">
+      <div style="background-image: url({{styles[x].src}})" class="{{styles[x].rotated? 'rotated' : ''}}"></div>
+    </div>
+    <div>
+      <a href="{{styles[x].link}}">{{styles[x].title}}</a>
+    </div>
+  </div>
+
+  <div class="frow">
+
+    <div class="THREEjsview">
+      {{#await resourcePromise}}
+        <p>Loading the 3D model...</p>
+      {{then resources}}
+        <THREEjsView ref:view resources={{resources}} texture_url={{texture_url}} :backgroundColor :width :height></THREEjsView>
+      {{catch error}}
+        <p>A problem occurred while loading the 3D model!</p>
+      {{/await}}
     </div>
   </div>
 </div>
 
-<div class="frow">
-  <div id="sprite-second" class="sprite frow">
-    <div style="background-image: url({{styles[x].src}})" class="{{styles[x].rotated? 'rotated' : ''}}"></div>
-  </div>
-  <div class="THREEjsview">
-    {{#await resourcePromise}}
-      <p>Loading the 3D model...</p>
-    {{then resources}}
-      <THREEjsView ref:view resources={{resources}} texture_url={{texture_url}} :backgroundColor :width :height></THREEjsView>
-    {{catch error}}
-      <p>A problem occurred while loading the 3D model!</p>
-    {{/await}}
-  </div>
-</div>
 </figure>
 
 <style>
@@ -47,8 +54,8 @@
     background-size: cover;
     background-position: center;
     /* object-fit: contain; */
-    width: 400px;
-    height: 400px;
+    width: 275px;
+    height: 275px;
   }
   .sprite div:before {
     content: "";
@@ -73,7 +80,7 @@
       flex-direction: row;
       justify-content: space-between;
       margin-bottom: 7px;
-      max-width: calc(66px * 4 + 6px);
+      max-width: calc(55px * 5 + 6px);
       /*border-bottom: 1px solid #dddddd;*/
     }
     .icons .icon {
@@ -93,8 +100,8 @@
     .icon div {
       opacity: 0.5;
       image-rendering: auto;
-      width: 66px;
-      height: 66px;
+      width: 55px;
+      height: 55px;
       background-size: cover;
       background-position: center;
     }
@@ -168,39 +175,75 @@ export default {
       height: 400,
       styles: [
         {
-          texture: 'models/bunny/texture1.jpg',
-          src: 'images/styles/composition-cropped.jpg',
-          title: 'Composition VII',
-          artist: 'Wassily Kandinsky',
-          year: 1913,
+          texture: 'models/bunny/3Dstyles/texture_cd.jpg',
+          src: 'models/bunny/3Dstyles/styles/cd.jpg',
+          title: 'CD',
+          link: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CD_autolev_crop.jpg/480px-CD_autolev_crop.jpg"
         },
         {
-          texture: 'models/bunny/texture2.jpg',
-          src: 'images/styles/starry-night-cropped.jpg',
-          title: 'Starry Night',
-          artist: 'Vincent van Gogh',
-          year: 1889,
+          texture: 'models/bunny/3Dstyles/texture_cross.jpg',
+          src: 'models/bunny/3Dstyles/styles/cross.jpg',
+          title: 'Cross stitch detail',
+          link: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Cross_stitch_detail.jpg/640px-Cross_stitch_detail.jpg"
         },
         {
-          texture: 'models/bunny/texture3.jpg',
-          src: 'images/styles/parade-cropped.jpg',
-          title: 'The large one parades on red bottom',
-          artist: 'Fernand Leger',
-          year: 1953,
+          texture: 'models/bunny/3Dstyles/texture_galaxy.jpg',
+          src: 'models/bunny/3Dstyles/styles/galaxy.jpg',
+          title: 'Galaxy',
+          link: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/NGC_4414_%28NASA-med%29.jpg/582px-NGC_4414_%28NASA-med%29.jpg",
         },
         {
-          texture: 'models/bunny/texture4.jpg',
-          src: 'images/styles/scream-cropped.jpg',
-          title: 'The Scream',
-          artist: 'Edvard Munch',
-          year: 1893,
+          texture: 'models/bunny/3Dstyles/texture_mosaic.jpg',
+          src: 'models/bunny/3Dstyles/styles/mosaic.jpg',
+          title: "Leger's Grand Parade",
+          link: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Fernand_L%C3%A9ger_-_Grand_parade_with_red_background_%28mosaic%29_1958_made.jpg/637px-Fernand_L%C3%A9ger_-_Grand_parade_with_red_background_%28mosaic%29_1958_made.jpg",
         },
+        {
+          texture: 'models/bunny/3Dstyles/texture_newspaper.jpg',
+          src: 'models/bunny/3Dstyles/styles/newspaper.jpg',
+          title: 'Newspaper',
+          link: "https://upload.wikimedia.org/wikipedia/commons/d/db/RIAN_archive_409362_Literaturnaya_Gazeta_article_about_YuriGagarin%2C_first_man_in_space.jpg"
+        },
+        {
+          texture: 'models/bunny/3Dstyles/texture_noodles.jpg',
+          src: 'models/bunny/3Dstyles/styles/noodles.jpg',
+          title: 'Noodles and eggs',
+          link:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Noodles_and_eggs20170520_1035.jpg/526px-Noodles_and_eggs20170520_1035.jpg"
+        },
+        {
+          texture: 'models/bunny/3Dstyles/texture_onwhite.jpg',
+          src: 'models/bunny/3Dstyles/styles/on_white.jpg',
+          title: "Kandinsky's On White",
+          link: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Vassily_Kandinsky%2C_1923_-_On_White_II.jpg"
+        },
+        {
+          texture: 'models/bunny/3Dstyles/texture_points.jpg',
+          src: 'models/bunny/3Dstyles/styles/points.jpg',
+          title: "Delaunay's Portrait de Metzinger",
+          link: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Robert_Delaunay%2C_1906%2C_Portrait_de_Metzinger%2C_oil_on_canvas%2C_55_x_43_cm%2C_DSC08255.jpg/449px-Robert_Delaunay%2C_1906%2C_Portrait_de_Metzinger%2C_oil_on_canvas%2C_55_x_43_cm%2C_DSC08255.jpg",
+        },
+        {
+          texture: 'models/bunny/3Dstyles/texture_scream.jpg',
+          src: 'models/bunny/3Dstyles/styles/scream.jpg',
+          title: "Munch's The Scream",
+          link: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/The_Scream.jpg/471px-The_Scream.jpg"
+        },
+        {
+          texture: 'models/bunny/3Dstyles/texture_starry.jpg',
+          src: 'models/bunny/3Dstyles/styles/starry_night.jpg',
+          title: "Van Gogh's Starry Night ",
+          link: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/606px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+        },
+
       ]
     }
   },
   computed: {
     texture_url: (styles,x) => {
       return styles[x].texture;
+    },
+    title: (styles,x) => {
+      return styles[x].title;
     },
     resources: (model_folder, faces_file, positions_file, uvs_file) => {
       return new Map([
