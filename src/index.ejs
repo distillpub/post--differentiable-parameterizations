@@ -145,15 +145,16 @@
   </p>
 
   <p>
-    All these techniques work in roughly the same way. Neural networks used in vision have a rich internal representation of the images they look at.
-    We can use this representation to describe the properties we want an image to have, and then optimize the input image to have those properties.
+    All these techniques work in roughly the same way.
+    Neural networks used in vision have a rich internal representation of the images they look at.
+    We can use this representation to describe the properties we want an image to have (eg. style), and then optimize the input image to have those properties.
     This kind of optimization is possible because the networks are differentiable with respect to their inputs: we can how to slightly tweak the image to better fit the desired properties, and then iteratively apply such tweaks in gradient descent.
   </p>
 
   <p>
     Typically, we parameterize the input image as the RGB values of each pixel.
     But that isn’t the only way to parameterize images.
-    And, as long as the mapping from values to images is differentiable, we can still optimize alternative parameterizations with gradient descent.
+    And, as long as the mapping from parameters to images is differentiable, we can still optimize alternative parameterizations with gradient descent.
   </p>
 
   <figure>
@@ -165,6 +166,9 @@
     The answer is quite a lot, and some of the more exotic possibilities a wide range of interesting effects, including 3D neural art, images with transparency, and aligned interpolation.
     We believe there's a great deal of untapped potential waiting to be explored.
   </p>
+  
+  
+  <aside>For each demonstration, we provide a colab notebook so that you can easily reproduce and build on our results.</aside>
 <!--
   <p>
     Alternative parameterizations can achieve a lot of interesting effects, including 3D neural art, images with transparency, and aligned interpolation. 
