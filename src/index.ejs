@@ -138,37 +138,40 @@
 
 <d-article>
 
-  <!-- <h2 id='introduction'>Introduction</h2> -->
+  
   <p>
-Deep Neural Networks are, essentially, very entangled non-linear functions<d-cite key="lecun2015deepLearning"></d-cite>. Despite being highly non-linear, they remain differentiable functions for which the computation of partial derivatives is not only possible, but very efficient on parallel architectures<d-cite key="krizhevsky2012"></d-cite>. The computation of the derivatives with respect to the parameters enables the learning of a desired function. Network's parameters, also called weights, are modified by a tiny amount along the gradient until, after a number of iterations, the output of the network and the desired function match.
+    Neural networks trained to classify images have a remarkable -- and surprising! -- capacity to generate images.
+    Techniques such as DeepDream <d-cite key="mordvintsev2015inceptionism"></d-cite>, style transfer<d-cite key="gatys2015"></d-cite>, and feature visualization<d-cite key="olah2017feature"></d-cite> leverage this capacity as a powerful tool for exploring the inner workings of neural networks, and to fuel a small artistic movement based neural art.
   </p>
 
   <p>
-However, other differentiable functions can be propagated, either from the output or the activations of hidden layers, without changing the parameters of the network but rather its input<d-cite key="zeiler2014"></d-cite>.
-We will refer to the space in which the input is optimized as its <b>Differentiable Image Parameterization</b>.
-The most common and simple parameterization is the image pixel space, where the changes propagated troughout the network correspond to changes in the color of each pixel.
-  </p>
-
-  <img style="width: 100%" src="images/diagrams/general.png"/>
-
-  <p>
-Depending on which function is propagated, the parameterization will map some network's latent state to a 2D raster image.
-For example, DeepDream<d-cite key="mordvintsev2015inceptionism"></d-cite> and <b>feature visualization</b><d-cite key="olah2017feature"></d-cite> objective functions can be used to map in the chosen parameterization the visual patterns that the network learned to detect.
-By optimizing for different objective functions, <b>artistic image style transfer</b> can be implemented.
-This application was pioneered by Gatys et al. <d-cite key="gatys2015"></d-cite> and is one of the most widespread applications of neural networks for the generation of artistic contents.
-The resulting parameterization creates a raster image that preserves the content of a desired image and the style of a different one.
+    All these techniques work in roughly the same way. Neural networks used in vision have a rich internal representation of the images they look at.
+    We can use this representation to describe the properties we want an image to have, and then optimize the input image to have those properties.
+    This kind of optimization is possible because the networks are differentiable with respect to their inputs: we can how to slightly tweak the image to better fit the desired properties, and then iteratively apply such tweaks in gradient descent.
   </p>
 
   <p>
-In this article we explore some more exotic image parameterization and optimization functions that allows for the creation of artistic results. The proposed techniques achieve generative capabilities through an iterative process that makes small adjustments to randomly initialized parameterizations.
-Hence, we do not require the creation of ad-hoc feed-forward networks<d-cite key="li2017universal"></d-cite> that learn to emulate the iterative process or the implementation of generative models, such as Generative Adversarial Networks (GANs)<d-cite key="goodfellow2014:adversarial"></d-cite> or Variational Autoencoders (VAEs)<d-cite key="Diederik2013:VAE"></d-cite>.
+    Typically, we parameterize the input image as the RGB values of each pixel.
+    But that isn’t the only way to parameterize images.
+    And, as long as the mapping from values to images is differentiable, we can still optimize alternative parameterizations with gradient descent.
   </p>
 
+  <figure>
+    <img style="width: 100%" src="images/diagrams/general.png"/>
+  </figure>
+
   <p>
-We propose different parameterizations for images and extensions that allow for the creation of artistic 3D models.
-We believe that our examples will inspire researchers and computational artists in devising novel and exciting computational art.
-To further facilitate the development of novel parameterizations, we release the code of our experiments as <a href="https://colab.research.google.com/">CoLab</a> notebooks.
+    Differentiable image parameterizations invite us to ask "what kind of image generation process can we backprop through?"
+    The answer is quite a lot, and some of the more exotic possibilities a wide range of interesting effects, including 3D neural art, images with transparency, and aligned interpolation.
+    We believe there's a great deal of untapped potential waiting to be explored.
   </p>
+<!--
+  <p>
+    Alternative parameterizations can achieve a lot of interesting effects, including 3D neural art, images with transparency, and aligned interpolation. 
+    We believe
+    While recent work has begun to explore some of these possibilities [], we think that there’s a lot of untapped potential
+  </p>
+-->
 
 <!-- =================================================== -->
 
