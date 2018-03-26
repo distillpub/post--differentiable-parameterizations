@@ -3,10 +3,6 @@
        style='--width:{{width}}px;--height:{{height}}px;'
        >
   </div>
-  <div class='controls'>
-    <input ref:unfoldBox id="unfoldBox" type="checkbox" class="control" bind:checked='unfoldFlag'/>
-    <label for="unfoldBox">Unfold</label>
-  </div>
 </div>
 
 <style>
@@ -16,6 +12,9 @@
     /*border: 1px solid #ddd;*/
     margin-left: auto;
     margin-right: auto;
+  }
+  .meshview {
+    cursor: all-scroll;
   }
 </style>
 
@@ -90,10 +89,13 @@ const fragmentShaderTextureString = `
 `;
 
 export default {
+  components: {
+    ToggleSwitch
+  },
   oncreate() {
-    const { texture_url, backgroundColor, resources, width, height } = this.get();
+    const self = this;
+    const { textureUrl, backgroundColor, resources, width, height, enableZoom } = this.get();
     const [positions, uvs, faces] = resources;
-    const unfoldBox = this.refs.unfoldBox;
     const shadeBox = this.refs.shadeBox;
     const container = this.refs.container;
     const component = this;
@@ -114,7 +116,7 @@ export default {
       //scene contain the 3D model
       scene = new Scene();
       camera = new PerspectiveCamera(42, width / height, 0.1, 100);
-      camera.position.z = 2.0;
+      camera.position.z = 2.5;
       scene.add(camera);
 
       var geometry = new BufferGeometry();
@@ -122,7 +124,7 @@ export default {
       geometry.addAttribute( 'uv', new BufferAttribute(uvs, 2) );
       geometry.setIndex(new BufferAttribute(faces, 1 ));
       geometry.computeVertexNormals();
-      var texture = new TextureLoader().load(texture_url, update);
+      var texture = new TextureLoader().load(textureUrl, update);
       material = new ShaderMaterial( {
         uniforms: {
           viewAspect: {value: width/height},
@@ -166,13 +168,13 @@ export default {
       container.appendChild(renderer.domElement);
       controls = new OrbitControls( camera, renderer.domElement );
       controls.enablePan = false;
-      controls.enableZoom = true;
+      controls.enableZoom = enableZoom;
       //Disable the autoClear option to draw the two scenes together
       renderer.autoClear = false;
       //render on change only
       controls.addEventListener('change', function() {
         // fold mesh back if the user interacts with the model
-        unfoldBox.checked = false;
+        self.set({unfoldFlag: false});
         update();
       });
       document.querySelectorAll('.control').forEach(e=>{
@@ -190,7 +192,7 @@ export default {
     }
 
     function animate(time) {
-      var unfoldFlag = unfoldBox.checked;
+      const unfoldFlag = self.get('unfoldFlag');
       if (unfolded != unfoldFlag) {
         unfolded = unfoldFlag;
         animationStart = time - Math.max(animationStart+unfoldDuration+preFadeDuration+fadeInDuration-time, 0.0);
@@ -222,24 +224,33 @@ export default {
       renderer.render(scene, camera);
     }
 
-    this.observe('texture_url', texture_url => {
+    this.observe('textureUrl', textureUrl => {
       //A new texture is loaded
       const { material } = this.get();
-      console.debug(texture_url, material)
-      const texture = new TextureLoader().load(texture_url, update);
+      const texture = new TextureLoader().load(textureUrl, update);
       material.uniforms.texture = { type: 't', value: texture };
       materialTexture.uniforms.texture = { type: 't', value: texture };
+    });
+    
+    this.observe('unfoldFlag', unfoldFlag => {
+      update();
+    });
+    
+    this.observe('autorotate', autorotate => {
+      
     });
   },
   data() {
     return {
-      texture_url: null,
-      backgroundColor: '#ffffff',
+      textureUrl: null,
+      backgroundColor: '#f7f7f7',
       width: 400,
       height: 400,
       shadedFlag: true,
       unfoldFlag: false,
       unfoldDuration: 1000.0,
+      enableZoom: true,
+      autorotate: true
     }
   },
   computed: {

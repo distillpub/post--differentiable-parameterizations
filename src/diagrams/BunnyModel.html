@@ -1,31 +1,31 @@
-<figure class="grid">
-  <div class="THREEjsview centered">
+<figure class="l-body">
     {{#await resourcePromise}}
       <p>wait for it...</p>
     {{then resources}}
-      <THREEjsView ref:view resources={{resources}} :texture_url :width :height :backgroundColor></THREEjsView>
+      <THREEjsView ref:view resources={{resources}} :textureUrl :width :height :backgroundColor :enableZoom bind:unfoldFlag></THREEjsView>
     {{catch error}}
       <p>well that's odd</p>
     {{/await}}
-  </div>
 </figure>
+<div class="controls">
+  <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
+</div>
+
 
 <style>
-  figure {
-    grid-column: text;
-    grid-auto-flow: column;
-  }
-  .centered{
+  .controls {
+    margin-top: 10px;
     text-align: center;
   }
- </style>
+</style>
+
 
 <script>
-
+import ToggleSwitch from '../components/ToggleSwitch';
 import THREEjsView from '../components/THREEjsView';
 
 export default {
-  components: { THREEjsView },
+  components: { THREEjsView, ToggleSwitch },
   oncreate() {
   },
   data() {
@@ -37,13 +37,15 @@ export default {
       texture_file: 'bunny-texture.png',
       resourcesReady: false,
       texture_index: 0,
-      backgroundColor: '#f8f8f8',
-      width: 700,
-      height: 400
+      backgroundColor: 'white',
+      enableZoom: false,
+      width: 400,
+      height: 400,
+      unfoldFlag: false
     }
   },
   computed: {
-    texture_url: (model_folder, texture_file) => {
+    textureUrl: (model_folder, texture_file) => {
       return model_folder + '/' + texture_file;
     },
     resources: (model_folder, faces_file, positions_file, uvs_file) => {

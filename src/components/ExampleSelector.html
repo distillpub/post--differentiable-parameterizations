@@ -1,9 +1,20 @@
 <div class="icons" style="--thumbnail-size: {{thumbnail_size}}px;">
-  {{#each items as item, i}}
-    <div class="icon {{(index == i)? 'selected' : ''}}" on:click='set({index: i})'>
-      <div style="background-image: url({{item[image_accessor]}})" class="{{item.rotated? 'rotated' : ''}}"></div>
-    </div>
-  {{/each}}
+  {{#if spriteUrl}}
+    {{#each range(spriteColumns) as i}}
+      <div class="icon {{(index == i)? 'selected' : ''}}" on:click='set({index: i})'>
+        <Sprite url={{spriteUrl}} width={{spriteWidth}} columns={{spriteColumns}} index={{i}}></Sprite>
+      </div>
+    {{/each}}
+  {{elseif items}}
+    {{#each items as item, i}}
+      <div class="icon {{(index == i)? 'selected' : ''}}" on:click='set({index: i})'>
+        <div style="background-image: url({{imageUrlAccessor(item)}})" class="{{item.rotated? 'rotated' : ''}}"></div>
+      </div>
+    {{/each}}
+  {{else}}
+    <span>No content set for ExampleSelector, needs either items or sprite!</span>
+  {{/if}}
+  
 </div>
 
 
@@ -35,7 +46,9 @@
   filter: none;
 }
 
-.icon div {
+.icon div,
+.icon canvas {
+  display: block;
   opacity: 0.5;
   image-rendering: auto;
   width: var(--thumbnail-size);
@@ -44,7 +57,8 @@
   background-position: center;
 }
 
-.icon.selected div {
+.icon.selected div,
+.icon.selected canvas {
   opacity: 1;
 }
 
@@ -52,7 +66,11 @@
 
 
 <script>
+import { Sprite } from 'lucid-components';
+import { range } from '../util';
+
 export default {
+  components: { Sprite },
   oncreate() {
     const items = this.get('items');
     console.log(items);
@@ -61,11 +79,23 @@ export default {
   data() {
     return {
       items: [],
+      spriteUrl: null,
       thumbnail_size: 44,
       image_accessor: 'src'
     }
   },
   computed: {
+    imageUrlAccessor: (image_accessor) => {
+      if (image_accessor !== null) {
+        return (item) => item[image_accessor];
+      } else {
+        return (item) => item;
+      }
+      
+    }
+  },
+  helpers: {
+    range
   }
 }
 </script>

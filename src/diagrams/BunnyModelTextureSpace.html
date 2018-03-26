@@ -1,163 +1,124 @@
-<figure class="bunny-text-space">
-<div class="frow">
-  <div class="frow">
-    <div id="icons-column" class="fcolumn">
-      <div class="icons">
-        {{#each range(1) as i}}
-          <div class="icon {{(x == i)? 'selected' : ''}}" on:click='set({x: i})'>
-            <Sprite src_class={{sprite_class}} size=80 sprite_size=128 y=0 x={{i}} sprite_scale=0.99/>
-          </div>
-        {{/each}}
-        <div class="icon {{(x == 1)? 'selected' : ''}}" on:click='set({x: 1})'>
-          Seams
-        </div>
-        <div class="icon {{(x == 2)? 'selected' : ''}}" on:click='set({x: 2})'>
-          Orientation
-        </div>
-        <div class="icon {{(x == 3)? 'selected' : ''}}" on:click='set({x: 3})'>
-          Scaling
-        </div>
-      </div>
-    </div>
+<figure>
+  
+  <div class="inputs">
+    <h4>Input Controls</h4>
+    <figcaption>
+      <p>
+        A Naïve approach optimizes the texture as an image with a feature visualization objective function.
+      </p>
+      <p>
+        Because this optimization is not aware of the UV mapping used to render the object, it creates artifacts such as 
+        <a class="{{x==1 ? 'selected' : ''}}" on:click='set({x: 1})'>seams</a>
+        , 
+        <a class="{{x==2 ? 'selected' : ''}}" on:click='set({x: 2})'>badly oriented patterns</a>
+         and 
+        <a class="{{x==3 ? 'selected' : ''}}" on:click='set({x: 3})'>low resolution areas</a>.
+      </p>
+      <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
+    </figcaption>
   </div>
 
-  <div class="fcolumn centered">
+
+  <div class="output-naive">
+    <h4>Naïve Optimization</h4>
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsGuidedView ref:view resources={{resources}} :texture_url :width :height :backgroundColor camId={{x}}></THREEjsGuidedView>
+      <THREEjsGuidedView ref:view resources={{resources}} textureUrl={{naiveTextureUrl}} :width :height :backgroundColor camId={{x}} bind:unfoldFlag></THREEjsGuidedView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
   </div>
-  <div class="frow">
-    <div id="icons-column" class="fcolumn">
-      <div class="icons">
-        <div class="icon {{(texture_file == '/3Dfeatureviz/texture_space.jpg')? 'selected' : ''}}" on:click="set({texture_file: '/3Dfeatureviz/texture_space.jpg'})">
-          Naïve
-        </div>
-        <div class="icon {{(texture_file == '/3Dfeatureviz/texture_0.jpg')? 'selected' : ''}}" on:click="set({texture_file: '/3Dfeatureviz/texture_0.jpg'})">
-          Rendered
-        </div>
-      </div>
+  
+  <div class="output-rendered">
+    <h4>Render-based Optimization</h4>
+    {{#await resourcePromise}}
+      <p>Loading the 3D model...</p>
+    {{then resources}}
+      <THREEjsGuidedView ref:view resources={{resources}} textureUrl={{renderedTextureUrl}} :width :height :backgroundColor camId={{x}} bind:unfoldFlag></THREEjsGuidedView>
+    {{catch error}}
+      <p>A problem occurred while loading the 3D model!</p>
+    {{/await}}
   </div>
-</div>
 
 </figure>
 
 <style>
+
+figure {
+  grid-column: page;
+  display: grid;
+  grid-gap: inherit;
+  grid-row-gap: 10px;
+  grid-auto-flow: column;
+  grid-template: 
+    "input" auto
+    "naive" auto
+    "rendered" auto / 1fr;
+}
+
+.inputs {
+  grid-area: input;
+}
+
+.output-naive {
+  grid-area: naive;
+}
+
+.output-rendered {
+  grid-area: rendered;
+}
+
+figure > div {
+  display: grid;
+  grid-gap: inherit;
+  align-items: flex-start;
+  grid-auto-rows: min-content;
+  grid-auto-flow: row;
+}
+
+h4 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 8px;
+  margin: 0;
+  font-weight: 700;
+}
+
+a {
+  cursor: pointer;
+}
+
+a.selected {
+  color: hsl(24, 100%, 50%);
+  border-bottom: 1px solid hsl(24, 100%, 50%);
+  text-shadow: 0.5px 0 0 hsl(24, 100%, 50%);
+} 
+
+@media (min-width: 768px) {
   figure {
-    grid-column: text;
-    grid-auto-flow: column;
+    grid-template: 
+      "naive rendered" auto
+      "input input" auto / 1fr 1fr;
   }
+}
 
-  .selection_sprite {
-    background-image: url('models/bunny/3Dfeatureviz/naive_sprite.png')
+@media (min-width: 1180px) {
+  figure {
+    grid-template: 
+      "input naive rendered" auto / 1fr 2fr 2fr;
   }
-
-
-    /* FRow & FColumn */
-
-    .frow {
-      display: flex;
-      flex-flow: row;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-    }
-
-    .fcolumn {
-      display: flex;
-      flex-flow: column;
-      margin-right: 10px;
-      margin-bottom: 10px;
-      z-index: 2;
-    }
-
-    /* Icons */
-    .icons {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-      margin-bottom: 7px;
-      max-width: 100px;
-      /*border-bottom: 1px solid #dddddd;*/
-    }
-
-    .icons .icon {
-      cursor: pointer;
-      padding-bottom: 6px;
-      margin-bottom: 11px;
-
-      /*margin-left: 3px;*/
-      margin-right: 6px;
-      border-bottom: 1px solid #dddddd;
-    }
-
-    .icons .icon.selected {
-      opacity: 100%;
-      padding-bottom: 3px;
-      border-bottom: 3px solid #ff6600;
-    }
-
-    .icon div {
-      opacity: 0.666;
-      image-rendering: auto;
-    }
-
-    .icon.selected div {
-      opacity: 1;
-    }
-
-    #icons-column {
-      order: 1
-    }
-
-    .result {
-      z-index: 3;
-    }
-
-
-    .img-container {
-      background-image: url('images/checkerboard.png')
-    }
-
-
-    @media (min-width: 1024px) {
-
-      .fcolumn {
-        margin-left: 10px;
-      }
-
-      .fcolumn:first-of-type {
-        margin-left: 0;
-      }
-
-      .fcolumn:last-of-type {
-        margin-right: 0;
-      }
-
-      #icons-column {
-        order: 1
-      }
-
-      .bunny-text-space {
-        margin-bottom: 0px;
-      }
-    }
+}
 
 </style>
 
 <script>
-
+import ToggleSwitch from '../components/ToggleSwitch';
 import THREEjsGuidedView from '../components/THREEjsGuidedView';
 import Sprite from '../components/Sprite.html';
-
-function range(n){
-  return Array(n).fill().map((_, i) => i);
-}
+import { range } from '../util';
 
 export default {
-  components: { THREEjsGuidedView, Sprite },
+  components: { THREEjsGuidedView, Sprite, ToggleSwitch },
   oncreate() {
   },
   data() {
@@ -167,18 +128,17 @@ export default {
       positions_file: 'position.3d',
       uvs_file: 'uv.3d',
       sprite_class: 'selection_sprite',
-      texture_file: '/3Dfeatureviz/texture_space.jpg',
+      naiveTextureUrl: 'models/bunny/3Dfeatureviz/texture_space.jpg',
+      renderedTextureUrl: 'models/bunny/3Dfeatureviz/texture_0.jpg',
       resourcesReady: false,
-      backgroundColor: '#f8f8f8',
-      width: 480,
+      backgroundColor: '#f7f7f7',
+      width: 400,
       height: 400,
-      x: 0
+      x: 0,
+      unfoldFlag: false,
     }
   },
   computed: {
-    texture_url: (model_folder, texture_file) => {
-      return model_folder + '/' + texture_file;
-    },
     resources: (model_folder, faces_file, positions_file, uvs_file) => {
       return new Map([
         ['positions', [model_folder + '/' + positions_file, Float32Array]],

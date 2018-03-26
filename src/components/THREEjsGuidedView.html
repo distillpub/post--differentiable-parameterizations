@@ -1,13 +1,7 @@
-<div class='meshview'>
-  <div ref:container class='container'
-       style='--width:{{width}}px;--height:{{height}}px;'
-       >
-  </div>
-  <div class='controls'>
-    <input ref:unfoldBox id="unfoldBox" type="checkbox" class="control" bind:checked='unfoldFlag'/>
-    <label for="unfoldBox">Unfold</label>
 
-  </div>
+<div ref:container class='container'
+     style='--width:{{width}}px;--height:{{height}}px;'
+     >
 </div>
 
 <style>
@@ -93,7 +87,8 @@ const fragmentShaderTextureString = `
 
 export default {
   oncreate() {
-    var { texture_url, backgroundColor, resources, width, height, camId } = this.get();
+    const self = this;
+    var { textureUrl, backgroundColor, resources, width, height, camId } = this.get();
     const [positions, uvs, faces] = resources;
     const unfoldBox = this.refs.unfoldBox;
     const shadeBox = this.refs.shadeBox;
@@ -132,7 +127,7 @@ export default {
       geometry.addAttribute( 'uv', new BufferAttribute(uvs, 2) );
       geometry.setIndex(new BufferAttribute(faces, 1 ));
       geometry.computeVertexNormals();
-      var texture = new TextureLoader().load(texture_url, update);
+      var texture = new TextureLoader().load(textureUrl, update);
       material = new ShaderMaterial( {
         uniforms: {
           viewAspect: {value: width/height},
@@ -193,7 +188,7 @@ export default {
       //render on change only
       controls.addEventListener('change', function() {
         // fold mesh back if the user interacts with the model
-        unfoldBox.checked = false;
+        self.set({unfoldFlag: false});
         update();
       });
       document.querySelectorAll('.control').forEach(e=>{
@@ -240,7 +235,7 @@ export default {
         camera.position.set(camVector.x,camVector.y,camVector.z);
       }
 
-      var unfoldFlag = unfoldBox.checked;
+      const unfoldFlag = self.get('unfoldFlag');
       if (unfolded != unfoldFlag) {
         unfolded = unfoldFlag;
         animationStart = time - Math.max(animationStart+unfoldDuration+preFadeDuration+fadeInDuration-time, 0.0);
@@ -272,11 +267,11 @@ export default {
       renderer.render(scene, camera);
     }
 
-    this.observe('texture_url', texture_url => {
+    this.observe('textureUrl', textureUrl => {
       //A new texture is loaded
       const { material } = this.get();
-      console.debug(texture_url, material)
-      const texture = new TextureLoader().load(texture_url, update);
+      console.debug(textureUrl, material)
+      const texture = new TextureLoader().load(textureUrl, update);
       material.uniforms.texture = { type: 't', value: texture };
       materialTexture.uniforms.texture = { type: 't', value: texture };
     });
@@ -286,10 +281,14 @@ export default {
       camId = newCamId;
       update();
     });
+    
+    this.observe('unfoldFlag', unfoldFlag => {
+      update();
+    });
   },
   data() {
     return {
-      texture_url: null,
+      textureUrl: null,
       backgroundColor: '#ffffff',
       width: 400,
       height: 400,
