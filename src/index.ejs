@@ -318,7 +318,8 @@ We can observe that only the most dominant features are visible after the optimi
   <h2 id='experiment-xy2rgb'>Compositional Pattern Producing Networks as Differentiable Parameterization</h2>
 
 <p>
-  So far, we’ve explored image parameterizations that are relatively close to how we normally think of images, using pixels or fourier components. In this section, we’ll explore something a bit more radical and parameterize our image as a neural network -- in particular, a Compositional Pattern Producing Network (CPPN) <d-cite key="stanley2007cppn"></d-cite>.
+  So far, we’ve explored image parameterizations that are relatively close to how we normally think of images, using pixels or Fourier components.
+  In this section, we’ll explore something a bit more radical and parameterize our image as a neural network -- in particular, a Compositional Pattern Producing Network (CPPN) <d-cite key="stanley2007cppn"></d-cite>.
 </p>
 
 <p>
@@ -335,18 +336,19 @@ We can observe that only the most dominant features are visible after the optimi
   The parameters of the CPPN network -- the weights and biases -- determine what image is produced.
   Random parameters can produce aesthetically interesting images <d-cite key="CPPN:random"></d-cite>, but we can often produce more interesting images by learning the parameters.
   Often this is done by evolution  <d-cite key="stanley2007cppn,Nguyen2015:easilyFooled"></d-cite> but, since the network is differentiable, we can also do gradient descent.
-  This means we can see CPPNs as a fully general differentiable image parameterization and use them for any neural art or visualization task.
+  That is to say, CPPNs are a differentiable image parameterization --
+  a general tool for parameterizing images in any neural art or visualization task.
 </p>
 
 <figure>
   <img style="width: 100%" src="images/diagrams/cppn.png"/>
-  <figcaption>CPPNs are fully general differentiable image parameterizations. We can use them for neural art or visualization tasks by backproping not only through the CNN to the image, but then past the image, through the CPPN to its parameters.</figcaption>
+  <figcaption>CPPNs are a differentiable image parameterization. We can use them for neural art or visualization tasks by backproping not only through the CNN to the image, but then past the image, through the CPPN to its parameters.</figcaption>
 </figure>
 
 <p>
   Using CPPNs as your parameterization can add an interesting artistic quality to neural art, vaguely reminiscent of light-paintings.<d-footnote>Light-painting is an artistic medium where images are created by manipulating colorful light beams with prisms and mirrors. Notable examples of this technique are the <a href="http://www.lightpaintings.com/">work of Stephen Knapp</a>.</d-footnote>
   At a more theoretical level, they can be seen as constraining the computational complexity of your images.
-  When used for feature visualization, they produce distinctive clean images:
+  When used for feature visualization, they produce distinctive images:
 </p> 
 
 
