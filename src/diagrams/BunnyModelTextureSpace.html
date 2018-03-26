@@ -4,15 +4,15 @@
     <h4>Input Controls</h4>
     <figcaption>
       <p>
-        A Naïve approach optimizes the texture as an image with a feature visualization objective function.
+        A naïve approach optimizes the texture as an image with a feature visualization objective function.
       </p>
       <p>
         Because this optimization is not aware of the UV mapping used to render the object, it creates artifacts such as 
-        <a class="{{x==1 ? 'selected' : ''}}" on:click='set({x: 1})'>seams</a>
+        <a class="{{index==1 ? 'selected' : ''}}" on:click='toggle(1)'>seams</a>
         , 
-        <a class="{{x==2 ? 'selected' : ''}}" on:click='set({x: 2})'>badly oriented patterns</a>
+        <a class="{{index==2 ? 'selected' : ''}}" on:click='toggle(2)'>badly oriented patterns</a>
          and 
-        <a class="{{x==3 ? 'selected' : ''}}" on:click='set({x: 3})'>low resolution areas</a>.
+        <a class="{{index==3 ? 'selected' : ''}}" on:click='toggle(3)'>low resolution areas</a>.
       </p>
       <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
     </figcaption>
@@ -24,7 +24,7 @@
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsGuidedView ref:view resources={{resources}} textureUrl={{naiveTextureUrl}} :width :height :backgroundColor camId={{x}} bind:unfoldFlag></THREEjsGuidedView>
+      <THREEjsGuidedView ref:view resources={{resources}} textureUrl={{naiveTextureUrl}} :width :height :backgroundColor camId={{index}} bind:unfoldFlag></THREEjsGuidedView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
@@ -35,7 +35,7 @@
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsGuidedView ref:view resources={{resources}} textureUrl={{renderedTextureUrl}} :width :height :backgroundColor camId={{x}} bind:unfoldFlag></THREEjsGuidedView>
+      <THREEjsGuidedView ref:view resources={{resources}} textureUrl={{renderedTextureUrl}} :width :height :backgroundColor camId={{index}} bind:unfoldFlag></THREEjsGuidedView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
@@ -134,7 +134,7 @@ export default {
       backgroundColor: '#f7f7f7',
       width: 400,
       height: 400,
-      x: 0,
+      index: 0,
       unfoldFlag: false,
     }
   },
@@ -157,6 +157,14 @@ export default {
     }
   },
   methods: {
+    toggle: function (toggledIndex) {
+      const currentIndex = this.get('index');
+      if (toggledIndex == currentIndex) {
+        this.set({index: 0});
+      } else {
+        this.set({index: toggledIndex});
+      }
+    }
   },
   helpers: {range}
 }

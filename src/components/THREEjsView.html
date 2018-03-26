@@ -76,7 +76,7 @@ const fragmentShaderTextureString = `
         gl_FragColor = vec4(background_color,1);
         return;
       }
-    }else{
+    } else {
       uv.x = gl_FragCoord.x/width;
       uv.y = (gl_FragCoord.y-(height-width)/2.)/width;
       if(uv.y > 1. || uv.y < 0.){
