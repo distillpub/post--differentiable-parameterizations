@@ -1,4 +1,6 @@
-<figure id="style-transfer-examples" class="l-page grid">
+<:Window on:resize="resize()"/>
+
+<figure id="style-transfer-examples" class="grid">
   
 <div id="input-content" class="input-wrapper">
   <h4>Content Image</h4>
@@ -25,11 +27,11 @@
 
 <div id="output">
   <h4>Final image Optimization</h4>
-  <div class="THREEjsview">
+  <div ref:sizer class="THREEjsview">
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsView ref:view :resources :textureUrl :width :height></THREEjsView>
+      <THREEjsView ref:view :resources :textureUrl :width :height bind:unfoldFlag></THREEjsView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
@@ -40,12 +42,19 @@
 
 <span class="figcaption l-body">
   Styletransfer of "{{styleImage.title}}" onto a 3D model by Greg Turk and Marc Levoy. 
+  <div class="controls">
+    <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
+  </div>
 </span>
 <span class="figcaption l-body">
   <!-- Move the slider to compare optimization in pixel space and in the fourier basis. Both images were created with the same optimization process and differ only in their parameterization. -->
 </span>
 
 <style>
+
+#style-transfer-examples {
+  grid-column: page-start / text-end;
+}
 
 .grid {
   display: grid;
@@ -74,13 +83,15 @@
   display: grid;
   grid-area: output;
   grid-gap: inherit;
+  grid-template-rows: min-content auto;
+  height: 100%;
 }
 
 .input-wrapper {
   display: grid;
   grid-gap: inherit;
   align-items: flex-start;
-  grid-auto-rows: min-content;
+  grid-auto-rows: min-content auto;
   z-index: 1;
 }
 
@@ -126,7 +137,10 @@ h4 {
 }
 
 .THREEjsview {
-  align-self: center;
+  align-self: stretch;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 @media (min-width: 768px) {
@@ -139,8 +153,8 @@ h4 {
 @media (min-width: 1180px) {
   .grid {
     grid-template: 
-      "style arrow output" auto
-      "content arrow output" auto / min-content 34px 2fr;
+      "style arrow output" 1fr
+      "content arrow output" 1fr / min-content 34px 1fr;
   }
   .sprite {
     min-width: 210px; /* magic number */
@@ -160,11 +174,12 @@ h4 {
 <script>
   import { range } from '../util';
   import THREEjsView from '../components/THREEjsView';
+  import ToggleSwitch from '../components/ToggleSwitch';
   import ImageComparison from '../components/ImageComparison'
   import ExampleSelector from '../components/ExampleSelector'
 
   export default {
-    components: { ImageComparison, ExampleSelector, THREEjsView },
+    components: { ImageComparison, ExampleSelector, THREEjsView, ToggleSwitch },
     computed: {
       styleImage: (styleImages, styleIndex) => styleImages[styleIndex],
       textureUrl: (styleImage) => styleImage.texture,
@@ -185,6 +200,9 @@ h4 {
         }));
       }
     },
+    oncreate() {
+      setTimeout(() => { this.resize(); }, 200);
+    },
     data() {
       return {
         model_folder: 'models/bunny',
@@ -196,6 +214,7 @@ h4 {
         contentIndex: 0,
         width: 600,
         height: 400,
+        unfoldFlag: false,
         styleImages: [
           {
             texture: 'models/bunny/3Dstyles/texture_cd.jpg',
@@ -262,6 +281,13 @@ h4 {
           {src: 'images/bunny-content.png'}
         ]
       };
+    },
+    methods: {
+      resize: function() {
+        const bb = this.refs.sizer.getBoundingClientRect();
+        console.debug(bb.width)
+        this.set({width: bb.width });
+      }
     },
     helpers: {
       range,

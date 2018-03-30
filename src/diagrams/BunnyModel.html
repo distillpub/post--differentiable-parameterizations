@@ -1,8 +1,10 @@
-<figure class="l-body">
+<:Window on:resize="resize()"/>
+
+<figure ref:root class="l-body">
     {{#await resourcePromise}}
       <p>wait for it...</p>
     {{then resources}}
-      <THREEjsView ref:view resources={{resources}} :textureUrl :width :height :backgroundColor :enableZoom bind:unfoldFlag></THREEjsView>
+      <THREEjsView ref:view resources={{resources}} :textureUrl :width :height :backgroundColor :enableZoom bind:unfoldFlag autoRotate={{false}}></THREEjsView>
     {{catch error}}
       <p>well that's odd</p>
     {{/await}}
@@ -27,6 +29,7 @@ import THREEjsView from '../components/THREEjsView';
 export default {
   components: { THREEjsView, ToggleSwitch },
   oncreate() {
+    setTimeout(() => { this.resize(); }, 200);
   },
   data() {
     return {
@@ -66,6 +69,10 @@ export default {
     }
   },
   methods: {
+    resize: function() {
+      const bb = this.refs.root.getBoundingClientRect();
+      this.set({width: bb.width });
+    }
   }
 }
 </script>

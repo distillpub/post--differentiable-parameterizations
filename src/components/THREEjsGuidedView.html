@@ -270,7 +270,7 @@ export default {
     this.observe('textureUrl', textureUrl => {
       //A new texture is loaded
       const { material } = this.get();
-      console.debug(textureUrl, material)
+      // console.debug(textureUrl, material)
       const texture = new TextureLoader().load(textureUrl, update);
       material.uniforms.texture = { type: 't', value: texture };
       materialTexture.uniforms.texture = { type: 't', value: texture };
@@ -283,6 +283,15 @@ export default {
     });
     
     this.observe('unfoldFlag', unfoldFlag => {
+      update();
+    });
+    
+    this.observe('width', width => {
+      materialTexture.uniforms.width.value = width;
+      material.uniforms.viewAspect.value = width / height;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
       update();
     });
   },

@@ -1,9 +1,7 @@
-<div class='meshview'>
-  <div ref:container class='container'
-       style='--width:{{width}}px;--height:{{height}}px;'
-       >
-  </div>
+<div ref:container class='container' 
+  style='--width:{{width}}px;--height:{{height}}px;'>
 </div>
+
 
 <style>
   .container {
@@ -12,15 +10,17 @@
     /*border: 1px solid #ddd;*/
     margin-left: auto;
     margin-right: auto;
-  }
-  .meshview {
     cursor: all-scroll;
   }
 </style>
 
+
 <script>
 import OrbitControls from 'three-orbitcontrols';
-import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer, Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry, Camera } from 'three';
+import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, 
+  TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer, 
+  Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry, 
+  Camera, Quaternion } from 'three';
 
 const vertexShaderString = `
   uniform float viewAspect;
@@ -94,7 +94,7 @@ export default {
   },
   oncreate() {
     const self = this;
-    const { textureUrl, backgroundColor, resources, width, height, enableZoom } = this.get();
+    const { textureUrl, backgroundColor, resources, width, height, enableZoom, autoRotate } = this.get();
     const [positions, uvs, faces] = resources;
     const shadeBox = this.refs.shadeBox;
     const container = this.refs.container;
@@ -138,6 +138,7 @@ export default {
       });
       component.set({material: material});
       var mesh = new Mesh(geometry, material);
+      mesh.name = 'bunny';
       scene.add(mesh);
 
       //SceneTexture draws the background texture
@@ -169,6 +170,10 @@ export default {
       controls = new OrbitControls( camera, renderer.domElement );
       controls.enablePan = false;
       controls.enableZoom = enableZoom;
+      controls.autoRotateSpeed = 0.25;
+      controls.autoRotate = autoRotate;
+      controls.minDistance = 0.5;
+      controls.maxDistance = 2;
       //Disable the autoClear option to draw the two scenes together
       renderer.autoClear = false;
       //render on change only
@@ -176,6 +181,9 @@ export default {
         // fold mesh back if the user interacts with the model
         self.set({unfoldFlag: false});
         update();
+      });
+      controls.addEventListener('start', function(){
+        controls.autoRotate = false;
       });
       document.querySelectorAll('.control').forEach(e=>{
         e.addEventListener('change', update);
@@ -233,11 +241,21 @@ export default {
     });
     
     this.observe('unfoldFlag', unfoldFlag => {
+      controls.autoRotate = false;
       update();
     });
     
-    this.observe('autorotate', autorotate => {
-      
+    this.observe('autoRotate', autoRotate => {
+      controls.autoRotate = autoRotate;
+    });
+    
+    this.observe('width', width => {
+      materialTexture.uniforms.width.value = width;
+      material.uniforms.viewAspect.value = width / height;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      update();
     });
   },
   data() {
@@ -250,7 +268,7 @@ export default {
       unfoldFlag: false,
       unfoldDuration: 1000.0,
       enableZoom: true,
-      autorotate: true
+      autoRotate: true
     }
   },
   computed: {

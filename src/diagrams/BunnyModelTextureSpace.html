@@ -1,3 +1,5 @@
+<:Window on:resize="resize()"/>
+
 <figure>
   
   <div class="inputs">
@@ -19,7 +21,7 @@
   </div>
 
 
-  <div class="output-naive">
+  <div ref:outputExample class="output-naive">
     <h4>Naïve Optimization</h4>
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
@@ -55,6 +57,10 @@ figure {
     "input" auto
     "naive" auto
     "rendered" auto / 1fr;
+}
+
+figure > * {
+  overflow: hidden;
 }
 
 .inputs {
@@ -164,6 +170,10 @@ export default {
       } else {
         this.set({index: toggledIndex});
       }
+    },
+    resize: function() {
+      const bb = this.refs.outputExample.getBoundingClientRect();
+      this.set({width: bb.width });
     }
   },
   helpers: {range}
