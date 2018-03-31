@@ -136,42 +136,65 @@
     .visual-toc-item:hover .visual-toc-colab > img {
       filter: unset;
     }
+
+    .visual-toc-top:hover, .visual-toc-colab:hover {
+      background-color: #FDFBF0;
+    }
+    /*.visual-toc-colab:hover {
+      color: #333;
+    }*/
+    .visual-toc-top:hover img {
+      filter: brightness(100%);
+    }
+
   </style>
   <nav class="l-page visual-toc">
     <a href="#experiment-aligned" class="visual-toc-item">
-      <img class="visual-toc-img" src="images/vtoc-aligned-interpolation.png"/>
-      <span class="visual-toc-heading">Aligned Neuron Interpolation</span>
-      <span class="visual-toc-subheading">by using a shared parameterization</span>
+      <div class="visual-toc-top">
+        <img class="visual-toc-img" src="images/vtoc-aligned-interpolation.png"/>
+        <span class="visual-toc-heading">Aligned Neuron Interpolation</span>
+        <span class="visual-toc-subheading">by using a shared parameterization</span>
+      </div>
       <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
     </a>
     <a href="#experiment-styletransfer" class="visual-toc-item">
-      <img class="visual-toc-img" src="images/vtoc-styletransfer.png"/>
-      <span class="visual-toc-heading">Style Transfer in the Fourier basis</span>
-      <span class="visual-toc-subheading">generalized to non-VGG architectures</span>
+      <div class="visual-toc-top">
+        <img class="visual-toc-img" src="images/vtoc-styletransfer.png"/>
+        <span class="visual-toc-heading">Style Transfer in the Fourier basis</span>
+        <span class="visual-toc-subheading">generalized to non-VGG architectures</span>
+      </div>
       <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
     </a>
     <a href="#experiment-featureviz-rgba" class="visual-toc-item">
-      <img class="visual-toc-img" src="images/vtoc-alpha.png"/>
-      <span class="visual-toc-heading">Feature Vis with transparency</span>
-      <span class="visual-toc-subheading">for activation maximization</span>
+      <div class="visual-toc-top">
+        <img class="visual-toc-img" src="images/vtoc-alpha.png"/>
+        <span class="visual-toc-heading">Feature Vis with transparency</span>
+        <span class="visual-toc-subheading">for activation maximization</span>
+      </div>
       <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
     </a>
     <a href="#experiment-xy2rgb" class="visual-toc-item">
-      <img class="visual-toc-img" src="images/vtoc-cppn.png"/>
-      <span class="visual-toc-heading">Feature Vis with CPPNs</span>
-      <span class="visual-toc-subheading">for activation maximization</span>
+      <div class="visual-toc-top">
+        <img class="visual-toc-img" src="images/vtoc-cppn.png"/>
+        <span class="visual-toc-heading">Feature Vis with CPPNs</span>
+        <span class="visual-toc-subheading">for activation maximization</span>
+      </div>
       <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
     </a>
     <a href="#experiment-featureviz-3d" class="visual-toc-item">
-      <img class="visual-toc-img" src="images/vtoc-3d-opt.png"/>
-      <span class="visual-toc-heading">Feature Vis in 3D<br/><br/></span>
-      <span class="visual-toc-subheading">for activation maximization</span>
+      <div class="visual-toc-top">
+        <img class="visual-toc-img" src="images/vtoc-3d-opt.png"/>
+        <span class="visual-toc-heading">Feature Vis in 3D<br/><br/></span>
+        <span class="visual-toc-subheading">for activation maximization</span>
+      </div>
       <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
     </a>
     <a href="#experiment-styletransfer-3d" class="visual-toc-item">
-      <img class="visual-toc-img" src="images/vtoc-3d-style.png"/>
-      <span class="visual-toc-heading">Style Transfer in 3D<br/><br/></span>
-      <span class="visual-toc-subheading">Aligned Neuron Interpolation</span>
+      <div class="visual-toc-top">
+        <img class="visual-toc-img" src="images/vtoc-3d-style.png"/>
+        <span class="visual-toc-heading">Style Transfer in 3D<br/><br/></span>
+        <span class="visual-toc-subheading">Aligned Neuron Interpolation</span>
+      </div>
       <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
     </a>
   </nav>
