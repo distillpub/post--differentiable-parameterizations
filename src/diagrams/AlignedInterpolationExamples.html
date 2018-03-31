@@ -1,85 +1,114 @@
 <figure class="base-grid">
-  <figcaption><p>
+  <figcaption>
     Six images are optimized for a convex combination of two neurons. Notice how major visual features stay in similar places throughout the examples.
-  </p></figcaption>
+  </figcaption>
   <div class="container">
-    <ImageArray ref:imageArray></ImageArray>
+    <ExampleSelector spriteUrl={{selectorUrl}} spriteWidth={{128}} spriteColumns={{3}} bind:index></ExampleSelector>
+    <div class="sprites" style="--steps: {{steps}};">
+      <div class="background"></div>
+      
+      <div class="sprite-row">
+        <h4>Unique</h4>
+        <spacer/>
+        {{#each range(steps) as x}}
+          <Sprite :url :width index={{[x, 1]}}></Sprite>
+        {{/each}}
+      </div>
+      
+      <div class="sprite-row">
+        <h4>Shared</h4>
+        <Sprite :url :width index={{[0, 2]}}></Sprite>
+      </div>
+      
+      <div class="sprite-row">
+        <h4>Result</h4>
+        <spacer/>
+        {{#each range(steps) as x}}
+          <Sprite :url :width index={{[x, 0]}}></Sprite>
+        {{/each}}
+      </div>
+
+    </div>
   </div>
 </figure>
 
 
 <style>
 
-  figure {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-  
-  figcaption {
-    grid-column: kicker;
-  }
-  
-  .container {
-    grid-column: text-start / page-end;
-  }
-  
-  .interpolation-sprite {
-    background-image: url("images/interpolation.jpg");
-  }
-  
+figure {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+figcaption {
+  grid-column: kicker;
+}
+
+.container {
+  grid-column: text;
+  display: grid;
+  grid-gap: 10px;
+}
+
+.sprites {
+  position: relative;
+  display: grid;
+  grid-gap: inherit;
+}
+
+.sprite-row {
+  z-index: 1;
+  display: grid;
+  grid-gap: inherit;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.sprite-row > canvas {
+  width: 100%;
+}
+
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url(images/connection-arrows.svg);
+  background-repeat: no-repeat;
+  background-position: right;
+  background-size: contain;
+  z-index: 0
+}
+
 </style>
 
+
 <script>
-  import ImageArray from '../components/ImageArray';
-  
-  const imageArrayData = {
-    src_class: "interpolation-sprite",
-    icon_src_class: "interpolation-sprite",
-    icon_x: 0,
-    label_func: (n, i) => {
-      if (n == 0) {
-        return [
-          "Layer 4a, Unit 476",
-          "Layer 4a, Unit 476",
-          "Layer 4a, Unit 460",
-          "Layer 4b, Unit 475",
-          "Layer 4c, Unit 369",
-          "Layer 4d, Unit 503",
-          "Layer 4d, Unit 503",
-          "Layer 5a, Unit 810",
-          "Layer 5a, Unit 810",
-        ][i];
-      } else if (n == 5) {
-        return [
-          "Layer 4a, Unit 455",
-          "Layer 4a, Unit 460",
-          "Layer 4a, Unit 501",
-          "Layer 4a, Unit 476",
-          "Layer 4a, Unit 476",
-          "Layer 5a, Unit 791",
-          "Layer 5a, Unit 810",
-          "Layer 5a, Unit 200",
-          "Layer 5a, Unit 791",
-        ][i];
-      } else {
-        return "";
-      }
-    },
-    n_images: 6,
-    n_icons: 9,
-    sprite_size: 128, 
-    size: 112,
-    icon_scale: 1,
-    hover_scale: 1,
-    selected: 1,
-    backwards: false
+
+import { range } from '../util';
+import ExampleSelector from '../components/ExampleSelector';
+import { Sprite } from 'lucid-components';
+
+export default {
+  oncreate() {
+  },
+  data() {
+    return {
+      index: 0,
+      steps: 5,
+      width: 128,
+      params: ['result', 'unique', 'shared'],//, 'singular', 'interpolating'],
+      selectorUrl: 'images/interpolation-selector-sprite.png',
+    }
+  },
+  computed: {
+    url: (index) => `images/interpolation-sprite-0${index+1}.jpg`,
+  },
+  components: { 
+    ExampleSelector, Sprite,
+  },
+  helpers: {
+    range
   }
   
-  export default {
-    oncreate() {
-      this.refs.imageArray.set(imageArrayData);
-    },
-    components: { ImageArray }
-  }
+}
 
 </script>
