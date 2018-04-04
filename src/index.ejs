@@ -611,23 +611,30 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
 <!-- =================================================== -->
 
   <h2 id='conclusions'>Conclusions</h2>
+  
   <p>
-In this article we explored several novel differentiable parameterizations that generates different kind of artistic artifacts such as images, animations and 3D objects.
-However, we believe that we explored only a small fraction of the possible image parameterizations for the creation of neural artistic content and exciting new possibilities lie ahead.
+    For the creative artist or researcher, there's a large space of ways to parameterize images for optimization. 
+    This opens up not only dramatically different image results, but also animations and 3D objects!
+    We think the possibilities explored in this article only scratch the surface.
+    For example, one could explore extending the optimization of 3d object textures to optimizing the material or reflectance -- or even go the direction of Kato et al.<d-cite key="kato2017neural3D"></d-cite> and optimize the mesh vertex positions!
   </p>
-
-
-
+  
   <p>
-Potential future research directions may include combining the described approaches in creative ways.
-An application that comes to mind is the extension of the texture synthesis approach to material or reflectance model synthesis.
+    This article focused on <i>differentiable</i> image parameterizations, because they're easy to optimize and are already a wide space.
+    But it's certain possible to optimize image parameterizations that aren't differentiable (or are only partly differentiable), using reinforcement learning or evolutionary strategies <d-cite key="wierstra2014naturalEvolutionStrategies,salimans2017evolution"></d-cite>.
+    This could open up exciting possibilities for image or scene parameterization.
   </p>
-
+  
+  <!--
   <p>
-Another interesting direction is to go beyond differential parameterizations.
-One possible approach to this is proposed by Kato et al.<d-cite key="kato2017neural3D"></d-cite> to extend optimization techniques to mesh vertex position. We also think that, by augmenting gradient optimization techniques with evolution strategies<d-cite key="wierstra2014naturalEvolutionStrategies"></d-cite>, interesting new research opportunities open for image or scene parameterization.
+    Finally, we think thoughtful use of parameterization can be useful in other optimization problems, providing additional control over the outcome.
+    For example, dimensionality reduction is often framed as an optimization problem over the position of points;
+    while each point is normally parameterized as a simple position, one could easily use alternate parameterizations.
+    This may accelerate dimensionality reduction or be a tool in aligning related dimensionality reductions.
+    Of course, people do think very carefully about the way they parameterize the objects they optimize in many domains (eg. neural networks); we just think it's worth considering more generally.
+    This kind more general use of parameterization is in some ways similar to preconditioning and natural gradients.
   </p>
-
+  -->
 
 </d-article>
 
