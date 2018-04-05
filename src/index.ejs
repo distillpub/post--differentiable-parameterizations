@@ -288,6 +288,12 @@ We refer to the result of this procedure as the optimization for a feature visua
     By partially sharing a parameterization between images, we encourage the resulting visualizations to naturally align.
     Intuitively, the shared parameterization provides a common reference for the displacement of major patterns, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
     It doesn't change the objective, but it does enlarge the basins of attraction where the visualizations are aligned.
+    <d-footnote>
+      We can explicitly visualize how shared parameterization effects the basins of attraction in a toy example.
+      Let's consider two optimizing two variables $x$ and $y$ to both minimize $L(z)= (z^2-1)^2$.
+      Since $L(z)$ has two basins of attraction $z=1$ or $z=-1$, the pair of optimization problems has four solutions: $(x,y) = (1,1)$, $(x,y) = (-1,1)$, $(x,y) = (1,-1)$, or $(x,y) = (-1,-1)$. Normally, the optimization are independent, so $x$ and $y$ are equally likely to fall into unaligned solutions as aligned ones. But if we add a shared parameterization, the problems become coupled and the basin of attraction where they're aligned becomes bigger.<br>  
+      <img style="width: 70%; margin-top: 15px;" src="images/diagrams/basin-alignment.png"/>
+    </d-footnote>
   </p>
 
   <p>
