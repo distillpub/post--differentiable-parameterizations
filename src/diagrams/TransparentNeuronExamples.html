@@ -1,0 +1,122 @@
+
+<div class="pivot-table">
+  
+  <div class="pivot">
+    <div class="entries">
+      {{#each range(5) as x}}
+        <Sprite url='images/neurons.jpg' width=176 columns=5 index={{x}}/>
+      {{/each}}
+    </div>
+    <div class="footer">
+      <span class="figcaption">Neuron visualization does not distinguish between areas a neuron cares about and those it doesn't.</span>
+    </div>
+  </div>
+  
+  <div class="pivot">
+    <div class="entries">
+      {{#each range(5) as x}}
+        <Sprite url='images/neurons.jpg' width=176 columns=5 index={{5+x}}/>
+      {{/each}}
+    </div>
+    <div class="footer">
+      <span class="figcaption">Introducing transparency helps separate those areas.</span>
+    </div>
+  </div>
+  
+</div>
+
+
+<style>
+
+.pivot-table {
+  grid-column: text;
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  grid-column-gap: inherit;
+  grid-row-gap: 16px;
+}
+
+.pivot {
+  display: grid;
+  grid-row-gap: inherit;
+  grid-auto-rows: min-content;
+}
+
+.pivot > .header {
+  
+}
+
+.pivot > .footer {
+  
+}
+
+.pivot > .entries {
+  display: grid;
+  grid-row-gap: inherit;
+  grid-auto-rows: min-content;
+}
+
+@media (min-width: 448px) {
+  .pivot-table {
+    grid-column: screen;
+    display: grid;
+    grid-column-gap: inherit;
+    grid-template-columns: inherit;
+  }
+
+  .pivot {
+    grid-column: screen;
+    display: grid;
+    grid-column-gap: inherit;
+    grid-template-columns: inherit;
+    grid-auto-flow: column;
+  }
+  
+  .pivot > .footer {
+    grid-column: gutter-start / screen-end;
+    
+  }
+
+  .pivot > .entries {
+    grid-column: text;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-column-gap: 16px;
+    grid-auto-flow: column;
+  }
+}
+
+@media (min-width: 768px) {
+  .pivot > .footer {
+    max-width: 128px;
+  }
+}
+
+canvas {
+  width: 100%;
+  border-radius: 3px;
+  box-shadow: 0px 0px 2px rgba(0,0,0,0.3);
+}
+
+.header, 
+.footer {
+  line-height: 1em;
+}
+
+</style>
+
+
+<script>
+import { range } from "../util";
+import { Sprite } from "lucid-components";
+
+export default {
+  data() {
+    return {
+    }
+  },
+  components: { Sprite },
+  helpers: { range },
+}
+</script>

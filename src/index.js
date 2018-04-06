@@ -1,12 +1,14 @@
 // for hot reloading only. TODO: remove after development
 require('file-loader!./index.ejs')
 
-
+import VisualTOC                      from './diagrams/VisualTOC.html';
 import StyleTransferExamples          from './diagrams/StyleTransferExamples.html';
 import AlignedInterpolationExamples   from './diagrams/AlignedInterpolationExamples.html';
 import AlignedInterpolationAnimations from './diagrams/AlignedInterpolationAnimations.html';
 import SemiTransparentCombination     from "./diagrams/SemiTransparentCombination.html";
 import SemiTransparentExamples        from './diagrams/SemiTransparentExamples.html';
+import TransparentNeuronExamples      from './diagrams/TransparentNeuronExamples.html';
+import NonTransparentNeuronExamples   from './diagrams/NonTransparentNeuronExamples.html';
 import ThreeDStyleTransferExamples    from './diagrams/3DStyleTransferExamples.html';
 import ThreeDFeatureVizExamples       from './diagrams/3DFeatureVizExamples.html';
 import CPPNExamples                   from "./diagrams/CPPNExamples.html";
@@ -19,10 +21,27 @@ import OrbitControls from 'three-orbitcontrols';
 import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer } from 'three';
 
 
+const tocNav = document.getElementById('vtoc');
+const visualTOC = new VisualTOC({target: tocNav});
+
 {
   const figure = document.getElementById('StyleTransferExamples');
   figure.addEventListener("ready", function() {
     const styleTransferExamples = new StyleTransferExamples({target: figure});
+  });
+}
+
+{
+  const figure = document.getElementById('TransparentNeuronExamples');
+  figure.addEventListener("ready", function() {
+    const transparentNeuronExamples = new TransparentNeuronExamples({target: figure});
+  });
+}
+
+{
+  const figure = document.getElementById('NonTransparentNeuronExamples');
+  figure.addEventListener("ready", function() {
+    const nonTransparentNeuronExamples = new NonTransparentNeuronExamples({target: figure});
   });
 }
 
@@ -40,19 +59,19 @@ import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoade
   });
 }
 
-{
-  const figure = document.getElementById("SemiTransparentCombination")
-  figure.addEventListener("ready", function() {
-    new SemiTransparentCombination({target: figure});
-  });
-}
+// {
+//   const figure = document.getElementById("SemiTransparentCombination")
+//   figure.addEventListener("ready", function() {
+//     new SemiTransparentCombination({target: figure});
+//   });
+// }
 
-{
-  const figure = document.getElementById('SemiTransparentExamples');
-  figure.addEventListener("ready", function() {
-    const semiTransparentExamples = new SemiTransparentExamples({target: figure});
-  });
-}
+// {
+//   const figure = document.getElementById('SemiTransparentExamples');
+//   figure.addEventListener("ready", function() {
+//     const semiTransparentExamples = new SemiTransparentExamples({target: figure});
+//   });
+// }
 
 //Add event listener
 new CPPNExamples({target: document.getElementById("CPPN-Examples")});

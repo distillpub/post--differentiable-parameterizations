@@ -1,3 +1,11 @@
+.subgrid {
+  grid-column: screen; 
+  display: grid; 
+  grid-template-columns: inherit;
+  grid-template-rows: inherit;
+  grid-column-gap: inherit;
+  grid-row-gap: inherit;
+}
 
 d-figure.base-grid {
   grid-column: screen;

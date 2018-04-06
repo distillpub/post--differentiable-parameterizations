@@ -1,0 +1,42 @@
+<figure class="sprites">
+  {{#each range(5) as x}}
+    <Sprite url='images/neurons.jpg' width=176 columns=5 index={{x}}/>
+  {{/each}}
+</figure>
+
+<style>
+
+.sprites {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(88px, 176px));
+  grid-gap: 16px;
+}
+
+@media (min-width: 448px) {
+  .sprites {
+    grid-template-columns: repeat(5, minmax(88px, 176px));
+  }
+}
+
+canvas {
+  width: 100%;
+  border-radius: 3px;
+  box-shadow: 0px 0px 2px rgba(0,0,0,0.3);
+}
+
+</style>
+
+
+<script>
+import { range } from "../util";
+import { Sprite } from "lucid-components";
+
+export default {
+  data() {
+    return {
+    }
+  },
+  components: { Sprite },
+  helpers: { range },
+}
+</script>

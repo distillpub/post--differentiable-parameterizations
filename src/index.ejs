@@ -60,144 +60,7 @@
 <d-title>
   <h1>Differentiable Image Parameterizations</h1>
   <p>A powerful, under-explored tool for neural network visualizations and art.</p>
-  <style>
-    .visual-toc {
-      counter-reset: toc-heading;
-      display: grid;
-      grid-auto-flow: dense;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 16px;
-      cursor: pointer;
-    }
-    @media (min-width: 1024px) {
-      .visual-toc {
-        grid-gap: 20px;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-      }
-    }
-    .visual-toc-item {
-      border: 1px solid #E5E5E5;
-      border-radius: 5px;
-      overflow: hidden;
-      text-decoration: none;
-      box-shadow: 0px 1px 4px rgba(0,0,0,0.05);
-      transition: box-shadow 0.35s, transform 0.35s;
-      transform: scale(1.0);
-    }
-    .visual-toc-item:hover {
-      box-shadow: 0px 1px 10px rgba(0,0,0,0.15);
-      transform: scale(1.02);
-      transition: box-shadow 0.15s, transform 0.15s;
-    }
-    .visual-toc-img {
-      width: 100%;
-    }
-    .visual-toc-heading,
-    .visual-toc-subheading {
-      display: block;
-      line-height: 1.3em;
-      font-size: 85%;
-      padding: 0.5em 1em 0.5em 1em;
-    }
-    .visual-toc-heading {
-      counter-increment: toc-heading;
-      color: #333;
-      font-weight: 600;
-    }
-    .visual-toc-heading::before{
-      display: block;
-      content: "Section " counter(toc-heading);
-      font-weight: 400;
-      text-transform: uppercase;
-      font-size: 0.6rem;
-      color: #666;
-    }
-    .visual-toc-subheading {
-      display: none;
-      color: #666;
-      font-size: 75%;
-    }
-    .visual-toc-colab {
-      border-top: dashed 1px rgba(0,0,0,0.1);
-      padding-left: 1.2em;
-      padding-right: 1.2em;
-      padding-top: 0.5em;
-      padding-bottom: 0.5em;
-      text-transform: uppercase;
-      color: #aaa;
-      font-size: 11px;
-      line-height: 24px;
-    }
-    .visual-toc-colab > img {
-      position: relative;
-      top: 3px;
-      /* filter: grayscale(); */
-    }
-    .visual-toc-item:hover .visual-toc-colab > img {
-      filter: unset;
-    }
-
-    .visual-toc-top:hover, .visual-toc-colab:hover {
-      background-color: #FDFBF0;
-    }
-    /*.visual-toc-colab:hover {
-      color: #333;
-    }*/
-    .visual-toc-top:hover img {
-      filter: brightness(100%);
-    }
-
-  </style>
-  <nav class="l-page visual-toc">
-    <a href="#experiment-aligned" class="visual-toc-item">
-      <div class="visual-toc-top">
-        <img class="visual-toc-img" src="images/vtoc-aligned-interpolation.png"/>
-        <span class="visual-toc-heading">Aligned Neuron Interpolation</span>
-        <span class="visual-toc-subheading">by using a shared parameterization</span>
-      </div>
-      <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
-    </a>
-    <a href="#experiment-styletransfer" class="visual-toc-item">
-      <div class="visual-toc-top">
-        <img class="visual-toc-img" src="images/vtoc-styletransfer.png"/>
-        <span class="visual-toc-heading">Style Transfer in the Fourier basis</span>
-        <span class="visual-toc-subheading">generalized to non-VGG architectures</span>
-      </div>
-      <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
-    </a>
-    <a href="#experiment-featureviz-rgba" class="visual-toc-item">
-      <div class="visual-toc-top">
-        <img class="visual-toc-img" src="images/vtoc-alpha.png"/>
-        <span class="visual-toc-heading">Feature Vis with transparency</span>
-        <span class="visual-toc-subheading">for activation maximization</span>
-      </div>
-      <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
-    </a>
-    <a href="#experiment-xy2rgb" class="visual-toc-item">
-      <div class="visual-toc-top">
-        <img class="visual-toc-img" src="images/vtoc-cppn.png"/>
-        <span class="visual-toc-heading">Feature Vis with CPPNs</span>
-        <span class="visual-toc-subheading">for activation maximization</span>
-      </div>
-      <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
-    </a>
-    <a href="#experiment-featureviz-3d" class="visual-toc-item">
-      <div class="visual-toc-top">
-        <img class="visual-toc-img" src="images/vtoc-3d-opt.png"/>
-        <span class="visual-toc-heading">Feature Vis in 3D<br/><br/></span>
-        <span class="visual-toc-subheading">for activation maximization</span>
-      </div>
-      <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
-    </a>
-    <a href="#experiment-styletransfer-3d" class="visual-toc-item">
-      <div class="visual-toc-top">
-        <img class="visual-toc-img" src="images/vtoc-3d-style.png"/>
-        <span class="visual-toc-heading">Style Transfer in 3D<br/><br/></span>
-        <span class="visual-toc-subheading">Aligned Neuron Interpolation</span>
-      </div>
-      <div class="visual-toc-colab"> run in <img src="images/colab.svg"> notebook</div>
-    </a>
-  </nav>
+  <div class="l-page" id="vtoc"></div>
 </d-title>
 
 <d-article>
@@ -221,14 +84,19 @@
     And, as long as the mapping from parameters to images is differentiable, we can still optimize alternative parameterizations with gradient descent.
   </p>
 
-  <figure class="base-grid">
-    <figcaption style="grid-column: kicker;">
+  <figure class="subgrid">
+    <figcaption style="grid-column: kicker">
       <!-- <span class="figure-number">Figure 1:</span> -->
-      <span style="hyphens: manual;">As long as an image generation process is differ&shy;entiable, we can back&shy;propagate</span>
+      <span style="hyphens: manual;">As long as an </span>
+      <span style="background-color: #FFF1E7; padding-left: 2px; padding-right: 2px;">image para&shy;meter&shy;ization</span>
+      <span>is differ&shy;entiable, we can back&shy;propagate</span>
       <span style="white-space: nowrap;">( <img src="images/diagrams/backprop-arrow.svg" style="width: unset;"/> )</span>
       <span>through it.</span>
     </figcaption>
-    <img class="l-body" style="width: 100%" src="images/diagrams/general.png"/>
+    <!-- <img class="l-body" src="images/diagrams/general.png"/> -->
+    <div class="l-body">
+      <%= require("../static/images/diagrams/general.svg") %>
+    </div>
   </figure>
 
   <p>
@@ -238,7 +106,7 @@
   </p>
   
   
-  <aside>For each demonstration, we provide a colab notebook so that you can easily reproduce and build on our results.</aside>
+  <!-- <aside>For each demonstration, we provide a colab notebook so that you can easily reproduce and build on our results.</aside> -->
 <!--
   <p>
     Alternative parameterizations can achieve a lot of interesting effects, including 3D neural art, images with transparency, and aligned interpolation. 
@@ -328,27 +196,106 @@ We refer to the result of this procedure as the optimization for a feature visua
     For example, with the right image parameterization, GoogLeNet<d-cite key="szegedy2015googlenet"></d-cite> can produce images of comparable quality to VGG.
   </p>
 
-<d-figure class="base-grid" id='StyleTransferExamples'></d-figure>
+  <d-figure class="base-grid" id='StyleTransferExamples'></d-figure>
 
   <p>
     We use the same decorrelated parameterization
     <d-footnote>
-      For images, this means that the gradient descent must not be performed in the pixel space, but rather in the space of the Fourier basis where frequencies are scaled so that they all have equal energy. 
+      <span>For images, this means that the gradient descent must not be performed in the pixel space, but rather in the space of the Fourier basis where frequencies are scaled so that they all have equal energy. </span><br/><br/>
+      <span>A reference implementation of this parameterization is available in our visualization library <a href="https://github.com/tensorflow/lucid"  target="_blank">lucid</a> as <a href="https://github.com/tensorflow/lucid/blob/a40d0e411eee8c18a2e2ca1958383049354478c3/lucid/optvis/param/spatial.py#L38" target="_blank"><code>param.fft_image</code></a>. We have found it robust enough that it is the default behavior of <code>param.image</code>.</span>
     </d-footnote>
     and transformation robustness
     <d-footnote>
       Transformation robustness is achieved by stochastically jittering, rotating and scaling the image before applying the optimization step.
     </d-footnote>
     that Olah et al.<d-cite key="olah2017feature"></d-cite> found helpful for feature visualization.
+    
+  </p>
+
+  <figure class="subgrid">
+    <!-- <img src="images/diagrams/styletransfer.png"/> -->
+    <div style="grid-column: text-start / page-end; font-family: 'SF Pro Text';">
+      <%= require("../static/images/diagrams/styletransfer.svg") %>
+    </div>
+    <!-- <figcaption class="l-body">
+      Style Transfer optimizes an image for two objectives: a <strong>content objective</strong>, which aims to get neurons to fire in the same position as they did for the content image, and a <strong>style objective</strong>, which aims to create similar patterns of neuron activation anywhere as in the style image without regard to position.
+      Normally, this process is sensitive to the choice of model. By parameterizing the optimized image in a decorrelated space it works for many more models.
+    </figcaption> -->
+  </figure>
+
+  <p>
     When we use this parameterization, we find that the style transfer objective proposed by Gatys<d-cite key="gatys2015"></d-cite> produces convincing results even on architectures other than VGG.
     Picking the right parameterization can be the difference between techniques like style transfer working and failing.
-    </p>
+  </p>
 
 
-<!-- =================================================== -->
+  <!-- =================================================== -->
 
   <h2 id='experiment-featureviz-rgba'>Generation of Semi-Transparent Patterns</h2>
-
+  
+  <p>
+    Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
+    Unfortunately, there is no way for these visualization to distuingish what the neuron cares about strongly from what it cares about marginally.
+    <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote> 
+    For example, notice the geometric structures around the center of these neuron visualizations:
+  </p>
+  
+  <d-figure style="grid-column-gap: inherit;" id="NonTransparentNeuronExamples"></d-figure>
+  
+  <p>
+    Ideally, we would like a way for our visualizations to make this distinction in importance.
+    One natural way to represent that a part of the image doesn't matter is for it to be transparent.
+    More broadly, if we optimize an image with an alpha channel and encourage the image to be transparent, unimportant parts of the image should become transparent.
+  </p>
+  <p>
+    However, vision models expect their input to be an RGB image, so we will need to collapse the alpha channel.
+    If we did this with a consistent background, such as black, transparency would indicate positions where the default background is OK, rather than positions that are unimportant.
+    (In fact, it would be equivalent to penalizing the image to be close to that background!)
+    One way to avoid this is to use a random background, which changes at every optimization step.
+    <d-footnote>
+      Another possibility is to use an adversarial background.
+      <img>
+    </d-footnote>
+  </p>
+  
+  <figure class="subgrid" style="margin-top: 0;">
+    <div class="l-body">
+      <%= require("../static/images/diagrams/transparency.svg") %>
+    </div>
+    <!-- <img src="images/diagrams/transparency.svg"/> -->
+    <figcaption class="l-body">
+      Adding an alpha channel to the image parameterization allows it to represent transparency.
+      Transparent areas are blended with a random background at each step of the optimization.
+    </figcaption>
+  </figure>
+  
+  <p>
+    Introducing transparency does help separate areas the neuron cares about. 
+    It can be intersting to compare to a normal neuron visualization and observe the differences.
+  </p>
+  
+  <d-figure class="subgrid" id="TransparentNeuronExamples"></d-figure>
+  
+  <!-- <figure class="base-grid shaded-figure">
+    <figcaption style="grid-column: kicker;">
+      The image is parameterized as the combination of the RGB and alpha channel.
+    </figcaption>
+    <d-figure style="grid-column: text-start / screen-end; overflow: visible; contain: unset;" id="SemiTransparentCombination"></d-figure>
+  </figure> -->
+  
+  <!-- <p>
+    TODO: Paragraph discussing importance of different noise distributions for the background.
+  </p>
+  
+  <figure class="base-grid shaded-figure">
+    <p class="l-body">
+      different noise distributions on background!
+    </p>
+  </figure> -->
+  
+  
+  
+<!-- 
   <p>
     Most existing optimization techniques work on an input-space that has the same format as the networks training data.
     For networks trained to process images, the input usually corresponds to a 2D array of pixels, where each pixel is represented by RGB channel values.
@@ -401,7 +348,7 @@ For the latter, we found that the chosen image must have a diverse palette or th
 In this section we have shown how we can extend optimization techniques beyond the input space that was initially used for training the network.
 While this approach can be seen as an artistic content generation technique, it may also improve the interpretability of the generated patterns.
 We can observe that only the most dominant features are visible after the optimization.
-  </p>
+  </p>-->
 
 <!-- =================================================== -->
 
@@ -434,6 +381,7 @@ We can observe that only the most dominant features are visible after the optimi
 <figure>
   <img src="images/diagrams/cppn.png"/>
   <figcaption>CPPNs are a differentiable image parameterization. We can use them for neural art or visualization tasks by backproping not only through the CNN to the image, but then past the image, through the CPPN to its parameters.</figcaption>
+  
 </figure>
 
 <p>
@@ -532,7 +480,10 @@ The following diagram presents an overview of the proposed pipeline:
   </p>
   
   <figure>
-    <img src="images/diagrams/featurevis-3d.png"/>
+    <%= require("../static/images/diagrams/featurevis-3d.svg") %>
+    <figcaption>
+      We optimize a texture by backpropagating through the rendering process. This is possible because we know how pixels in the rendered image correspond to pixels in the texture.
+    </figcaption>
   </figure>
 
   <p>
@@ -565,8 +516,9 @@ Similarly to the 2D case, we aim at redrawing the original object's texture with
 The following diagram presents an overview of the approach:
   </p>
   
-  <figure>
-    <img src="images/diagrams/styletransfer-3d.png"/>
+  <figure style="grid-column: text-start / page-end;">
+    <%= require("../static/images/diagrams/styletransfer-3d.svg") %>
+    <!-- <img src="images/diagrams/styletransfer-3d.png"/> -->
   </figure>
 
   <p>
