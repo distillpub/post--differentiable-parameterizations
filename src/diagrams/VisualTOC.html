@@ -9,7 +9,7 @@
       {{/if}}
     </a>
     <a href="{{section.colab_url}}" class="visual-toc-colab">
-      run in <img src="images/colab.svg"> notebook
+      try in <img src="images/colab.svg"> notebook
     </a>
   </div>
   {{/each}}
@@ -23,7 +23,6 @@
   grid-auto-flow: dense;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 16px;
-  cursor: pointer;
 }
 @media (min-width: 1000px) {
   .visual-toc {
@@ -37,23 +36,25 @@
   }
 }
 .visual-toc-item {
+  display: flex;
+  flex-flow: column;
+}
+.visual-toc-top {
+  flex-grow: 1;
   border: 1px solid #E5E5E5;
   border-radius: 5px;
   overflow: hidden;
   text-decoration: none;
-  box-shadow: 0px 1px 4px rgba(0,0,0,0.05);
+  /* box-shadow: 0px 1px 4px rgba(0,0,0,0.05); */
   transition: box-shadow 0.35s, transform 0.35s;
   transform: scale(1.0);
   display: flex;
   flex-flow: column;
 }
-.visual-toc-item:hover {
-  box-shadow: 0px 1px 10px rgba(0,0,0,0.15);
+.visual-toc-top:hover {
+  box-shadow: 0px 1px 4px rgba(0,0,0,0.05);
   transform: scale(1.02);
   transition: box-shadow 0.15s, transform 0.15s;
-}
-.visual-toc-top {
-  flex-grow: 1;
 }
 .visual-toc-heading,
 .visual-toc-subheading {
@@ -81,11 +82,13 @@
   font-size: 75%;
 }
 .visual-toc-colab {
-  border-top: dashed 1px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  border: dashed 1px rgba(0,0,0,0.1);
+  margin-top: 1em;
   padding-left: 1.2em;
   padding-right: 1.2em;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
   text-transform: uppercase;
   color: #aaa;
   font-size: 11px;
@@ -101,13 +104,15 @@
   filter: unset;
 }
 
-.visual-toc-top:hover, .visual-toc-colab:hover {
-  background-color: #F2F9FF;
+/* .visual-toc-top:hover,  */
+.visual-toc-colab:hover {
+  background-color: hsl(0, 0%, 97%);
 }
 
 a {
   display: block;
   text-decoration: none;
+  cursor: pointer;
 }
 
 canvas {
