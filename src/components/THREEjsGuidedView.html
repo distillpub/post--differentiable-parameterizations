@@ -46,7 +46,7 @@ const fragmentShaderString = `
 
   void main() {
     gl_FragColor = texture2D(texture, text_coord);
-    float ambient_light = 0.25;
+    float ambient_light = 0.5;
     gl_FragColor.rgb *= shading*(1.-ambient_light) + ambient_light;
   }
 `;
@@ -281,11 +281,11 @@ export default {
       camId = newCamId;
       update();
     });
-    
+
     this.observe('unfoldFlag', unfoldFlag => {
       update();
     });
-    
+
     this.observe('width', width => {
       materialTexture.uniforms.width.value = width;
       material.uniforms.viewAspect.value = width / height;

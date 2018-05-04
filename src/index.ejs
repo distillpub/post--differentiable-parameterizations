@@ -100,9 +100,10 @@
   </figure>
 
   <p>
+  
     Differentiable image parameterizations invite us to ask "what kind of image generation process can we backpropagate through?"
     The answer is quite a lot, and some of the more exotic possibilities can create a wide range of interesting effects, including 3D neural art, images with transparency, and aligned interpolation.
-    We believe there's a great deal of untapped potential waiting to be explored.
+    Previous work using specific unusual image parameterizations <d-cite key="Nguyen2015:easilyFooled,athalye2017synthesizing,olah2017feature"></d-cite> has shown exciting results -- we think that zooming out and looking at this area as a whole suggests there's even more potential.
   </p>
   
   
@@ -161,6 +162,16 @@ We refer to the result of this procedure as the optimization for a feature visua
     By partially sharing a parameterization between images, we encourage the resulting visualizations to naturally align.
     Intuitively, the shared parameterization provides a common reference for the displacement of major patterns, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
     It doesn't change the objective, but it does enlarge the basins of attraction where the visualizations are aligned.
+    <d-footnote>
+      We can explicitly visualize how shared parameterization affects the basins of attraction in a toy example.
+      Let's consider optimizing two variables $x$ and $y$ to both minimize $L(z)= (z^2-1)^2$.
+      Since $L(z)$ has two basins of attraction $z=1$ or $z=-1$, the pair of optimization problems has four solutions:
+      $(x,y) = (1,1)$, $(x,y) = (-1,1)$, $(x,y) = (1,-1)$, or $(x,y) = (-1,-1)$.
+      Let's consider randomly initializing $x$ and $y$, and then optimizing them.
+      Normally, the optimization problems are independent, so $x$ and $y$ are equally likely to come to unaligned solutions (where they have different signs) as aligned ones.
+      But if we add a shared parameterization, the problems become coupled and the basin of attraction where they're aligned becomes bigger.<br>  
+      <img style="width: 100%; margin-top: 15px; max-width: 500px;" src="images/diagrams/basin-alignment.png"/>
+    </d-footnote>
   </p>
   
   <figure class="">
@@ -613,7 +624,7 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
 <d-appendix>
   <h3>Acknowledgments</h3>
   <p>
-    We are deeply grateful to Shan Carter for outstanding design advice. We also really appreciate the support of Matt Sharifi. Finally, the 3D printed example was made possible by Dominik Roblek giving us access to his 3D printer.
+    We are deeply grateful to Shan Carter for outstanding design advice. We also really appreciate the support of Matt Sharifi. Finally, the 3D printed example was made possible by Dominik Roblek.
   </p>
 
   <p>
