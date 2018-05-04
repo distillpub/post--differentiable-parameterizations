@@ -17,10 +17,9 @@ import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
 import BunnyModel                     from "./diagrams/BunnyModel.html";
 import BunnyModelTextureSpace         from "./diagrams/BunnyModelTextureSpace.html";
 
-import OrbitControls from 'three-orbitcontrols';
-import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer } from 'three';
+import ImageRow                       from './components/ImageRow.html';
 
-
+// eagerly initialize vtoc  as it's above the fold
 const tocNav = document.getElementById('vtoc');
 const visualTOC = new VisualTOC({target: tocNav});
 
@@ -41,7 +40,9 @@ const visualTOC = new VisualTOC({target: tocNav});
 {
   const figure = document.getElementById('NonTransparentNeuronExamples');
   figure.addEventListener("ready", function() {
-    const nonTransparentNeuronExamples = new NonTransparentNeuronExamples({target: figure});
+    const nonTransparentNeuronExamples = new ImageRow({target: figure, data: {
+      url: 'images/neurons.jpg', width: 176, columns: 5
+    }});
   });
 }
 
@@ -50,6 +51,20 @@ const visualTOC = new VisualTOC({target: tocNav});
   figure.addEventListener("ready", function() {
     const alignedInterpolationExamples = new AlignedInterpolationExamples({target: figure});
   });
+}
+
+{
+  const figure = document.getElementById('UnalignedInterpolation');
+  const unalignedInterpolation = new ImageRow({target: figure, data: {
+    url: 'images/same.jpg', width: 128, columns: 5, perRow: 5
+  }});
+}
+
+{
+  const figure = document.getElementById('AlignedInterpolation');
+  const unalignedInterpolation = new ImageRow({target: figure, data: {
+    url: 'images/interpolation-animation-aligned.jpg', width: 128, columns: 15, perRow: 5, every: 3
+  }});
 }
 
 {

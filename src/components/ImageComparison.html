@@ -3,9 +3,9 @@
 <div ref:container class="container" 
      on:mousemove="mousemove(event)">
   <img ref:imgBackground class="background" src={{right}} on:click="toggle()">
-  <div class="right label">Pixel Space</div>
+  <div class="right label">{{rightName}}</div>
   <div class="resizeable" style="width: {{overlayPercentage}}%">
-    <div class="left label">Fourier Space</div>
+    <div class="left label">{{leftName}}</div>
     <img ref:imgForeground src={{left}} on:click="toggle()">
   </div>
   <div ref:handle class="handle" 
@@ -74,6 +74,16 @@
     border-radius: 50%;
   }
   
+  .handle::before {
+    position: absolute;
+    top: 50%;
+    width: 88px;
+    height: 88px;
+    transform: translate(-44px, -44px);
+    /* background: red; */
+    content: ' ';
+  }
+  
   .resizeable {
     position: absolute;
     top: 0;
@@ -102,7 +112,9 @@ export default {
   data() {
     return {
       overlayPercentage: 67,
-      dragging: false
+      dragging: false,
+      leftName: "Left Image",
+      rightName: "Right Image",
     }
   },
   oncreate() {

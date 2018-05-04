@@ -133,15 +133,20 @@ We refer to the result of this procedure as the optimization for a feature visua
     If we do this naively, different visualizations will be unaligned.
     This is because the visualization process is stochastic: even optimizing for the same objective will lead to the visualization being laid out different each time.
   </p>
+  
+  <figure class="">
+    <div style="margin-bottom: 1em;" id='UnalignedInterpolation'></div>
+    <figcaption>
+      Even though all optimized for the same objective, visual features such as eyes appear in different locations in these visualizations.
+      This happens because each image starts the optimization from a different, random initialization.
+    </figcaption>
+  </figure>
 
   <p>
     Unfortunately, this randomness can make it harder to compare slightly different objectives.
     Shared parameterization is a useful technique for producing alignment between similar visualizations:
   </p>
-  
-  
-  
-  
+
   <d-figure class="base-grid" id='AlignedInterpolationExamples'></d-figure>
 
   <p>
@@ -157,6 +162,14 @@ We refer to the result of this procedure as the optimization for a feature visua
     Intuitively, the shared parameterization provides a common reference for the displacement of major patterns, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
     It doesn't change the objective, but it does enlarge the basins of attraction where the visualizations are aligned.
   </p>
+  
+  <figure class="">
+    <div style="margin-bottom: 1em;" id='AlignedInterpolation'></div>
+    <figcaption>
+      Aligned Interpolation between two neurons. Notice visual landmarks like eyes staying in similar positions for each image:<br>
+      <img style="max-width: 240px;" src="images/interpolation-explanation-aligned.jpg"/>
+    </figcaption>
+  </figure>
 
   <p>
     We can see the issue with independent optimization even more clearly if we look at the interpolation as an animation:
@@ -379,7 +392,7 @@ We can observe that only the most dominant features are visible after the optimi
 </p>
 
 <figure>
-  <img src="images/diagrams/cppn.png"/>
+  <%= require("../static/images/diagrams/cppn.svg") %>
   <figcaption>CPPNs are a differentiable image parameterization. We can use them for neural art or visualization tasks by backproping not only through the CNN to the image, but then past the image, through the CPPN to its parameters.</figcaption>
   
 </figure>

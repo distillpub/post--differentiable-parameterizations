@@ -1,0 +1,58 @@
+<div class="sprites {{styled ? 'styled' : ''}}" 
+ style="--perRow: {{perRow}}; --minSize: {{minSize}}; --maxSize: {{maxSize}};">
+  {{#each visibleColumns as column}}
+    <Sprite :url :width :columns index={{every * column}}/>
+  {{/each}}
+</div>
+
+<style>
+
+.sprites {
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(var(--perRow), 1fr);
+}
+
+canvas {
+  width: 100%;
+}
+
+.styled > canvas {
+  border-radius: 3px;
+  box-shadow: 0px 0px 2px rgba(0,0,0,0.3);
+}
+
+@media (min-width: 448px) {
+  .sprites {
+    grid-gap: 16px;
+  }
+  
+}
+
+</style>
+
+
+<script>
+import { range } from "../util";
+import { Sprite } from "lucid-components";
+
+export default {
+  data() {
+    return {
+      url: null,
+      width: null,
+      columns: 0,
+      styled: true,
+      every: 1,
+      perRow: 5
+    }
+  },
+  computed: {
+    visibleColumns: (columns, every) => range(Math.ceil(columns / every)),
+    maxSize: (width) => width,
+    minSize: (width) => width/2,
+  },
+  components: { Sprite },
+  helpers: { range },
+}
+</script>
