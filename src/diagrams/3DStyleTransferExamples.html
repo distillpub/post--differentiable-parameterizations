@@ -41,13 +41,12 @@
 </figure>
 
 <span class="figcaption l-body">
-  Styletransfer of "{{styleImage.title}}" onto a 3D model by Greg Turk and Marc Levoy. 
+  Styletransfer of "{{styleImage.title}}" onto the 3D model "{{contentImage.title}}" by {{contentImage.author}}. 
   <div class="controls">
     <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
   </div>
 </span>
 <span class="figcaption l-body">
-  <!-- Move the slider to compare optimization in pixel space and in the fourier basis. Both images were created with the same optimization process and differ only in their parameterization. -->
 </span>
 
 <style>
@@ -279,10 +278,10 @@ h4 {
           },
         ],
         contentImages: [
-          {model: 'bunny', src: 'models/bunny/preview.png'},
-          {model: 'david', src: 'models/david/preview.png'},
-          {model: 'horse', src: 'models/horse/preview.png'},
-          {model: 'skull', src: 'models/skull/preview.png'},
+          {model: 'bunny', src: 'models/bunny/preview.png', title: 'Stanford Bunny', author: 'Greg Turk & Marc Levoy'},
+          {model: 'david', src: 'models/david/preview.png', title: 'David by Michelangelo', author: 'Jerry Fisher'},
+          {model: 'horse', src: 'models/horse/preview.png', title: 'Marly - Louvre Museum', author: 'Benjamin Bardou'},
+          {model: 'skull', src: 'models/skull/preview.png', title: 'Skull', author: 'Martín Jario'},
         ]
       };
     },
