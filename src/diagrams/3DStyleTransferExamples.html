@@ -1,7 +1,7 @@
 <:Window on:resize="resize()"/>
 
 <figure id="style-transfer-examples" class="grid">
-  
+
 <div id="input-content" class="input-wrapper">
   <h4>Content Image</h4>
   <div class="input-chooser">
@@ -41,9 +41,9 @@
 </figure>
 
 <span class="figcaption l-body">
-  Styletransfer of "{{styleImage.title}}" onto the 3D model "{{contentImage.title}}" by {{contentImage.author}}. 
+  Styletransfer of "{{styleImage.title}}" onto the 3D model "{{contentImage.title}}" by {{contentImage.author}}.
   <div class="controls">
-    <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
+    <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
   </div>
 </span>
 <span class="figcaption l-body">
@@ -61,7 +61,7 @@
   grid-gap: 10px;
   grid-auto-columns: 1fr;
   align-items: flex-start;
-  grid-template: 
+  grid-template:
     "style content" auto
     "output output" auto / 1fr 1fr;
 }
@@ -151,7 +151,7 @@ h4 {
 
 @media (min-width: 1180px) {
   .grid {
-    grid-template: 
+    grid-template:
       "style arrow output" 1fr
       "content arrow output" 1fr / min-content 34px 1fr;
   }
@@ -188,7 +188,7 @@ h4 {
         return new Map([
           ['positions', [model_folder + '/' + positions_file, Float32Array]],
           ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
-          ['faces', [model_folder + '/' + faces_file, Uint16Array]],
+          ['faces', [model_folder + '/' + faces_file, Uint32Array]],
         ]);
       },
       resourcePromise: (resources) => {

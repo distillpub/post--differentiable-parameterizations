@@ -10,7 +10,7 @@
     {{/await}}
 </figure>
 <div class="controls">
-  <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
+  <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
 </div>
 
 
@@ -55,7 +55,7 @@ export default {
       return new Map([
         ['positions', [model_folder + '/' + positions_file, Float32Array]],
         ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
-        ['faces', [model_folder + '/' + faces_file, Uint16Array]],
+        ['faces', [model_folder + '/' + faces_file, Uint32Array]],
       ]);
     },
     resourcePromise: (resources) => {
