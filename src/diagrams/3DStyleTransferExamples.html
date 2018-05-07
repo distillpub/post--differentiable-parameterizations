@@ -1,13 +1,13 @@
 <:Window on:resize="resize()"/>
 
 <figure id="style-transfer-examples" class="grid">
-  
+
 <div id="input-content" class="input-wrapper">
   <h4>Content Image</h4>
   <div class="input-chooser">
     <ExampleSelector items={{contentImages}} bind:index='contentIndex'></ExampleSelector>
     <div id="sprite-first" class="sprite">
-      <div style="background-image: url('images/bunny-content.png')"></div>
+      <div style="background-image: url({{contentImage.src}})"></div>
     </div>
   </div>
 </div>
@@ -31,7 +31,7 @@
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsView ref:view :resources :textureUrl :width :height bind:unfoldFlag></THREEjsView>
+      <THREEjsView ref:view :resources :textureUrl :width :height bind:unfoldFlag autoRotate={{false}} backgroundColor={{"white"}}></THREEjsView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
@@ -41,13 +41,12 @@
 </figure>
 
 <span class="figcaption l-body">
-  Styletransfer of "{{styleImage.title}}" onto a 3D model by Greg Turk and Marc Levoy. 
+  Styletransfer of "{{styleImage.title}}" onto the 3D model "{{contentImage.title}}" by {{contentImage.author}}.
   <div class="controls">
-    <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
+    <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
   </div>
 </span>
 <span class="figcaption l-body">
-  <!-- Move the slider to compare optimization in pixel space and in the fourier basis. Both images were created with the same optimization process and differ only in their parameterization. -->
 </span>
 
 <style>
@@ -62,7 +61,7 @@
   grid-gap: 10px;
   grid-auto-columns: 1fr;
   align-items: flex-start;
-  grid-template: 
+  grid-template:
     "style content" auto
     "output output" auto / 1fr 1fr;
 }
@@ -152,7 +151,7 @@ h4 {
 
 @media (min-width: 1180px) {
   .grid {
-    grid-template: 
+    grid-template:
       "style arrow output" 1fr
       "content arrow output" 1fr / min-content 34px 1fr;
   }
@@ -181,13 +180,15 @@ h4 {
   export default {
     components: { ImageComparison, ExampleSelector, THREEjsView, ToggleSwitch },
     computed: {
+      model_folder: (contentImage) => `models/${contentImage.model}`,
+      contentImage: (contentImages, contentIndex) => contentImages[contentIndex],
       styleImage: (styleImages, styleIndex) => styleImages[styleIndex],
-      textureUrl: (styleImage) => styleImage.texture,
+      textureUrl: (model_folder, styleImage) => model_folder + '/' + styleImage.texture,
       resources: (model_folder, faces_file, positions_file, uvs_file) => {
         return new Map([
           ['positions', [model_folder + '/' + positions_file, Float32Array]],
           ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
-          ['faces', [model_folder + '/' + faces_file, Uint16Array]],
+          ['faces', [model_folder + '/' + faces_file, Uint32Array]],
         ]);
       },
       resourcePromise: (resources) => {
@@ -205,7 +206,6 @@ h4 {
     },
     data() {
       return {
-        model_folder: 'models/bunny',
         faces_file: 'face.3d',
         positions_file: 'position.3d',
         uvs_file: 'uv.3d',
@@ -217,8 +217,14 @@ h4 {
         unfoldFlag: false,
         styleImages: [
           {
-            texture: 'models/bunny/3Dstyles/texture_cd.jpg',
-            src: 'models/bunny/3Dstyles/styles/cd.jpg',
+            texture: 'tex_onwhite.jpg',
+            src: 'models/styles/on_white.jpg',
+            title: "Kandinsky's On White",
+            link: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Vassily_Kandinsky%2C_1923_-_On_White_II.jpg"
+          },
+          {
+            texture: 'tex_cd.jpg',
+            src: 'models/styles/cd.jpg',
             title: 'CD',
             link: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CD_autolev_crop.jpg/480px-CD_autolev_crop.jpg"
           },
@@ -241,26 +247,20 @@ h4 {
           //   link: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Fernand_L%C3%A9ger_-_Grand_parade_with_red_background_%28mosaic%29_1958_made.jpg/637px-Fernand_L%C3%A9ger_-_Grand_parade_with_red_background_%28mosaic%29_1958_made.jpg",
           // },
           {
-            texture: 'models/bunny/3Dstyles/texture_newspaper.jpg',
-            src: 'models/bunny/3Dstyles/styles/newspaper.jpg',
+            texture: 'tex_newspaper.jpg',
+            src: 'models/styles/newspaper.jpg',
             title: 'Newspaper',
             link: "https://upload.wikimedia.org/wikipedia/commons/d/db/RIAN_archive_409362_Literaturnaya_Gazeta_article_about_YuriGagarin%2C_first_man_in_space.jpg"
           },
           {
-            texture: 'models/bunny/3Dstyles/texture_noodles.jpg',
-            src: 'models/bunny/3Dstyles/styles/noodles.jpg',
+            texture: 'tex_noodles.jpg',
+            src: 'models/styles/noodles.jpg',
             title: 'Noodles and eggs',
             link:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Noodles_and_eggs20170520_1035.jpg/526px-Noodles_and_eggs20170520_1035.jpg"
           },
           {
-            texture: 'models/bunny/3Dstyles/texture_onwhite.jpg',
-            src: 'models/bunny/3Dstyles/styles/on_white.jpg',
-            title: "Kandinsky's On White",
-            link: "https://upload.wikimedia.org/wikipedia/commons/c/c4/Vassily_Kandinsky%2C_1923_-_On_White_II.jpg"
-          },
-          {
-            texture: 'models/bunny/3Dstyles/texture_points.jpg',
-            src: 'models/bunny/3Dstyles/styles/points.jpg',
+            texture: 'tex_points.jpg',
+            src: 'models/styles/points.jpg',
             title: "Delaunay's Portrait de Metzinger",
             link: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Robert_Delaunay%2C_1906%2C_Portrait_de_Metzinger%2C_oil_on_canvas%2C_55_x_43_cm%2C_DSC08255.jpg/449px-Robert_Delaunay%2C_1906%2C_Portrait_de_Metzinger%2C_oil_on_canvas%2C_55_x_43_cm%2C_DSC08255.jpg",
           },
@@ -271,22 +271,25 @@ h4 {
           //   link: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/The_Scream.jpg/471px-The_Scream.jpg"
           // },
           {
-            texture: 'models/bunny/3Dstyles/texture_starry.jpg',
-            src: 'models/bunny/3Dstyles/styles/starry_night.jpg',
+            texture: 'tex_starry.jpg',
+            src: 'models/styles/starry_night.jpg',
             title: "Van Gogh's Starry Night ",
             link: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/606px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
           },
         ],
         contentImages: [
-          {src: 'images/bunny-content.png'}
+          {model: 'bunny', src: 'models/bunny/preview.png', title: 'Stanford Bunny', author: 'Greg Turk & Marc Levoy'},
+          {model: 'david', src: 'models/david/preview.png', title: 'David by Michelangelo', author: 'Jerry Fisher'},
+          {model: 'horse', src: 'models/horse/preview.png', title: 'Marly - Louvre Museum', author: 'Benjamin Bardou'},
+          {model: 'skull', src: 'models/skull/preview.png', title: 'Skull', author: 'Martín Jario'},
         ]
       };
     },
     methods: {
       resize: function() {
-        const bb = this.refs.sizer.getBoundingClientRect();
-        console.debug(bb.width)
-        this.set({width: bb.width });
+        // const bb = this.refs.sizer.getBoundingClientRect();
+        // console.debug(bb.width)
+        // this.set({width: bb.width });
       }
     },
     helpers: {

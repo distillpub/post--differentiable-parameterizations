@@ -1,4 +1,4 @@
-<div ref:container class='container' 
+<div ref:container class='container'
   style='--width:{{width}}px;--height:{{height}}px;'>
 </div>
 
@@ -17,9 +17,9 @@
 
 <script>
 import OrbitControls from 'three-orbitcontrols';
-import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, 
-  TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer, 
-  Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry, 
+import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute,
+  TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer,
+  Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry,
   Camera, Quaternion } from 'three';
 
 const vertexShaderString = `
@@ -116,7 +116,7 @@ export default {
       //scene contain the 3D model
       scene = new Scene();
       camera = new PerspectiveCamera(42, width / height, 0.1, 100);
-      camera.position.z = 2.5;
+      camera.position.z = 3.3;
       scene.add(camera);
 
       var geometry = new BufferGeometry();
@@ -173,7 +173,7 @@ export default {
       controls.autoRotateSpeed = 0.25;
       controls.autoRotate = autoRotate;
       controls.minDistance = 0.5;
-      controls.maxDistance = 2;
+      controls.maxDistance = 4;
       //Disable the autoClear option to draw the two scenes together
       renderer.autoClear = false;
       //render on change only
@@ -223,7 +223,7 @@ export default {
       materialTexture.uniforms.fade_in_perc.value = fadeIndVal;
 
       //Camera controls
-      controls.update();
+      // controls.update();
 
       //Render the two scenes
       renderer.clear();
@@ -239,16 +239,16 @@ export default {
       material.uniforms.texture = { type: 't', value: texture };
       materialTexture.uniforms.texture = { type: 't', value: texture };
     });
-    
+
     this.observe('unfoldFlag', unfoldFlag => {
       controls.autoRotate = false;
       update();
     });
-    
+
     this.observe('autoRotate', autoRotate => {
       controls.autoRotate = autoRotate;
     });
-    
+
     this.observe('width', width => {
       materialTexture.uniforms.width.value = width;
       material.uniforms.viewAspect.value = width / height;

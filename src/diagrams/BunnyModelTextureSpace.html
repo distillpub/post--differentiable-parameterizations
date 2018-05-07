@@ -1,7 +1,7 @@
 <:Window on:resize="resize()"/>
 
 <figure>
-  
+
   <div class="inputs">
     <h4>Input Controls</h4>
     <figcaption>
@@ -9,14 +9,14 @@
         A naïve approach optimizes the texture as an image with a feature visualization objective function.
       </p>
       <p>
-        Because this optimization is not aware of the UV mapping used to render the object, it creates artifacts such as 
+        Because this optimization is not aware of the UV mapping used to render the object, it creates artifacts such as
         <a class="{{index==1 ? 'selected' : ''}}" on:click='toggle(1)'>seams</a>
-        , 
+        ,
         <a class="{{index==2 ? 'selected' : ''}}" on:click='toggle(2)'>badly oriented patterns</a>
-         and 
+         and
         <a class="{{index==3 ? 'selected' : ''}}" on:click='toggle(3)'>low resolution areas</a>.
       </p>
-      <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
+      <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
     </figcaption>
   </div>
 
@@ -31,7 +31,7 @@
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
   </div>
-  
+
   <div class="output-rendered">
     <h4>Render-based Optimization</h4>
     {{#await resourcePromise}}
@@ -53,7 +53,7 @@ figure {
   grid-gap: inherit;
   grid-row-gap: 10px;
   grid-auto-flow: column;
-  grid-template: 
+  grid-template:
     "input" auto
     "naive" auto
     "rendered" auto / 1fr;
@@ -98,11 +98,11 @@ a.selected {
   color: hsl(24, 100%, 50%);
   border-bottom: 1px solid hsl(24, 100%, 50%);
   text-shadow: 0.5px 0 0 hsl(24, 100%, 50%);
-} 
+}
 
 @media (min-width: 768px) {
   figure {
-    grid-template: 
+    grid-template:
       "naive rendered" auto
       "input input" auto / 1fr 1fr;
   }
@@ -110,7 +110,7 @@ a.selected {
 
 @media (min-width: 1180px) {
   figure {
-    grid-template: 
+    grid-template:
       "input naive rendered" auto / 1fr 2fr 2fr;
   }
 }
@@ -149,7 +149,7 @@ export default {
       return new Map([
         ['positions', [model_folder + '/' + positions_file, Float32Array]],
         ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
-        ['faces', [model_folder + '/' + faces_file, Uint16Array]],
+        ['faces', [model_folder + '/' + faces_file, Uint32Array]],
       ]);
     },
     resourcePromise: (resources) => {

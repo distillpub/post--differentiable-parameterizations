@@ -10,7 +10,7 @@
     {{/await}}
 </figure>
 <div class="controls">
-  <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch> 
+  <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
 </div>
 
 
@@ -37,7 +37,7 @@ export default {
       faces_file: 'face.3d',
       positions_file: 'position.3d',
       uvs_file: 'uv.3d',
-      texture_file: 'bunny-texture.png',
+      texture_file: 'tex.png',
       resourcesReady: false,
       texture_index: 0,
       backgroundColor: 'white',
@@ -55,7 +55,7 @@ export default {
       return new Map([
         ['positions', [model_folder + '/' + positions_file, Float32Array]],
         ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
-        ['faces', [model_folder + '/' + faces_file, Uint16Array]],
+        ['faces', [model_folder + '/' + faces_file, Uint32Array]],
       ]);
     },
     resourcePromise: (resources) => {
