@@ -7,7 +7,7 @@
     <div class="sprites" style="--steps: {{steps}};">
       <div class="background"></div>
       
-      <div class="sprite-row">
+      <div class="sprite-row styled-canvas">
         <h4>Unique</h4>
         <spacer/>
         {{#each range(steps) as x}}
@@ -15,12 +15,12 @@
         {{/each}}
       </div>
       
-      <div class="sprite-row">
+      <div class="sprite-row styled-canvas">
         <h4>Shared</h4>
         <Sprite :url :width index={{[0, 2]}}></Sprite>
       </div>
       
-      <div class="sprite-row">
+      <div class="sprite-row styled-canvas">
         <h4>Result</h4>
         <spacer/>
         {{#each range(steps) as x}}
@@ -92,7 +92,7 @@ export default {
   },
   data() {
     return {
-      index: 0,
+      index: 1,
       steps: 5,
       width: 128,
       params: ['result', 'unique', 'shared'],//, 'singular', 'interpolating'],
@@ -100,7 +100,7 @@ export default {
     }
   },
   computed: {
-    url: (index) => `images/interpolation-sprite-0${index+1}.jpg`,
+    url: (index) => `images/interpolation-sprite-0${index}.jpg`,
   },
   components: { 
     ExampleSelector, Sprite,
