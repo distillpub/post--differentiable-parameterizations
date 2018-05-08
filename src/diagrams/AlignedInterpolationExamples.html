@@ -1,47 +1,44 @@
-<figure class="base-grid">
-  <figcaption>
-    Six images are optimized for a convex combination of two neurons. Notice how major visual features stay in similar places throughout the examples.
-  </figcaption>
-  <div class="container">
-    <ExampleSelector spriteUrl={{selectorUrl}} spriteWidth={{128}} spriteColumns={{3}} bind:index></ExampleSelector>
-    <div class="sprites" style="--steps: {{steps}};">
-      <div class="background"></div>
-      
-      <div class="sprite-row styled-canvas">
-        <h4>Unique</h4>
-        <spacer/>
-        {{#each range(steps) as x}}
-          <Sprite :url :width index={{[x, 1]}}></Sprite>
-        {{/each}}
-      </div>
-      
-      <div class="sprite-row styled-canvas">
-        <h4>Shared</h4>
-        <Sprite :url :width index={{[0, 2]}}></Sprite>
-      </div>
-      
-      <div class="sprite-row styled-canvas">
-        <h4>Result</h4>
-        <spacer/>
-        {{#each range(steps) as x}}
-          <Sprite :url :width index={{[x, 0]}}></Sprite>
-        {{/each}}
-      </div>
-
+<figure class="container">
+  
+  <div class="sprites" style="--steps: {{steps}};">
+    <div class="background"></div>
+    
+    <div class="sprite-row styled-canvas">
+      <p class="figcaption">We start with independently parameterized frames.</p>
+      <spacer/>
+      {{#each range(steps) as x}}
+        <Sprite :url :width index={{[x, 1]}}></Sprite>
+      {{/each}}
     </div>
+    
+    <div class="sprite-row styled-canvas">
+      <p class="figcaption">Each frame is then combined with a single, shared parameterization…</p>
+      <Sprite :url :width index={{[0, 2]}}></Sprite>
+    </div>
+    
+    <div class="sprite-row styled-canvas">
+      <p class="figcaption">…to create a visually aligned neuron interpolation.</p>
+      <spacer/>
+      {{#each range(steps) as x}}
+        <Sprite :url :width index={{[x, 0]}}></Sprite>
+      {{/each}}
+    </div>
+
   </div>
+  <!-- <ExampleSelector spriteUrl={{selectorUrl}} spriteWidth={{128}} spriteColumns={{3}} bind:index></ExampleSelector> -->
 </figure>
+
 
 
 <style>
 
 figure {
-  margin-top: 0;
-  margin-bottom: 0;
+  padding: 20px 0;
 }
 
-figcaption {
-  grid-column: kicker;
+h4 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
 }
 
 .container {
@@ -60,7 +57,7 @@ figcaption {
   z-index: 1;
   display: grid;
   grid-gap: inherit;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: 2fr repeat(6, 1fr);
 }
 
 .sprite-row > canvas {
@@ -69,8 +66,10 @@ figcaption {
 
 .background {
   position: absolute;
-  width: 100%;
+  width: 88%;
+  right: 0;
   height: 100%;
+  opacity: 0.67;
   background-image: url(images/connection-arrows.svg);
   background-repeat: no-repeat;
   background-position: right;

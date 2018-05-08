@@ -3,6 +3,7 @@ require('file-loader!./index.ejs')
 
 import VisualTOC                      from './diagrams/VisualTOC.html';
 import StyleTransferExamples          from './diagrams/StyleTransferExamples.html';
+import AlignedUnalignedComparison     from './diagrams/AlignedUnalignedComparison.html';
 import AlignedInterpolationExamples   from './diagrams/AlignedInterpolationExamples.html';
 import AlignedInterpolationAnimations from './diagrams/AlignedInterpolationAnimations.html';
 import SemiTransparentCombination     from "./diagrams/SemiTransparentCombination.html";
@@ -68,11 +69,19 @@ const visualTOC = new VisualTOC({target: tocNav});
 }
 
 {
-  const figure = document.getElementById('AlignedInterpolationAnimations');
+  const figure = document.getElementById('AlignedUnalignedComparison');
   figure.addEventListener("ready", function() {
-    const alignedInterpolationAnimations = new AlignedInterpolationAnimations({target: figure});
+    const unalignedInterpolation = new AlignedUnalignedComparison({target: figure});
+    figure.addEventListener("onscreen", () => unalignedInterpolation.onscreen());
   });
 }
+
+// {
+//   const figure = document.getElementById('AlignedInterpolationAnimations');
+//   figure.addEventListener("ready", function() {
+//     const alignedInterpolationAnimations = new AlignedInterpolationAnimations({target: figure});
+//   });
+// }
 
 // {
 //   const figure = document.getElementById("SemiTransparentCombination")

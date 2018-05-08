@@ -1,0 +1,179 @@
+<figure>
+
+<div class="row styled-canvas">
+  <div>
+    <h4>Unaligned Interpolation</h4>
+    <p class="figcaption">Visual landmarks, such as eyes, change position from one frame to the next.</p>
+  </div>
+  <Sprite url={{spriteUrlNaive}} width={{128}} columns={{numFrames}} :index></Sprite>
+  <div class="spacer"><div class="line"></div></div>
+  <div>
+    <ImageRow url={{spriteUrlNaive}} width={{128}} columns={{numFrames}} perRow={{5}} every={{3}}></ImageRow>
+    <Slider ref:slider1 min={{0}} max={{numFrames-1}} step={{1}} ticks={{numFrames}} bind:value=index></Slider>
+    <button ref:button1 type="button" name="play" on:click="play()">play</button>
+  </div>
+</div>
+
+<div class="row styled-canvas">
+  <div>
+    <h4>Aligned Interpolation</h4>
+    <p class="figcaption">Frames are easier to compare because visual landmarks stay in place.</p>
+  </div>
+  <Sprite url={{spriteUrlAligned}} width={{128}} columns={{numFrames}} :index></Sprite>
+  <div class="spacer"><div class="line"></div></div>
+  <div>
+    <ImageRow url={{spriteUrlAligned}} width={{128}} columns={{numFrames}} perRow={{5}} every={{3}}></ImageRow>
+    <Slider min={{0}} max={{numFrames-1}} step={{1}} ticks={{numFrames}} bind:value=index></Slider>
+    <button ref:button2 type="button" name="play" on:click="play()">play</button>
+  </div>
+</div>
+
+</figure>
+
+
+<style>
+
+figure {
+  grid-gap: 16px;
+  display: grid;
+  padding: 20px 0;
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+
+.line {
+  height: 100%;
+  border-right: 1px solid hsla(0,0%,0%,0.1);
+  padding-left: 50%;
+  padding-right: 50%;
+}
+
+
+.row {
+  display: grid;
+  grid-gap: inherit;
+  grid-template-columns: 1fr 128px 1px 3fr;
+  grid-auto-flow: column;
+}
+
+.sprites {
+  grid-gap: 8px;
+}
+
+canvas {
+  width: 100%;
+}
+
+d-slider {
+  padding-top: 6px;
+}
+
+button {
+  
+  padding: 0.3em 0.5em;
+  margin: 0;
+  /* border: 1px solid rgba(0,0,0,0.4); */
+  background-color: #00000000;
+  border: 1px solid #ff6000;
+  border-radius: 3px;
+  /* text-transform: uppercase; */
+  font-weight: 500;
+  
+  /* color: rgba(0, 0, 0, 0.6); */
+  color: #ff6000;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:focus {
+  /* outline: 0; */
+}
+
+button:hover {
+  background-color: #ff6000;
+  color: white;
+}
+
+button.disabled {
+  border: 1px solid rgba(0,0,0,0.4);
+  color: rgba(0, 0, 0, 0.6);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.disabled:hover {
+  background-color: #00000000;
+}
+
+</style>
+
+
+<script>
+import { range } from '../util';
+import { Sprite } from 'lucid-components';
+import SpriteAnimation from '../components/SpriteAnimation';
+import Slider from '../components/Slider';
+import ImageRow from '../components/ImageRow';
+
+export default {
+  oncreate() {
+    // this.play();
+  },
+  data() {
+    return {
+      index: 1,
+      animationDirection: 1,
+      numFrames: 15,
+      spriteUrlAligned: 'images/interpolation-animation-aligned.jpg',
+      spriteUrlNaive: 'images/interpolation-animation-naive.jpg',
+      hasBeenOnscreen: false
+    }
+  },
+  methods: {
+    onscreen() {
+      console.warn("onscreeen!~!!")
+      const { hasBeenOnscreen } = this.get();
+      if (!hasBeenOnscreen) {
+        setTimeout(() => this.play(), 1000);
+      }
+      this.set({hasBeenOnscreen: true});
+    },
+    play() {
+      const { numFrames, timer } = this.get();
+      clearInterval(timer);
+      const newTimer = setInterval(() => this.tick(), 1000/numFrames);
+      this.set({timer: newTimer});
+    },
+    tick() {
+      const { index, numFrames, animationDirection, timer } = this.get();
+      const newIndex = index + animationDirection;
+      this.refs.button1.classList.add('disabled');
+      this.refs.button2.classList.add('disabled');
+      if (newIndex >= numFrames-1) {
+        this.set({animationDirection: -1, index: numFrames-1});
+      } else if (newIndex < 0) {
+        clearInterval(timer);
+        this.set({animationDirection: 1, index: 0});
+        this.refs.button1.classList.remove('disabled');
+        this.refs.button2.classList.remove('disabled');
+      } else {
+        this.set({index: newIndex});
+      }
+      // console.log("tick!");
+    }
+  },
+  computed: {
+  },
+  components: { 
+    Sprite, ImageRow, Slider
+  },
+  helpers: {
+    range
+  }
+}
+</script>
