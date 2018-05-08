@@ -158,14 +158,13 @@ We refer to the result of this procedure as the optimization for a feature visua
     </d-footnote>
     , one of which is using a <em>shared parameterization</em>: each frame is parameterized as a combination of it's own unique parameterization, and a single shared parameterization.
     <!-- The shared parameterization makes it easier for the optimization process to find frames in which visual landmarks stay in the same position then frames where they don't. In order to produce an unaligned frame, this frame's unique parameterization would have to overpower the shared parameterization. -->
-    The shared parameterization makes it easier for the optimization process to find aligned frames then unaligned ones: In order to produce an unaligned frame, that frame's unique parameterization would have to overpower the shared parameterization.
   </p>
 
   <d-figure id='AlignedInterpolationExamples'></d-figure>
   
   <p>
     By partially sharing a parameterization between frames, we encourage the resulting visualizations to naturally align.
-    Intuitively, the shared parameterization provides a common reference for the displacement of major patterns, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
+    Intuitively, the shared parameterization provides a common reference for the displacement of visual landmarks, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
     <d-footnote>
       Concretely, we combine a usually lower-resolution shared parameterization $ P_{\text{shared}}$ and full-resolution independent parameterizations $P_{\text{unique}}^i$ that are unique to each frame $i$ of the visualization.
       Each individual frame $i$ is then parameterized as a combination $P^i$ of the two, $P^i = N(P_{\text{unique}}^i + P_{\text{shared}})$, where $N$ is usually the logistic function.
