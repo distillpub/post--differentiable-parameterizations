@@ -130,38 +130,46 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <p>
     Sometimes we'd like to visualize how two neurons interact.
-    We can do this by optimizing different <a href="https://en.wikipedia.org/wiki/Convex_combination">convex combinations</a> of two neurons.
-    If we do this naively, different visualizations will be unaligned.
-    This is because the visualization process is stochastic: even optimizing for the same objective will lead to the visualization being laid out different each time.
+    We can do this by optimizing <a href="https://en.wikipedia.org/wiki/Convex_combination">convex combinations</a> of two neurons.
+    If we do this naively, different frames of the resulting visualization will be unaligned--visual landmarks such as eyes appear in different locations in each frame.
+    This is because the optimization process that creates the visualization is stochastic: even optimizing for the same objective will lead to the visualization being laid out different each time.
   </p>
   
-  <figure class="">
+  <p>
+    Unfortunately, this randomness can make it harder to compare slightly different objectives.
+    We can see the issue with independent optimization if we look at the interpolated frames as an animation:
+  </p>
+  
+  <d-figure id='AlignedUnalignedComparison'></d-figure>
+  
+  <!-- <figure class="">
     <div style="margin-bottom: 1em;" id='UnalignedInterpolation'></div>
     <figcaption>
       Even though all optimized for the same objective, visual features such as eyes appear in different locations in these visualizations.
       This happens because each image starts the optimization from a different, random initialization.
     </figcaption>
-  </figure>
-
+  </figure> -->
+  
   <p>
-    Unfortunately, this randomness can make it harder to compare slightly different objectives.
-    Shared parameterization is a useful technique for producing alignment between similar visualizations:
+    How can we achieve this aligned interpolation, where visual landmarks do not move between frames? 
+    There are a number of possible approaches one could try
+    <d-footnote>
+      For example, one could explicitly penalize differences between adjacent frames. Our final result and our colab notebook use this technique in combination with a shared parameterization.
+    </d-footnote>
+    , one of which is using a <em>shared parameterization</em>: each frame is parameterized as a combination of it's own unique parameterization, and a single shared parameterization.
+    <!-- The shared parameterization makes it easier for the optimization process to find frames in which visual landmarks stay in the same position then frames where they don't. In order to produce an unaligned frame, this frame's unique parameterization would have to overpower the shared parameterization. -->
   </p>
 
-  <d-figure class="base-grid" id='AlignedInterpolationExamples'></d-figure>
-
+  <d-figure id='AlignedInterpolationExamples'></d-figure>
+  
   <p>
-    <figcaption>
-      Visual alignment is obtained by combining a low-resolution shared parameterization $ P_{\text{shared}}$ and high-resolution parameterization $P_{\text{unique}}^i$ that is unique to each frame $i$.
-      Each individual frame $i$ of the animation is then parameterized as a combination $P^i$ of the two, $P^i = N(P_{\text{unique}}^i + P_{\text{shared}})$, where $N$ is usually the logistic function.
-    </figcaption>
-  </p>
-
-
-  <p>
-    By partially sharing a parameterization between images, we encourage the resulting visualizations to naturally align.
-    Intuitively, the shared parameterization provides a common reference for the displacement of major patterns, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
-    It doesn't change the objective, but it does enlarge the basins of attraction where the visualizations are aligned.
+    By partially sharing a parameterization between frames, we encourage the resulting visualizations to naturally align.
+    Intuitively, the shared parameterization provides a common reference for the displacement of visual landmarks, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
+    <d-footnote>
+      Concretely, we combine a usually lower-resolution shared parameterization $ P_{\text{shared}}$ and full-resolution independent parameterizations $P_{\text{unique}}^i$ that are unique to each frame $i$ of the visualization.
+      Each individual frame $i$ is then parameterized as a combination $P^i$ of the two, $P^i = N(P_{\text{unique}}^i + P_{\text{shared}})$, where $N$ is usually the logistic function.
+    </d-footnote>
+    This parameterization doesn't change the objective, but it does enlarge the basins of attraction where the visualizations are aligned.
     <d-footnote>
       We can explicitly visualize how shared parameterization affects the basins of attraction in a toy example.
       Let's consider optimizing two variables $x$ and $y$ to both minimize $L(z)= (z^2-1)^2$.
@@ -174,23 +182,16 @@ We refer to the result of this procedure as the optimization for a feature visua
     </d-footnote>
   </p>
   
-  <figure class="">
+  <!-- <figure class="">
     <div style="margin-bottom: 1em;" id='AlignedInterpolation'></div>
     <figcaption>
       Aligned Interpolation between two neurons. Notice visual landmarks like eyes staying in similar positions for each image:<br>
       <img style="max-width: 240px;" src="images/interpolation-explanation-aligned.jpg"/>
     </figcaption>
-  </figure>
+  </figure> -->
 
   <p>
-    We can see the issue with independent optimization even more clearly if we look at the interpolation as an animation:
-  </p>
-  
-  <d-figure id='AlignedInterpolationAnimations'></d-figure>
-  <p><figcaption>For the animation on the left, every frame is independently optimized from the others, resulting in an inconsistent visual appeal. The animation on the right is generated by optimizing each frame with a shared parameterization that we will detail shortly.</figcaption></p>
-
-  <p>
-    Shared parameterizations are an initial example of how differentiable parameterizations can be a useful additional tool in visualizing neural networks.
+    Shared parameterizations are an initial example of how differentiable parameterizations in general can be a useful additional tool in visualizing neural networks.
   </p>
 
 <!-- =================================================== -->
