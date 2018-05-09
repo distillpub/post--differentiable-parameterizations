@@ -11,10 +11,8 @@
       <p>
         Because this optimization is not aware of the UV mapping used to render the object, it creates artifacts such as
         <a class="{{index==1 ? 'selected' : ''}}" on:click='toggle(1)'>seams</a>
-        ,
-        <a class="{{index==2 ? 'selected' : ''}}" on:click='toggle(2)'>badly oriented patterns</a>
-         and
-        <a class="{{index==3 ? 'selected' : ''}}" on:click='toggle(3)'>low resolution areas</a>.
+        or
+        <a class="{{index==2 ? 'selected' : ''}}" on:click='toggle(2)'>wrongly oriented patterns</a>.
       </p>
       <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
     </figcaption>
@@ -26,7 +24,14 @@
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsGuidedView ref:view resources={{resources}} textureUrl={{naiveTextureUrl}} :width :height :backgroundColor camId={{index}} bind:unfoldFlag></THREEjsGuidedView>
+      <THREEjsView
+        ref:view1 on:animate
+        resources={{resources}}
+        textureUrl={{naiveTextureUrl}}
+        :width :height
+        :camera
+        bind:unfoldFlag>
+      </THREEjsView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
@@ -37,7 +42,13 @@
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsGuidedView ref:view resources={{resources}} textureUrl={{renderedTextureUrl}} :width :height :backgroundColor camId={{index}} bind:unfoldFlag></THREEjsGuidedView>
+      <THREEjsView
+        ref:view2 on:animate
+        resources={{resources}}
+        textureUrl={{renderedTextureUrl}}
+        :width :height
+        :camera
+        bind:unfoldFlag></THREEjsView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
@@ -119,15 +130,33 @@ a.selected {
 
 <script>
 import ToggleSwitch from '../components/ToggleSwitch';
-import THREEjsGuidedView from '../components/THREEjsGuidedView';
+import THREEjsView from '../components/THREEjsView';
 import Sprite from '../components/Sprite.html';
 import { range } from '../util';
+import { PerspectiveCamera, Vector3 } from 'three';
+
+const cameraPositions = [
+  new Vector3(0, 0, 3.3),
+  new Vector3(-0.346, -0.099, 0.968),
+  new Vector3(-2.331, -0.636, 0.532),
+];
 
 export default {
-  components: { THREEjsGuidedView, Sprite, ToggleSwitch },
+  components: { THREEjsView, Sprite, ToggleSwitch },
   oncreate() {
+    this.on('animate', ()=>{
+      if (this.refs.view1)
+        this.refs.view1.requestFrame();
+      if (this.refs.view2)
+        this.refs.view2.requestFrame();
+    })
+
+    this.observe
   },
   data() {
+    const camera = new PerspectiveCamera(42, 400 / 400, 0.1, 100);
+    camera.position.z = 3.3;
+
     return {
       model_folder: 'models/bunny',
       faces_file: 'face.3d',
@@ -137,11 +166,11 @@ export default {
       naiveTextureUrl: 'models/bunny/3Dfeatureviz/texture_space.jpg',
       renderedTextureUrl: 'models/bunny/3Dfeatureviz/texture_0.jpg',
       resourcesReady: false,
-      backgroundColor: '#f7f7f7',
       width: 400,
       height: 400,
       index: 0,
       unfoldFlag: false,
+      camera: camera,
     }
   },
   computed: {
@@ -170,6 +199,9 @@ export default {
       } else {
         this.set({index: toggledIndex});
       }
+      const targetPos = cameraPositions[this.get('index')];
+      this.refs.view1.flyTo(targetPos);
+      // this.refs.view2.flyTo(targetPos); -- views are in sync
     },
     resize: function() {
       const bb = this.refs.outputExample.getBoundingClientRect();

@@ -4,7 +4,7 @@
     {{#await resourcePromise}}
       <p>wait for it...</p>
     {{then resources}}
-      <THREEjsView ref:view resources={{resources}} :textureUrl :width :height :backgroundColor :enableZoom bind:unfoldFlag autoRotate={{false}}></THREEjsView>
+      <THREEjsView ref:view resources={{resources}} :textureUrl :width :height :enableZoom bind:unfoldFlag autoRotate={{false}}></THREEjsView>
     {{catch error}}
       <p>well that's odd</p>
     {{/await}}

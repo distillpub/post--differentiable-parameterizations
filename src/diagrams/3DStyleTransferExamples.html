@@ -31,7 +31,7 @@
     {{#await resourcePromise}}
       <p>Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsView ref:view :resources :textureUrl :width :height bind:unfoldFlag autoRotate={{false}} backgroundColor={{"white"}}></THREEjsView>
+      <THREEjsView ref:view :resources :textureUrl :width :height bind:unfoldFlag autoRotate={{false}}></THREEjsView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}

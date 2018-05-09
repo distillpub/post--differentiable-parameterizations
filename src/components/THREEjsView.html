@@ -1,7 +1,8 @@
-<div ref:container class='container'
-  style='--width:{{width}}px;--height:{{height}}px;'>
-</div>
 
+<div ref:container class='container'
+     style='--width:{{width}}px;--height:{{height}}px;'
+     >
+</div>
 
 <style>
   .container {
@@ -10,20 +11,14 @@
     /*border: 1px solid #ddd;*/
     margin-left: auto;
     margin-right: auto;
-    cursor: all-scroll;
   }
 </style>
 
-
 <script>
 import OrbitControls from 'three-orbitcontrols';
-import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute,
-  TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer,
-  Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry,
-  Camera, Quaternion } from 'three';
+import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer, Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry, Camera, Quaternion } from 'three';
 
 const vertexShaderString = `
-  uniform float viewAspect;
   uniform float unfolding_perc;
   uniform float shadeFlag;
   varying vec2 text_coord;
@@ -31,6 +26,7 @@ const vertexShaderString = `
 
   void main () {
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    float viewAspect = projectionMatrix[1][1] / projectionMatrix[0][0];
     vec4 plane_position = vec4((uv.x*2.0-1.0)/viewAspect, (uv.y*2.0-1.0), 0, 1);
     gl_Position = mix(gl_Position, plane_position, unfolding_perc);
     //not normalized on purpose to simulate the rotation
@@ -44,80 +40,57 @@ const vertexShaderString = `
 `;
 const fragmentShaderString = `
   uniform float unfolding_perc;
+  uniform float opacity;
   varying vec2  text_coord;
   varying float shading;
   uniform sampler2D texture;
 
   void main() {
     gl_FragColor = texture2D(texture, text_coord);
-    gl_FragColor.rgb *= (shading/2.0) + 0.5;
+    float ambient_light = 0.5;
+    gl_FragColor.rgb *= shading*(1.-ambient_light) + ambient_light;
+    gl_FragColor.a = opacity;
   }
 `;
 
-const vertexShaderTextureString = `
-  void main () {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }
-`;
-const fragmentShaderTextureString = `
-  uniform float fade_in_perc;
-  uniform float width;
-  uniform float height;
-  uniform sampler2D texture;
-  uniform vec3 background_color;
+function ease(x) {
+  x = Math.min(Math.max(x, 0.0), 1.0);
+  return x*x*(3.0 - 2.0*x);
+}
 
-  //a bit cluncky
-  void main() {
-    vec2 uv;
-    if(width/height > 1.){
-      uv.x = (gl_FragCoord.x-(width-height)/2.)/height;
-      uv.y = gl_FragCoord.y/height;
-      if(uv.x > 1. || uv.x < 0.){
-        gl_FragColor = vec4(background_color,1);
-        return;
-      }
-    } else {
-      uv.x = gl_FragCoord.x/width;
-      uv.y = (gl_FragCoord.y-(height-width)/2.)/width;
-      if(uv.y > 1. || uv.y < 0.){
-        gl_FragColor = vec4(background_color,1);
-        return;
-      }
-    }
-    gl_FragColor = mix(vec4(background_color,1.),texture2D(texture, uv),fade_in_perc);
-  }
-`;
 
 export default {
-  components: {
-    ToggleSwitch
-  },
   oncreate() {
     const self = this;
-    const { textureUrl, backgroundColor, resources, width, height, enableZoom, autoRotate } = this.get();
+    var { textureUrl, resources, width, height, camera} = this.get();
     const [positions, uvs, faces] = resources;
-    const shadeBox = this.refs.shadeBox;
     const container = this.refs.container;
     const component = this;
 
     const unfoldDuration  = 1500.0;
     const preFadeDuration = 200.0;
     const fadeInDuration  = 500.0;
-    var camera, scene, renderer, controls, material;
-    var sceneTexture, cameraTexture, materialTexture;
+    const cameraMoveDuration = 400.0;
+
+    var scene, renderer, controls, material;
+    var backgroundPlane;
 
     var unfolded = false;
     var animationStart = -unfoldDuration*10.0;
+    var cameraAnimationStart = -cameraMoveDuration *10.;
+    var startCameraLocation, endCameraLocation;
+
+    this.frameRequested = false;
 
     init();
-    animate(0.0);
 
     function init() {
-      //scene contain the 3D model
       scene = new Scene();
-      camera = new PerspectiveCamera(42, width / height, 0.1, 100);
-      camera.position.z = 3.3;
-      scene.add(camera);
+
+      if (!camera) {
+        camera = new PerspectiveCamera(42, width / height, 0.1, 100);
+        camera.position.z = 3.3;
+      }
 
       var geometry = new BufferGeometry();
       geometry.addAttribute( 'position', new BufferAttribute(positions, 3 ) );
@@ -127,10 +100,10 @@ export default {
       var texture = new TextureLoader().load(textureUrl, update);
       material = new ShaderMaterial( {
         uniforms: {
-          viewAspect: {value: width/height},
           unfolding_perc: { value: 0.0 },
           shadeFlag: { value: 1.0 },
           texture: { type: 't', value: texture },
+          opacity: { value: 1.0},
         },
         side: DoubleSide,
         vertexShader: vertexShaderString,
@@ -138,68 +111,71 @@ export default {
       });
       component.set({material: material});
       var mesh = new Mesh(geometry, material);
-      mesh.name = 'bunny';
       scene.add(mesh);
 
       //SceneTexture draws the background texture
-      sceneTexture = new Scene();
-      materialTexture = new ShaderMaterial( {
-        uniforms: {
-          width: {value: width},
-          height: {value: height},
-          fade_in_perc: { value: 0.0 },
-          texture: { type: 't', value: texture },
-          background_color: { value: new Color( backgroundColor )}
-        },
-        vertexShader: vertexShaderTextureString,
-        fragmentShader: fragmentShaderTextureString
-      });
-      var backgroundTexture = new Mesh(
-        new PlaneGeometry(2, 2, 0),
-        materialTexture
+      var bgMaterial = material.clone();
+      bgMaterial.uniforms.shadeFlag.value = 0.0;
+      bgMaterial.uniforms.unfolding_perc.value = 1.0;
+      bgMaterial.transparent = true;
+      bgMaterial.uniforms.opacity.value = 0.5;
+
+      backgroundPlane = new Mesh(
+        new PlaneGeometry(1, 1, 0),
+        bgMaterial
       );
-      cameraTexture = new Camera();
-      sceneTexture.add(cameraTexture);
-      sceneTexture.add(backgroundTexture);
+      scene.add(backgroundPlane);
 
       //Renderer initialization
-      renderer = new WebGLRenderer({antialias: true});
+      renderer = new WebGLRenderer({antialias: true, alpha: true });
       renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
       controls = new OrbitControls( camera, renderer.domElement );
-      controls.enablePan = false;
-      controls.enableZoom = enableZoom;
-      controls.autoRotateSpeed = 0.25;
-      controls.autoRotate = autoRotate;
+      controls.enablePan = true;
+      controls.enableZoom = true;
       controls.minDistance = 0.5;
       controls.maxDistance = 4;
-      //Disable the autoClear option to draw the two scenes together
-      renderer.autoClear = false;
+
       //render on change only
       controls.addEventListener('change', function() {
         // fold mesh back if the user interacts with the model
         self.set({unfoldFlag: false});
         update();
       });
-      controls.addEventListener('start', function(){
-        controls.autoRotate = false;
-      });
-      document.querySelectorAll('.control').forEach(e=>{
-        e.addEventListener('change', update);
-      });
     }
 
     function update() {
-      requestAnimationFrame(animate);
+      self.fire('animate');
     }
 
-    function ease(x) {
-      x = Math.min(Math.max(x, 0.0), 1.0);
-      return x*x*(3.0 - 2.0*x);
+    this._flyTo = function(position) {
+      startCameraLocation = camera.position.clone();
+      endCameraLocation = position;
+      cameraAnimationStart = performance.now();
+      update();
     }
 
-    function animate(time) {
+    this.render = time => {
+      this.frameRequested = false;
+
+      if(time - cameraAnimationStart < cameraMoveDuration){
+        //Forced camera movement
+        var interpFactor = ease((time - cameraAnimationStart)/cameraMoveDuration);
+
+        const lenghtStart = startCameraLocation.length();
+        const lenghtEnd = endCameraLocation.length();
+
+        var camVector = new Vector3().lerpVectors(
+          startCameraLocation, endCameraLocation, interpFactor);
+        const interpLength = lenghtStart * (1-interpFactor) + lenghtEnd * interpFactor;
+        const parabolicTrj = (1-(interpFactor*2-1)*(interpFactor*2-1))*0.7;
+        camVector.normalize();
+        camVector.multiplyScalar(interpLength+parabolicTrj);
+        camera.position.copy(camVector);
+        update();
+      }
+
       const unfoldFlag = self.get('unfoldFlag');
       if (unfolded != unfoldFlag) {
         unfolded = unfoldFlag;
@@ -220,15 +196,10 @@ export default {
       //Background texture
       var fadeIndVal = ease(fadeInTime);
       fadeIndVal = unfolded ? fadeIndVal : 1.0 - fadeIndVal;
-      materialTexture.uniforms.fade_in_perc.value = fadeIndVal;
+      backgroundPlane.material.uniforms.opacity.value = fadeIndVal;
 
       //Camera controls
-      // controls.update();
-
-      //Render the two scenes
-      renderer.clear();
-      renderer.render(sceneTexture, cameraTexture);
-      renderer.clearDepth();
+      controls.update();
       renderer.render(scene, camera);
     }
 
@@ -236,46 +207,50 @@ export default {
       //A new texture is loaded
       const { material } = this.get();
       const texture = new TextureLoader().load(textureUrl, update);
-      material.uniforms.texture = { type: 't', value: texture };
-      materialTexture.uniforms.texture = { type: 't', value: texture };
+      material.uniforms.texture.value = texture;
+      backgroundPlane.material.uniforms.texture.value = texture;
     });
 
     this.observe('unfoldFlag', unfoldFlag => {
-      controls.autoRotate = false;
       update();
     });
 
-    this.observe('autoRotate', autoRotate => {
-      controls.autoRotate = autoRotate;
-    });
-
     this.observe('width', width => {
-      materialTexture.uniforms.width.value = width;
-      material.uniforms.viewAspect.value = width / height;
       renderer.setSize(width, height);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       update();
     });
+
+    this.on('animate', event => {
+      self.requestFrame();
+    });
+
+    update();
   },
   data() {
     return {
       textureUrl: null,
-      backgroundColor: '#f7f7f7',
       width: 400,
       height: 400,
       shadedFlag: true,
       unfoldFlag: false,
-      unfoldDuration: 1000.0,
-      enableZoom: true,
-      autoRotate: true
     }
   },
   computed: {
 
   },
   methods: {
+    requestFrame() {
+      if (!this.frameRequested) {
+        requestAnimationFrame(this.render);
+        this.frameRequested = true;
+      }
+    },
 
+    flyTo(position) {
+      this._flyTo(position);
+    }
   }
 }
 </script>
