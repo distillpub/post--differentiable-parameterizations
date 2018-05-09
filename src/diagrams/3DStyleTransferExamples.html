@@ -6,8 +6,14 @@
   <h4>Content Image</h4>
   <div class="input-chooser">
     <ExampleSelector items={{contentImages}} bind:index='contentIndex'></ExampleSelector>
-    <div id="sprite-first" class="sprite">
-      <div style="background-image: url({{contentImage.src}})"></div>
+    <div ref:sizer class="THREEjsview">
+      {{#await resourcePromise}}
+        <p class="figcaption">Loading the 3D model...</p>
+      {{then resources}}
+        <THREEjsView ref:view1 on:animate :camera :resources textureUrl={{originalTextureUrl}} width={{210}} height={{210}} bind:unfoldFlag autoRotate={{false}}></THREEjsView>
+      {{catch error}}
+        <p>A problem occurred while loading the 3D model!</p>
+      {{/await}}
     </div>
   </div>
 </div>
@@ -29,9 +35,9 @@
   <h4>Final image Optimization</h4>
   <div ref:sizer class="THREEjsview">
     {{#await resourcePromise}}
-      <p>Loading the 3D model...</p>
+      <p class="figcaption">Loading the 3D model...</p>
     {{then resources}}
-      <THREEjsView ref:view :resources :textureUrl :width :height bind:unfoldFlag autoRotate={{false}}></THREEjsView>
+      <THREEjsView ref:view2 on:animate :camera :resources :textureUrl :width :height bind:unfoldFlag autoRotate={{false}}></THREEjsView>
     {{catch error}}
       <p>A problem occurred while loading the 3D model!</p>
     {{/await}}
@@ -52,7 +58,7 @@
 <style>
 
 #style-transfer-examples {
-  grid-column: page-start / text-end;
+  grid-column: text;
 }
 
 .grid {
@@ -176,6 +182,7 @@ h4 {
   import ToggleSwitch from '../components/ToggleSwitch';
   import ImageComparison from '../components/ImageComparison'
   import ExampleSelector from '../components/ExampleSelector'
+  import { PerspectiveCamera, Vector3 } from 'three';
 
   export default {
     components: { ImageComparison, ExampleSelector, THREEjsView, ToggleSwitch },
@@ -184,6 +191,7 @@ h4 {
       contentImage: (contentImages, contentIndex) => contentImages[contentIndex],
       styleImage: (styleImages, styleIndex) => styleImages[styleIndex],
       textureUrl: (model_folder, styleImage) => model_folder + '/' + styleImage.texture,
+      originalTextureUrl: (model_folder) => model_folder + '/tex.jpg',
       resources: (model_folder, faces_file, positions_file, uvs_file) => {
         return new Map([
           ['positions', [model_folder + '/' + positions_file, Float32Array]],
@@ -203,8 +211,17 @@ h4 {
     },
     oncreate() {
       setTimeout(() => { this.resize(); }, 200);
+      this.on('animate', ()=>{
+        if (this.refs.view1)
+          this.refs.view1.requestFrame();
+        if (this.refs.view2)
+          this.refs.view2.requestFrame();
+      })
     },
     data() {
+      const camera = new PerspectiveCamera(42, 400 / 400, 0.1, 100);
+      camera.position.z = 3.3;
+      
       return {
         faces_file: 'face.3d',
         positions_file: 'position.3d',
@@ -212,9 +229,10 @@ h4 {
         resourcesReady: false,
         styleIndex: 0,
         contentIndex: 0,
-        width: 600,
+        width: 400,
         height: 400,
         unfoldFlag: false,
+        camera: camera,
         styleImages: [
           {
             texture: 'tex_onwhite.jpg',
