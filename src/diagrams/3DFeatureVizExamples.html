@@ -19,7 +19,7 @@
       {{#await resourcePromise}}
         <p>Loading the 3D model...</p>
       {{then resources}}
-        <THREEjsView ref:view resources={{resources}} textureUrl={{textureUrl}} :backgroundColor :width :height bind:unfoldFlag></THREEjsView>
+        <THREEjsView ref:view resources={{resources}} textureUrl={{textureUrl}} :width :height bind:unfoldFlag></THREEjsView>
       {{catch error}}
         <p>A problem occurred while loading the 3D model!</p>
       {{/await}}
@@ -60,7 +60,6 @@ export default {
       texture_files: ['texture_0.jpg', 'texture_1.jpg', 'texture_2.jpg', 'texture_3.jpg',
                       'texture_4.jpg', 'texture_5.jpg', 'texture_6.jpg', 'texture_7.jpg'],
       resourcesReady: false,
-      backgroundColor: '#f8f8f8',
       texture_index: 0,
       index: 0,
       width: 600,

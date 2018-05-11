@@ -132,7 +132,7 @@ export default {
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
       controls = new OrbitControls( camera, renderer.domElement );
-      controls.enablePan = true;
+      controls.enablePan = false;
       controls.enableZoom = true;
       controls.minDistance = 0.5;
       controls.maxDistance = 4;
