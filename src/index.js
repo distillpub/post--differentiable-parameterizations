@@ -20,9 +20,28 @@ import BunnyModelTextureSpace         from "./diagrams/BunnyModelTextureSpace.ht
 
 import ImageRow                       from './components/ImageRow.html';
 
+import { WebGLRenderer } from 'three';
+
 // eagerly initialize vtoc  as it's above the fold
 const tocNav = document.getElementById('vtoc');
 const visualTOC = new VisualTOC({target: tocNav});
+
+{
+  const renderer = new WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+
+  renderer.ensureSize = function(width, height) {
+    var curSize = this.getSize();
+    if (curSize.width < width || curSize.height < height) {
+      this.setSize(Math.max(width, curSize.width),
+                   Math.max(height, curSize.height));
+    }
+    this.setViewport( 0, 0, width, height );
+    this.setScissor( 0, 0, width, height );
+    this.setScissorTest( true );
+  }
+  window.sharedRenderer = renderer;
+}
 
 {
   const figure = document.getElementById('StyleTransferExamples');

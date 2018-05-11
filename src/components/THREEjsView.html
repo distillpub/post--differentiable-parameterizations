@@ -1,14 +1,9 @@
-
-<div ref:container class='container'
-     style='--width:{{width}}px;--height:{{height}}px;'
-     >
-</div>
+<canvas 
+  ref:canvas class='canvas' width='{{width}}' height='{{height}}'>
+</canvas>
 
 <style>
-  .container {
-    width:  var(--width);
-    height: var(--height);
-    /*border: 1px solid #ddd;*/
+  .canvas {
     margin-left: auto;
     margin-right: auto;
   }
@@ -64,15 +59,13 @@ export default {
     const self = this;
     var { textureUrl, resources, width, height, camera} = this.get();
     const [positions, uvs, faces] = resources;
-    const container = this.refs.container;
-    const component = this;
 
     const unfoldDuration  = 1500.0;
     const preFadeDuration = 200.0;
     const fadeInDuration  = 500.0;
     const cameraMoveDuration = 400.0;
 
-    var scene, renderer, controls, material;
+    var scene, controls, material;
     var backgroundPlane;
 
     var unfolded = false;
@@ -81,6 +74,10 @@ export default {
     var startCameraLocation, endCameraLocation;
 
     this.frameRequested = false;
+
+    var renderer = window.sharedRenderer;
+    var outputCanvas = this.refs.canvas;
+    var outputContext = outputCanvas.getContext('2d', {alpha: true});
 
     init();
 
@@ -109,7 +106,7 @@ export default {
         vertexShader: vertexShaderString,
         fragmentShader: fragmentShaderString
       });
-      component.set({material: material});
+      self.set({material: material});
       var mesh = new Mesh(geometry, material);
       scene.add(mesh);
 
@@ -126,12 +123,7 @@ export default {
       );
       scene.add(backgroundPlane);
 
-      //Renderer initialization
-      renderer = new WebGLRenderer({antialias: true, alpha: true });
-      renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-      renderer.setSize(width, height);
-      container.appendChild(renderer.domElement);
-      controls = new OrbitControls( camera, renderer.domElement );
+      controls = new OrbitControls( camera, outputCanvas );
       controls.enablePan = false;
       controls.enableZoom = true;
       controls.minDistance = 0.5;
@@ -158,6 +150,10 @@ export default {
 
     this.render = time => {
       this.frameRequested = false;
+
+      const width = outputCanvas.width;
+      const height = outputCanvas.height;
+      renderer.ensureSize(width, height);
 
       if(time - cameraAnimationStart < cameraMoveDuration){
         //Forced camera movement
@@ -201,6 +197,12 @@ export default {
       //Camera controls
       controls.update();
       renderer.render(scene, camera);
+
+      // Copy rendered image from the shared GL canvas
+      outputContext.clearRect(0, 0, width, height);
+      outputContext.drawImage(renderer.domElement,
+                              0, 0, width, height,
+                              0, 0, width, height);
     }
 
     this.observe('textureUrl', textureUrl => {
@@ -216,7 +218,8 @@ export default {
     });
 
     this.observe('width', width => {
-      renderer.setSize(width, height);
+      this.refs.canvas.width = width;
+      this.refs.canvas.height = height;
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       update();
