@@ -75,6 +75,24 @@ export default {
 
     this.frameRequested = false;
 
+    if (!window.sharedRenderer) {
+      const renderer = new WebGLRenderer({ antialias: true, alpha: true });
+      //renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+
+      renderer.ensureSize = function(width, height) {
+        var curSize = this.getSize();
+        if (curSize.width < width || curSize.height < height) {
+          this.setSize(Math.max(width, curSize.width),
+                       Math.max(height, curSize.height));
+        }
+        this.setViewport( 0, 0, width, height );
+        this.setScissor( 0, 0, width, height );
+        this.setScissorTest( true );
+      }
+      window.sharedRenderer = renderer;
+
+    }
+
     var renderer = window.sharedRenderer;
     var outputCanvas = this.refs.canvas;
     var outputContext = outputCanvas.getContext('2d', {alpha: true});
