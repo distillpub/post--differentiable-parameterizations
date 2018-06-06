@@ -1,13 +1,13 @@
-<:Window on:resize="resize()"/>
+<svelte:window on:resize="resize()"/>
 
 <figure ref:root class="l-body">
-    {{#await resourcePromise}}
+    {#await resourcePromise}
       <p>wait for it...</p>
-    {{then resources}}
-      <THREEjsView ref:view resources={{resources}} :textureUrl :width :height :enableZoom bind:unfoldFlag autoRotate={{false}}></THREEjsView>
-    {{catch error}}
+    {:then resources}
+      <THREEjsView ref:view resources={resources} {textureUrl} {width} {height} {enableZoom} bind:unfoldFlag autoRotate={false}></THREEjsView>
+    {:catch error}
       <p>well that's odd</p>
-    {{/await}}
+    {/await}
 </figure>
 <div class="controls">
   <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
@@ -47,17 +47,17 @@ export default {
     }
   },
   computed: {
-    textureUrl: (model_folder, texture_file) => {
+    textureUrl: ({ model_folder, texture_file }) => {
       return model_folder + '/' + texture_file;
     },
-    resources: (model_folder, faces_file, positions_file, uvs_file) => {
+    resources: ({ model_folder, faces_file, positions_file, uvs_file }) => {
       return new Map([
         ['positions', [model_folder + '/' + positions_file, Float32Array]],
         ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
         ['faces', [model_folder + '/' + faces_file, Uint32Array]],
       ]);
     },
-    resourcePromise: (resources) => {
+    resourcePromise: ({ resources }) => {
       return Promise.all([...resources].map(([resource, [path, DType]]) => {
         return fetch(path).then((response) => {
           return response.arrayBuffer();

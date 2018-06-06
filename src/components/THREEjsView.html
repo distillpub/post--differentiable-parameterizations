@@ -1,5 +1,5 @@
 <canvas 
-  ref:canvas class='canvas' width='{{width}}' height='{{height}}'>
+  ref:canvas class='canvas' width='{width}' height='{height}'>
 </canvas>
 
 <style>
@@ -10,6 +10,7 @@
 </style>
 
 <script>
+import { observe } from 'svelte-extras';
 import OrbitControls from 'three-orbitcontrols';
 import { Scene, PerspectiveCamera, BufferGeometry, BufferAttribute, TextureLoader, ShaderMaterial, DoubleSide, Mesh, Color, WebGLRenderer, Vector3, Vertex, MeshBasicMaterial, Geometry, Face3, PlaneGeometry, Camera, Quaternion } from 'three';
 
@@ -190,7 +191,7 @@ export default {
         update();
       }
 
-      const unfoldFlag = self.get('unfoldFlag');
+      const { unfoldFlag } = self.get();
       if (unfolded != unfoldFlag) {
         unfolded = unfoldFlag;
         animationStart = time - Math.max(animationStart+unfoldDuration+preFadeDuration+fadeInDuration-time, 0.0);
@@ -262,13 +263,13 @@ export default {
 
   },
   methods: {
+    observe,
     requestFrame() {
       if (!this.frameRequested) {
         requestAnimationFrame(this.render);
         this.frameRequested = true;
       }
     },
-
     flyTo(position) {
       this._flyTo(position);
     }

@@ -1,19 +1,19 @@
-<div class="icons" style="--thumbnail-size: {{thumbnail_size}}px;">
-  {{#if spriteUrl}}
-    {{#each range(spriteColumns) as i}}
-      <div class="icon {{(index == i)? 'selected' : ''}}" on:click='set({index: i})'>
-        <Sprite url={{spriteUrl}} width={{spriteWidth}} columns={{spriteColumns}} index={{i}}></Sprite>
+<div class="icons" style="--thumbnail-size: {thumbnail_size}px;">
+  {#if spriteUrl}
+    {#each range(spriteColumns) as i}
+      <div class="icon {(index == i)? 'selected' : ''}" on:click='set({index: i})'>
+        <Sprite url={spriteUrl} width={spriteWidth} columns={spriteColumns} index={i}></Sprite>
       </div>
-    {{/each}}
-  {{elseif items}}
-    {{#each items as item, i}}
-      <div class="icon {{(index == i)? 'selected' : ''}}" on:click='set({index: i})'>
-        <div style="background-image: url({{imageUrlAccessor(item)}})" class="{{item.rotated? 'rotated' : ''}}"></div>
+    {/each}
+  {:elseif items}
+    {#each items as item, i}
+      <div class="icon {(index == i)? 'selected' : ''}" on:click='set({index: i})'>
+        <div style="background-image: url({imageUrlAccessor(item)})" class="{item.rotated? 'rotated' : ''}"></div>
       </div>
-    {{/each}}
-  {{else}}
+    {/each}
+  {:else}
     <span>No content set for ExampleSelector, needs either items or sprite!</span>
-  {{/if}}
+  {/if}
   
 </div>
 
@@ -62,6 +62,10 @@
   opacity: 1;
 }
 
+.icon :global(canvas) {
+  width: 100%;
+}
+
 </style>
 
 
@@ -71,11 +75,6 @@ import { range } from '../util';
 
 export default {
   components: { Sprite },
-  oncreate() {
-    // const items = this.get('items');
-    // console.log(items);
-    // this.observe('x', (x1, x2) => console.log(this))
-  },
   data() {
     return {
       items: [],
@@ -85,7 +84,7 @@ export default {
     }
   },
   computed: {
-    imageUrlAccessor: (image_accessor) => {
+    imageUrlAccessor: ({ image_accessor }) => {
       if (image_accessor !== null) {
         return (item) => item[image_accessor];
       } else {

@@ -1,32 +1,32 @@
 
 <div class="icons">
-  {{#each icon_ns as n}}
-    <div class="icon {{(selected == n)? 'selected' : ''}}"
+  {#each icon_ns as n}
+    <div class="icon {(selected == n)? 'selected' : ''}"
          on:click='set({selected: n})'
       >
         <Sprite bind:src_class=icon_src_class 
         size=44 
-        sprite_size={{icon_scale*sprite_size}} 
-        y={{(1-icon_scale)/2 + n/icon_scale}} 
-        x={{(1-icon_scale)/2 + icon_x/icon_scale}} 
-        hover_scale={{44/sprite_size/icon_scale}} />
+        sprite_size={icon_scale*sprite_size} 
+        y={(1-icon_scale)/2 + n/icon_scale} 
+        x={(1-icon_scale)/2 + icon_x/icon_scale} 
+        hover_scale={44/sprite_size/icon_scale} />
 
     </div>
-  {{/each}}
+  {/each}
 </div>
 <div class="images">
-  {{#each image_ns as n}}
+  {#each image_ns as n}
     <div>
       <Sprite bind:src_class 
       bind:size 
       bind:sprite_size 
       bind:y=selected 
-      x={{n}} 
-        hover={{false}}  />
+      x={n} 
+        hover={false}  />
       <br style="clear:left">
-      <figcaption style="max-width: {{size}}px;" >{{{label_func(n, selected)}}}</figcaption>
+      <figcaption style="max-width: {size}px;" >{@html label_func(n, selected)}</figcaption>
     </div>
-  {{/each}}
+  {/each}
 </div>
 
 
@@ -121,8 +121,8 @@ figcaption {
       }
     },
     computed: {
-      icon_ns: (n_icons, backwards) => range(n_icons, backwards),
-      image_ns: n_images => range(n_images, false)
+      icon_ns: ({ n_icons, backwards }) => range(n_icons, backwards),
+      image_ns: ({ n_images }) => range(n_images, false)
     },
     components: {Sprite}
   }

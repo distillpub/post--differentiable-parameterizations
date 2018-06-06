@@ -15,7 +15,7 @@ import ThreeDFeatureVizExamples       from './diagrams/3DFeatureVizExamples.html
 import CPPNExamples                   from "./diagrams/CPPNExamples.html";
 import CPPNAnimations                 from "./diagrams/CPPNAnimations.html";
 import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
-import BunnyModel                     from "./diagrams/BunnyModel.html";
+// import BunnyModel                     from "./diagrams/BunnyModel.html";
 import BunnyModelTextureSpace         from "./diagrams/BunnyModelTextureSpace.html";
 
 import ImageRow                       from './components/ImageRow.html';
@@ -41,7 +41,7 @@ const visualTOC = new VisualTOC({target: tocNav});
 {
   const figure = document.getElementById('NonTransparentNeuronExamples');
   figure.addEventListener("ready", function() {
-    const nonTransparentNeuronExamples = new ImageRow({target: figure, data: {
+    const nonTransparentNeuronExamples = new NonTransparentNeuronExamples({target: figure, data: {
       url: 'images/neurons.jpg', width: 176, columns: 5
     }});
   });
@@ -98,7 +98,14 @@ const visualTOC = new VisualTOC({target: tocNav});
 // }
 
 //Add event listener
-new CPPNExamples({target: document.getElementById("CPPN-Examples")});
+// new CPPNExamples({target: document.getElementById("CPPN-Examples")});
+
+{
+  const figure = document.getElementById("CPPN-Examples");
+  figure.addEventListener("ready", function() {
+    const cppnAnimations = new CPPNExamples({target: figure});
+  });
+}
 
 {
   const figure = document.getElementById('CPPNAnimations');
@@ -114,12 +121,12 @@ new CPPNExamples({target: document.getElementById("CPPN-Examples")});
   });
 }
 
-{
-  const figure = document.getElementById('BunnyModel');
-  figure.addEventListener("ready", function() {
-    const bunnyModel = new BunnyModel({target: figure});
-  });
-}
+// {
+//   const figure = document.getElementById('BunnyModel');
+//   figure.addEventListener("ready", function() {
+//     const bunnyModel = new BunnyModel({target: figure});
+//   });
+// }
 
 {
   const figure = document.getElementById('BunnyModelTextureSpaceOptimization');

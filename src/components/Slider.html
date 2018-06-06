@@ -21,14 +21,14 @@
 <div class="root">
   <d-slider
     ref:slider
-    ticks="{{ticks}}"
+    ticks="{ticks}"
     type="range"
-    min="{{min}}"
-    max="{{max}}"
+    min="{min}"
+    max="{max}"
     origin="0"
     on:input="input(event)"
-    step="{{step}}"
-    value="{{value}}"
+    step="{step}"
+    value="{value}"
   ></d-slider>
   <!-- <label>{{value.toFixed(2)}}</label> -->
 </div>
@@ -41,10 +41,6 @@ export default {
       max: 1,
       ticks: true
     }
-  },
-  oncreate() {
-    // this.observe("value", (prev, next) => {
-    // })
   },
   methods: {
     input: function(event) {

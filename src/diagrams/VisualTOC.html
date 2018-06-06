@@ -1,18 +1,18 @@
 <nav class="visual-toc">
-  {{#each sections as section, i}}
+  {#each sections as section, i}
   <div class="visual-toc-item">
-    <a href="{{section.anchor}}" class="visual-toc-top">
-      <Sprite url='images/vtoc.jpg' width=320 columns=3 index={{i}}/>
-      <span class="visual-toc-heading">{{section.title}}</span>
-      {{#if section.subtitle}}
-        <span class="visual-toc-subheading">{{section.subtitle}}</span>
-      {{/if}}
+    <a href="{section.anchor}" class="visual-toc-top">
+      <Sprite url='images/vtoc.jpg' width=320 columns=3 index={section.sprite_index}/>
+      <span class="visual-toc-heading">{section.title}</span>
+      {#if section.subtitle}
+        <span class="visual-toc-subheading">{section.subtitle}</span>
+      {/if}
     </a>
-    <a href="{{section.colab_url}}" class="visual-toc-colab">
-      try in <img src="images/colab.svg"> notebook
+    <a href="{section.colab_url}" class="visual-toc-colab">
+      try in a <img src="images/colab.svg"> notebook
     </a>
   </div>
-  {{/each}}
+  {/each}
 </nav>
 
 
@@ -91,13 +91,13 @@
   padding-bottom: 0.25em;
   text-transform: uppercase;
   color: #aaa;
-  font-size: 11px;
+  font-size: 10.5px;
   line-height: 24px;
 
 }
 .visual-toc-colab > img {
   position: relative;
-  top: 3px;
+  top: 4px;
   /* filter: grayscale(); */
 }
 .visual-toc-item:hover .visual-toc-colab > img {
@@ -107,6 +107,8 @@
 /* .visual-toc-top:hover,  */
 .visual-toc-colab:hover {
   background-color: hsl(0, 0%, 97%);
+  border-color: rgba(0,0,0,0.2);
+  color: #888;
 }
 
 a {
@@ -115,7 +117,7 @@ a {
   cursor: pointer;
 }
 
-canvas {
+a :global(canvas) {
   width: 100%;
 }
 </style>
@@ -129,12 +131,12 @@ export default {
   data() {
     return {
       sections: [
-        { title: "Aligned Neuron Interpolation", colab_url: "", anchor: "#experiment-aligned"},
-        { title: "Style Transfer on non-VGG", colab_url: "", anchor: "#experiment-styletransfer"},
-        { title: "Feature Vis with transparency", colab_url: "", anchor: "#experiment-featureviz-rgba"},
-        { title: "Feature Vis with CPPNs", colab_url: "", anchor: "#experiment-xy2rgb"},
-        { title: "Feature Vis in 3D", colab_url: "", anchor: "#experiment-featureviz-3d"},
-        { title: "Style Transfer in 3D", colab_url: "", anchor: "#experiment-styletransfer-3d"},
+        { title: "Aligned Neuron Interpolation", colab_url: "", anchor: "#experiment-aligned", sprite_index: 0  },
+        { title: "Style Transfer on non-VGG", colab_url: "", anchor: "#experiment-styletransfer", sprite_index: 1 },
+        { title: "Feature Vis with CPPNs", colab_url: "", anchor: "#experiment-xy2rgb", sprite_index: 3 },
+        { title: "Feature Vis with transparency", colab_url: "", anchor: "#experiment-featureviz-rgba", sprite_index: 2 },
+        { title: "Feature Vis in 3D", colab_url: "", anchor: "#experiment-featureviz-3d", sprite_index: 4 },
+        { title: "Style Transfer in 3D", colab_url: "", anchor: "#experiment-styletransfer-3d", sprite_index: 5 },
       ]
     }
   },

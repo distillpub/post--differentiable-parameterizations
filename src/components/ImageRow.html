@@ -1,8 +1,8 @@
-<div class="sprites {{styled ? 'styled' : ''}}" 
- style="--perRow: {{perRow}}; --minSize: {{minSize}}; --maxSize: {{maxSize}};">
-  {{#each visibleColumns as column}}
-    <Sprite :url :width :columns index={{every * column}}/>
-  {{/each}}
+<div class="sprites {styled ? 'styled' : ''}" 
+ style="--perRow: {perRow}; --minSize: {minSize}; --maxSize: {maxSize};">
+  {#each visibleColumns as column}
+    <Sprite {url} {width} {columns} index={every * column}/>
+  {/each}
 </div>
 
 <style>
@@ -48,9 +48,9 @@ export default {
     }
   },
   computed: {
-    visibleColumns: (columns, every) => range(Math.ceil(columns / every)),
-    maxSize: (width) => width,
-    minSize: (width) => width/2,
+    visibleColumns: ({ columns, every }) => range(Math.ceil(columns / every)),
+    maxSize: ({ width }) => width,
+    minSize: ({ width }) => width/2,
   },
   components: { Sprite },
   helpers: { range },

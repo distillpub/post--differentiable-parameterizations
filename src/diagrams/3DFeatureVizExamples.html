@@ -1,4 +1,4 @@
-<:Window on:resize="resize()"/>
+<svelte:window on:resize="resize()"/>
 
 <figure class="base-grid">
 
@@ -13,16 +13,16 @@
 
   <div class="l-body">
     <div class="example-selector">
-      <ExampleSelector :spriteUrl bind:index spriteWidth={{128}} spriteColumns={{8}}></ExampleSelector>
+      <ExampleSelector {spriteUrl} bind:index spriteWidth={128} spriteColumns={8}></ExampleSelector>
     </div>
     <div ref:threejsContainer class="THREEjsview">
-      {{#await resourcePromise}}
+      {#await resourcePromise}
         <p>Loading the 3D model...</p>
-      {{then resources}}
-        <THREEjsView ref:view resources={{resources}} textureUrl={{textureUrl}} :width :height bind:unfoldFlag></THREEjsView>
-      {{catch error}}
+      {:then resources}
+        <THREEjsView ref:view resources={resources} textureUrl={textureUrl} {width} {height} bind:unfoldFlag></THREEjsView>
+      {:catch error}
         <p>A problem occurred while loading the 3D model!</p>
-      {{/await}}
+      {/await}
     </div>
   </div>
 
@@ -38,7 +38,6 @@
 import ExampleSelector from '../components/ExampleSelector';
 import ToggleSwitch from '../components/ToggleSwitch';
 import THREEjsView from '../components/THREEjsView';
-import Sprite from '../components/Sprite.html';
 
 function range(n){
   return Array(n).fill().map((_, i) => i);
@@ -67,18 +66,18 @@ export default {
     }
   },
   computed: {
-    textureUrls: (texture_folder, texture_files) => {
+    textureUrls: ({ texture_folder, texture_files }) => {
       return texture_files.map((texture) => texture_folder + '/' + texture);
     },
-    textureUrl: (textureUrls, index) => textureUrls[index],
-    resources: (model_folder, faces_file, positions_file, uvs_file) => {
+    textureUrl: ({ textureUrls, index }) => textureUrls[index],
+    resources: ({ model_folder, faces_file, positions_file, uvs_file }) => {
       return new Map([
         ['positions', [model_folder + '/' + positions_file, Float32Array]],
         ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
         ['faces', [model_folder + '/' + faces_file, Uint32Array]],
       ]);
     },
-    resourcePromise: (resources) => {
+    resourcePromise: ({ resources }) => {
       return Promise.all([...resources].map(([resource, [path, DType]]) => {
         return fetch(path).then((response) => {
           return response.arrayBuffer();

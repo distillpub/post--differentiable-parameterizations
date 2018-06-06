@@ -1,19 +1,19 @@
-<:Window on:resize="resize()"/>
+<svelte:window on:resize="resize()"/>
 
 <figure id="style-transfer-examples" class="grid">
 
 <div id="input-content" class="input-wrapper">
   <h4>Content Image</h4>
   <div class="input-chooser">
-    <ExampleSelector items={{contentImages}} bind:index='contentIndex'></ExampleSelector>
+    <ExampleSelector items={contentImages} bind:index='contentIndex'></ExampleSelector>
     <div ref:sizer class="THREEjsview">
-      {{#await resourcePromise}}
+      {#await resourcePromise}
         <p class="figcaption">Loading the 3D model...</p>
-      {{then resources}}
-        <THREEjsView ref:view1 on:animate :camera :resources textureUrl={{originalTextureUrl}} width={{210}} height={{210}} bind:unfoldFlag autoRotate={{false}}></THREEjsView>
-      {{catch error}}
+      {:then resources}
+        <THREEjsView ref:view1 on:animate {camera} {resources} textureUrl={originalTextureUrl} width={210} height={210} bind:unfoldFlag autoRotate={false}></THREEjsView>
+      {:catch error}
         <p>A problem occurred while loading the 3D model!</p>
-      {{/await}}
+      {/await}
     </div>
   </div>
 </div>
@@ -21,9 +21,9 @@
 <div id="input-style" class="input-wrapper">
   <h4>Style Image</h4>
   <div class="input-chooser">
-    <ExampleSelector items={{styleImages}} bind:index='styleIndex'></ExampleSelector>
+    <ExampleSelector items={styleImages} bind:index='styleIndex'></ExampleSelector>
     <div id="sprite-second" class="sprite">
-      <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
+      <div style="background-image: url({styleImage.src})" class="{styleImage.rotated? 'rotated' : ''}"></div>
     </div>
   </div>
 </div>
@@ -34,20 +34,20 @@
 <div id="output">
   <h4>Final image Optimization</h4>
   <div ref:sizer class="THREEjsview">
-    {{#await resourcePromise}}
+    {#await resourcePromise}
       <p class="figcaption">Loading the 3D model...</p>
-    {{then resources}}
-      <THREEjsView ref:view2 on:animate :camera :resources :textureUrl :width :height bind:unfoldFlag autoRotate={{false}}></THREEjsView>
-    {{catch error}}
+    {:then resources}
+      <THREEjsView ref:view2 on:animate {camera} {resources} {textureUrl} {width} {height} bind:unfoldFlag autoRotate={false}></THREEjsView>
+    {:catch error}
       <p>A problem occurred while loading the 3D model!</p>
-    {{/await}}
+    {/await}
   </div>
 </div>
 
 </figure>
 
 <span class="figcaption l-body">
-  Styletransfer of "{{styleImage.title}}" onto the 3D model "{{contentImage.title}}" by {{contentImage.author}}.
+  Styletransfer of "{styleImage.title}" onto the 3D model "{contentImage.title}" by {contentImage.author}.
   <div class="controls">
     <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
   </div>
@@ -187,19 +187,19 @@ h4 {
   export default {
     components: { ImageComparison, ExampleSelector, THREEjsView, ToggleSwitch },
     computed: {
-      model_folder: (contentImage) => `models/${contentImage.model}`,
-      contentImage: (contentImages, contentIndex) => contentImages[contentIndex],
-      styleImage: (styleImages, styleIndex) => styleImages[styleIndex],
-      textureUrl: (model_folder, styleImage) => model_folder + '/' + styleImage.texture,
-      originalTextureUrl: (model_folder) => model_folder + '/tex.jpg',
-      resources: (model_folder, faces_file, positions_file, uvs_file) => {
+      model_folder: ({ contentImage }) => `models/${contentImage.model}`,
+      contentImage: ({ contentImages, contentIndex }) => contentImages[contentIndex],
+      styleImage: ({ styleImages, styleIndex }) => styleImages[styleIndex],
+      textureUrl: ({ model_folder, styleImage }) => model_folder + '/' + styleImage.texture,
+      originalTextureUrl: ({ model_folder }) => model_folder + '/tex.jpg',
+      resources: ({ model_folder, faces_file, positions_file, uvs_file }) => {
         return new Map([
           ['positions', [model_folder + '/' + positions_file, Float32Array]],
           ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
           ['faces', [model_folder + '/' + faces_file, Uint32Array]],
         ]);
       },
-      resourcePromise: (resources) => {
+      resourcePromise: ({ resources }) => {
         return Promise.all([...resources].map(([resource, [path, DType]]) => {
           return fetch(path).then((response) => {
             return response.arrayBuffer();

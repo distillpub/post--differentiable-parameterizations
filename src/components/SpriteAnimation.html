@@ -1,14 +1,14 @@
 <div id='animation' style='
-  --width: {{width}}px;
-  --height: {{height}}px;
-  --n_images: {{n_images}};
-  --background-position: -{{run ? n_images * width : 0}}px;
-  --animation-offset: -{{offset*height}}px;
-  --image_url: url({{image_url}});
-  --interval_seconds: {{interval_seconds}}s;
-  --alternate: {{alternate ? 'alternate' : ''}};
-  --infinite: {{infinite ? 'infinite' : ''}};
-  --play_state: {{paused? 'paused' : 'running'}};
+  --width: {width}px;
+  --height: {height}px;
+  --n_images: {n_images};
+  --background-position: -{run ? n_images * width : 0}px;
+  --animation-offset: -{offset*height}px;
+  --image_url: url({image_url});
+  --interval_seconds: {interval_seconds}s;
+  --alternate: {alternate ? 'alternate' : ''};
+  --infinite: {infinite ? 'infinite' : ''};
+  --play_state: {paused? 'paused' : 'running'};
 '></div>
 
 <style> 

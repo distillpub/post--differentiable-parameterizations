@@ -1,11 +1,11 @@
 <div class='grid' on:mouseover='set({paused: false})' on:mouseout='set({paused: true})'>
   <img class="pointer" src="images/pointer.svg">
   <div class="animation">
-    <SpriteAnimation :run :paused :interval_seconds :n_images image_url={{naive_image_url}}></SpriteAnimation>
+    <SpriteAnimation {run} {paused} {interval_seconds} {n_images} image_url={naive_image_url}></SpriteAnimation>
     <span class="figcaption">Independently optimized images</span>
   </div>
   <div>
-    <SpriteAnimation :run :paused :interval_seconds :n_images image_url={{aligned_image_url}}></SpriteAnimation>
+    <SpriteAnimation {run} {paused} {interval_seconds} {n_images} image_url={aligned_image_url}></SpriteAnimation>
     <span class="figcaption">Images optimized with alignment</span>
   </div>
 </div>

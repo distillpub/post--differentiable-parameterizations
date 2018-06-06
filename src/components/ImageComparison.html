@@ -1,15 +1,15 @@
-<:Window on:mouseup='set({dragging: false})'/>
+<svelte:window on:mouseup='set({dragging: false})'/>
 
 <div ref:container class="container" 
      on:mousemove="mousemove(event)">
-  <img ref:imgBackground class="background" src={{right}} on:click="toggle()">
-  <div class="right label">{{rightName}}</div>
-  <div class="resizeable" style="width: {{overlayPercentage}}%">
-    <div class="left label">{{leftName}}</div>
-    <img ref:imgForeground src={{left}} on:click="toggle()">
+  <img ref:imgBackground class="background" src={right} on:click="toggle()">
+  <div class="right label">{rightName}</div>
+  <div class="resizeable" style="width: {overlayPercentage}%">
+    <div class="left label">{leftName}</div>
+    <img ref:imgForeground src={left} on:click="toggle()">
   </div>
   <div ref:handle class="handle" 
-       style="left: {{overlayPercentage}}%"
+       style="left: {overlayPercentage}%"
        on:mousedown="set({dragging: true})"></div>
 </div>
 
@@ -125,7 +125,7 @@ export default {
   },
   methods: {
     mousemove(event) {
-      const dragging = this.get('dragging');
+      const { dragging } = this.get();
       if (!dragging) return;
       const bbox = this.refs.container.getBoundingClientRect();
       let overlayWidthRatio = 100 * (event.clientX - bbox.left) / bbox.width;
@@ -133,12 +133,12 @@ export default {
       this.set({overlayPercentage: overlayWidthRatio});
     },
     toggle() {
-      const overlay = this.get('overlayPercentage');
+      const { overlayPercentage } = this.get();
       let newOverlay;
-      if ([15, 85].includes(overlay)) {
-        newOverlay = overlay == 85 ? 15 : 85;
+      if ([15, 85].includes(overlayPercentage)) {
+        newOverlay = overlayPercentage == 85 ? 15 : 85;
       } else {
-        newOverlay = overlay < 50 ? 15 : 85;
+        newOverlay = overlayPercentage < 50 ? 15 : 85;
       }
       this.tween('overlayPercentage', newOverlay, {
         duration: 300,

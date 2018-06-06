@@ -3,9 +3,9 @@
 <div id="input-content" class="input-wrapper">
   <h4>Content Image</h4>
   <div class="input-chooser">
-    <ExampleSelector items={{contentImages}} bind:index='contentIndex'></ExampleSelector>  
+    <ExampleSelector items={contentImages} bind:index='contentIndex'></ExampleSelector>  
     <div id="sprite-first" class="sprite">
-      <div style="background-image: url({{contentImage.src}})"></div>
+      <div style="background-image: url({contentImage.src})"></div>
     </div>
   </div>
 </div>
@@ -13,9 +13,9 @@
 <div id="input-style" class="input-wrapper">
   <h4>Style Image</h4>
   <div class="input-chooser">
-    <ExampleSelector items={{styleImages}} bind:index='styleIndex'></ExampleSelector>
+    <ExampleSelector items={styleImages} bind:index='styleIndex'></ExampleSelector>
     <div id="sprite-second" class="sprite">
-      <div style="background-image: url({{styleImage.src}})" class="{{styleImage.rotated? 'rotated' : ''}}"></div>
+      <div style="background-image: url({styleImage.src})" class="{styleImage.rotated? 'rotated' : ''}"></div>
     </div>
   </div>
 </div>
@@ -25,13 +25,13 @@
 
 <div id="output">
   <h4>Final image Optimization</h4>
-  <ImageComparison id="image-comparison" left={{styletransferImages[0]}} right={{styletransferImages[1]}} leftName="Decorrelated Space" rightName="Pixel Space"></ImageComparison>
+  <ImageComparison id="image-comparison" left={styletransferImages[0]} right={styletransferImages[1]} leftName="Decorrelated Space" rightName="Pixel Space"></ImageComparison>
 </div>
 
 </figure>
 
 <span class="figcaption l-body">
-  Styletransfer of "{{styleImage.title}}" (<em>{{styleImage.artist}}</em>, {{styleImage.year}}) onto a photograph by {{contentImage.artist}}. 
+  Styletransfer of "{styleImage.title}" (<em>{styleImage.artist}</em>, {styleImage.year}) onto a photograph by {contentImage.artist}. 
 </span>
 <span class="figcaption l-body">
   Move the slider to compare optimization in pixel space and in the fourier basis. Both images were created with the same optimization process and differ only in their parameterization.
@@ -158,9 +158,9 @@ h4 {
   export default {
     components: { ImageComparison, ExampleSelector },
     computed: {
-      contentImage: (contentImages, contentIndex) => contentImages[contentIndex],
-      styleImage: (styleImages, styleIndex) => styleImages[styleIndex],
-      styletransferImages: (contentImage, styleImage) => {
+      contentImage: ({ contentImages, contentIndex }) => contentImages[contentIndex],
+      styleImage: ({ styleImages, styleIndex }) => styleImages[styleIndex],
+      styletransferImages: ({ contentImage, styleImage }) => {
         const styleNamePart = canonical_name_part(styleImage.src);
         const contentNamePart = canonical_name_part(contentImage.src);
         const basename = styleNamePart + '-' + contentNamePart;

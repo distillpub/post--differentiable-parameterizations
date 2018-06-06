@@ -3,16 +3,16 @@
   <div class="frow">
     <div id="icons-first" class="fcolumn">
       <div class="icons">
-        {{#each range(6) as i}}
-          <div class="icon {{(x == i)? 'selected' : ''}}" on:click='set({x: i})'>
-            <Sprite src_class={{sprite_class}} size=44 sprite_size=256 y=0 x={{i}} sprite_scale=0.5/>
+        {#each range(6) as i}
+          <div class="icon {(x == i)? 'selected' : ''}" on:click='set({x: i})'>
+            <Sprite src_class={sprite_class} size=44 sprite_size=256 y=0 x={i} sprite_scale=0.5/>
           </div>
-        {{/each}}
+        {/each}
       </div>
     </div>
 
     <div id="sprite-first" class="fcolumn">
-      <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=1 x={{x}} sprite_scale=1/>
+      <Sprite src_class={sprite_class} size=180 sprite_size=256 y=1 x={x} sprite_scale=1/>
       <span class="figcaption">RGB channels</span>
     </div>
 
@@ -20,7 +20,7 @@
     </div>
 
     <div id="sprite-second" class="fcolumn">
-      <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=2 x={{x}} sprite_scale=1/>
+      <Sprite src_class={sprite_class} size=180 sprite_size=256 y=2 x={x} sprite_scale=1/>
       <span class="figcaption">Alpha channel</span>
     </div>
   </div>
@@ -28,7 +28,7 @@
   <div class="frow" style="">
     <div class="result c fcolumn">
       <div class="img-container">
-        <Sprite src_class={{sprite_class}} size=180 sprite_size=256 y=0 x={{x}} sprite_scale=1/>
+        <Sprite src_class={sprite_class} size=180 sprite_size=256 y=0 x={x} sprite_scale=1/>
       </div>
       <span class="figcaption">Combined image</span>
     </div>
@@ -205,7 +205,7 @@
 
 
 <script>
-  import Sprite from '../components/Sprite.html';
+  import { Sprite } from "lucid-components";
   // const join_svg = require('svg-inline-loader?classPrefix!../join.svg');
 
   function range(n){
