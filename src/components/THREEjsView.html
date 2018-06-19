@@ -58,15 +58,14 @@ function ease(x) {
 export default {
   oncreate() {
     const self = this;
-    var { textureUrl, resources, width, height, camera} = this.get();
-    const [positions, uvs, faces] = resources;
+    var { textureUrl, width, height, camera} = this.get();
 
     const unfoldDuration  = 1500.0;
     const preFadeDuration = 200.0;
     const fadeInDuration  = 500.0;
     const cameraMoveDuration = 400.0;
 
-    var scene, controls, material;
+    var scene, controls, mesh;
     var backgroundPlane;
 
     var unfolded = false;
@@ -92,6 +91,8 @@ export default {
       }
       window.sharedRenderer = renderer;
 
+      window.modelCache = {};
+      window.textureCache = {};
     }
 
     var renderer = window.sharedRenderer;
@@ -108,13 +109,9 @@ export default {
         camera.position.z = 3.3;
       }
 
-      var geometry = new BufferGeometry();
-      geometry.addAttribute( 'position', new BufferAttribute(positions, 3 ) );
-      geometry.addAttribute( 'uv', new BufferAttribute(uvs, 2) );
-      geometry.setIndex(new BufferAttribute(faces, 1 ));
-      geometry.computeVertexNormals();
+      var emptyGeometry = new BufferGeometry();
       var texture = new TextureLoader().load(textureUrl, update);
-      material = new ShaderMaterial( {
+      var material = new ShaderMaterial( {
         uniforms: {
           unfolding_perc: { value: 0.0 },
           shadeFlag: { value: 1.0 },
@@ -125,8 +122,8 @@ export default {
         vertexShader: vertexShaderString,
         fragmentShader: fragmentShaderString
       });
-      self.set({material: material});
-      var mesh = new Mesh(geometry, material);
+      
+      mesh = new Mesh(emptyGeometry, material);
       scene.add(mesh);
 
       //SceneTexture draws the background texture
@@ -205,8 +202,8 @@ export default {
       //3D model
       var unfoldVal = ease(unfoldTime);
       unfoldVal = unfolded ? unfoldVal : 1.0 - unfoldVal;
-      material.uniforms.unfolding_perc.value = unfoldVal;
-      material.uniforms.shadeFlag.value = 1.0;
+      mesh.material.uniforms.unfolding_perc.value = unfoldVal;
+      mesh.material.uniforms.shadeFlag.value = 1.0;
 
       //Background texture
       var fadeIndVal = ease(fadeInTime);
@@ -225,16 +222,53 @@ export default {
     }
 
     this.observe('textureUrl', textureUrl => {
-      //A new texture is loaded
-      const { material } = this.get();
-      const texture = new TextureLoader().load(textureUrl, update);
-      material.uniforms.texture.value = texture;
+      if (!(textureUrl in window.textureCache)) {
+        window.textureCache[textureUrl] = 
+            new TextureLoader().load(
+              textureUrl, update, undefined,    // onLoad, onProgress
+              err => {    // onError
+                delete window.textureCache[textureUrl];
+              }
+            );
+      }
+      const texture = window.textureCache[textureUrl];
+      mesh.material.uniforms.texture.value = texture;
       backgroundPlane.material.uniforms.texture.value = texture;
+      update();
+    });
+
+    this.observe('modelFolder', modelFolder => {
+      if (!(modelFolder in window.modelCache)) {
+        var geometry = new BufferGeometry();
+        window.modelCache[modelFolder] = geometry;
+        
+        var resources = ['position', 'uv', 'face'].map(name => {
+          return fetch(modelFolder+'/'+name+'.3d')
+          .then(response => response.arrayBuffer());
+        });
+        Promise.all(resources).then(data=>{
+          let [position, uv, face] = data;
+          position = new Float32Array(position);
+          uv = new Float32Array(uv);
+          face = new Uint32Array(face);
+          geometry.addAttribute( 'position', new BufferAttribute(position, 3 ) );
+          geometry.addAttribute( 'uv', new BufferAttribute(uv, 2 ) );
+          geometry.setIndex( new BufferAttribute(face, 1 ) );
+          geometry.computeVertexNormals();
+          update();
+        },
+        ()=>{ // onError
+          delete window.modelCache[modelFolder];
+        })
+      }
+      mesh.geometry = window.modelCache[modelFolder];
+      update();
     });
 
     this.observe('unfoldFlag', unfoldFlag => {
       update();
     });
+
 
     this.observe('width', width => {
       this.refs.canvas.width = width;
@@ -257,6 +291,7 @@ export default {
       height: 400,
       shadedFlag: true,
       unfoldFlag: false,
+      modelFolder: 'models/bunny'
     }
   },
   computed: {

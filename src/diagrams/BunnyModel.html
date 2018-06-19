@@ -1,13 +1,7 @@
 <svelte:window on:resize="resize()"/>
 
 <figure ref:root class="l-body">
-    {#await resourcePromise}
-      <p>wait for it...</p>
-    {:then resources}
-      <THREEjsView ref:view resources={resources} {textureUrl} {width} {height} {enableZoom} bind:unfoldFlag autoRotate={false}></THREEjsView>
-    {:catch error}
-      <p>well that's odd</p>
-    {/await}
+    <THREEjsView ref:view {modelFolder} {textureUrl} {width} {height} {enableZoom} bind:unfoldFlag autoRotate={false}></THREEjsView>
 </figure>
 <div class="controls">
   <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
@@ -33,10 +27,7 @@ export default {
   },
   data() {
     return {
-      model_folder: 'models/bunny',
-      faces_file: 'face.3d',
-      positions_file: 'position.3d',
-      uvs_file: 'uv.3d',
+      modelFolder: 'models/bunny',
       texture_file: 'tex.png',
       resourcesReady: false,
       texture_index: 0,
@@ -47,25 +38,9 @@ export default {
     }
   },
   computed: {
-    textureUrl: ({ model_folder, texture_file }) => {
-      return model_folder + '/' + texture_file;
+    textureUrl: ({ modelFolder, texture_file }) => {
+      return modelFolder + '/' + texture_file;
     },
-    resources: ({ model_folder, faces_file, positions_file, uvs_file }) => {
-      return new Map([
-        ['positions', [model_folder + '/' + positions_file, Float32Array]],
-        ['uvs', [model_folder + '/' + uvs_file, Float32Array]],
-        ['faces', [model_folder + '/' + faces_file, Uint32Array]],
-      ]);
-    },
-    resourcePromise: ({ resources }) => {
-      return Promise.all([...resources].map(([resource, [path, DType]]) => {
-        return fetch(path).then((response) => {
-          return response.arrayBuffer();
-        }).then((arrayBuffer) => {
-          return new DType(arrayBuffer);
-        });
-      }));
-    }
   },
   methods: {
     resize: function() {
