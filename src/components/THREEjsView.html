@@ -1,6 +1,10 @@
+<div>
+  <div ref:status style="position: absolute;">
+  </div>
 <canvas 
   ref:canvas class='canvas' width='{width}' height='{height}'>
 </canvas>
+</div>
 
 <style>
   .canvas {
@@ -221,48 +225,69 @@ export default {
                               0, 0, width, height);
     }
 
-    this.observe('textureUrl', textureUrl => {
-      if (!(textureUrl in window.textureCache)) {
-        window.textureCache[textureUrl] = 
-            new TextureLoader().load(
-              textureUrl, update, undefined,    // onLoad, onProgress
-              err => {    // onError
-                delete window.textureCache[textureUrl];
-              }
-            );
+    function updateContent() {
+      const {textureUrl, modelFolder} = self.get();
+      const texturePromise = window.textureCache[textureUrl];
+      const modelPromise = window.modelCache[modelFolder];
+      if ((texturePromise != undefined) & (modelPromise != undefined)) {
+        Promise.all([texturePromise, modelPromise]).then(args=>{
+          const state = self.get();
+          // check if model/tex pair is still needed (user didn't switch during loading)
+          if ((state['textureUrl'] != textureUrl) | (state['modelFolder'] != modelFolder)) {
+            console.log('rejected', textureUrl, modelFolder)
+            return;
+          }
+          const [texture, geometry] = args;
+          mesh.geometry = geometry;
+          mesh.material.uniforms.texture.value = texture;
+          backgroundPlane.material.uniforms.texture.value = texture;
+          self.refs.status.innerText = '';
+          update();
+          console.log('updated', textureUrl, modelFolder)
+        })
       }
-      const texture = window.textureCache[textureUrl];
-      mesh.material.uniforms.texture.value = texture;
-      backgroundPlane.material.uniforms.texture.value = texture;
-      update();
+    }
+
+    this.observe('textureUrl', textureUrl => {
+      self.refs.status.innerText = 'Loading ...';
+      if (!(textureUrl in window.textureCache)) {
+        window.textureCache[textureUrl] = new Promise(resolve => {
+          new TextureLoader().load(
+            textureUrl, resolve, undefined,    // onLoad, onProgress
+            err => {    // onError
+              delete window.textureCache[textureUrl];
+            }
+          );
+        });
+      };
+      updateContent();
     });
 
     this.observe('modelFolder', modelFolder => {
+      self.refs.status.innerText = 'Loading ...';
       if (!(modelFolder in window.modelCache)) {
-        var geometry = new BufferGeometry();
-        window.modelCache[modelFolder] = geometry;
-        
         var resources = ['position', 'uv', 'face'].map(name => {
           return fetch(modelFolder+'/'+name+'.3d')
           .then(response => response.arrayBuffer());
         });
-        Promise.all(resources).then(data=>{
+        var promise = Promise.all(resources).then(data=>{
           let [position, uv, face] = data;
           position = new Float32Array(position);
           uv = new Float32Array(uv);
           face = new Uint32Array(face);
+          var geometry = new BufferGeometry();
           geometry.addAttribute( 'position', new BufferAttribute(position, 3 ) );
           geometry.addAttribute( 'uv', new BufferAttribute(uv, 2 ) );
           geometry.setIndex( new BufferAttribute(face, 1 ) );
           geometry.computeVertexNormals();
-          update();
+          return geometry;
         },
         ()=>{ // onError
           delete window.modelCache[modelFolder];
-        })
+        });
+        window.modelCache[modelFolder] = promise;
       }
-      mesh.geometry = window.modelCache[modelFolder];
-      update();
+      updateContent();
     });
 
     this.observe('unfoldFlag', unfoldFlag => {
@@ -287,11 +312,11 @@ export default {
   data() {
     return {
       textureUrl: null,
+      modelFolder: null,
       width: 400,
       height: 400,
       shadedFlag: true,
       unfoldFlag: false,
-      modelFolder: 'models/bunny'
     }
   },
   computed: {
