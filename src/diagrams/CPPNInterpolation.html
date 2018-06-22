@@ -9,9 +9,20 @@
 <style>
 .grid {
   display: grid;
-  grid-auto-flow: column;
   grid-gap: 10px;
-  grid-auto-columns: min-content;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 512px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.grid > :global(div) {
+  border-radius: 4px;
+  width: 100%;
+  max-width: 224px;
 }
 </style>
 
