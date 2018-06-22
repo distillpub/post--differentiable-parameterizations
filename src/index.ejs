@@ -116,6 +116,23 @@
   </p>
 -->
 
+<h3>Why Does Parameterization Matter?</h3>
+
+<p>
+  It may seem surprising that changing the parameterization can have such dramatic effects
+  -- after all, it's still the same optimization problem.
+  But there are actually a number of reasons why it can impact the result:
+</p>
+
+<p><b>Improved Optimization</b> - Some parameterization, can make optimization easier. Linearly transforming the parameterization to improve conditioning ("preconditioning") is a fundamental technique in optimization; we're just generalizing this to non-linear reparameterizations. <b>Example:</b> Using decorrelated parameterization can make style transfer work when it previously didn't.</p>
+
+<p><b>Constraints / Regularization</b> - If one uses a parameterization that doesn't represent the entire solution space, they can optimize within a set of constraints. These could be simple constraints (eg. the boundary of the image must be black) but it's also possible to have parameterizations impose rich, subtle constraints. <b>Example:</b> When we look at CPPNs we will implicitly be constraining something like the computational complexity of the image.</p>
+
+<p><b>Basins of Attraction</b> - A parameterization may allow for all possible solutions, but make the basins of attraction for some much bigger than others, changing the outcomes of the process. <b>Example:</b> In the alignment section, we will use parameterization to manipulate which basins of attraction are most likely.</p>
+
+<p><b>Implicitly Optimizing other Objects</b> - A parameterization may internally use a different kind of object than the one it outputs; this usually involves a <i>stochastic</i> parameterization, which produces a distribution of images. <b>Example:</b> Using a 3D object to generate images from random perspectives. </p>
+
+
 <!-- =================================================== -->
   <style>
     d-article > .h2 {
