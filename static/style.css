@@ -38,4 +38,21 @@ d-figure > figure {
   height: 26px;
   top: 26px;
   left: -48px;
+  /* top: -48px;
+  left: 26px; */
 }
+
+/* @media (min-width: 768px) {
+  .pointer {
+    top: 26px;
+    left: -48px;
+  }
+} */
+
+/* Workaround for katex incorrectly computing bounding boxes. 
+   Unsets contain: content and downgrades to style-onyl containment.
+   Usage: manually add the "math-overflow" class to offending d-math tags. */
+.math-overflow .katex {
+  contain: style;
+}
+
