@@ -1,7 +1,8 @@
 <div class='grid'>
   <img class="pointer" src="images/pointer.svg">
-  {#each names as name}
+  {#each names as name, i}
     <video loop
+        poster="images/cppn_anim/{posters[i]}.jpg"
         on:mouseover='this.setAttribute("controls", true)'
         on:mouseout='this.removeAttribute("controls")'>
       <source src="images/cppn_anim/{name}.mp4" type="video/mp4"/>
@@ -17,13 +18,13 @@
     grid-gap: 10px;
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   @media (min-width: 512px) {
     .grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
-  
+
   video {
     width: 100%;
     max-width: 224px;
@@ -37,6 +38,11 @@ export default {
   data() {
     return {
       names: ['loop1', 'loop2', 'loop3'],
+      posters: [
+        'xy2rgb_mixed4d_3x3_bottleneck_pre_relu_114',
+        'xy2rgb_mixed4d_3x3_bottleneck_pre_relu_139',
+        'xy2rgb_mixed4b_3x3_pre_relu_77',
+      ]
     }
   },
 }
