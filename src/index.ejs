@@ -296,8 +296,9 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <p>
     The parameters of the CPPN network -- the weights and biases -- determine what image is produced.
-    Random parameters can produce aesthetically interesting images <d-cite key="CPPN:random"></d-cite>, but we can often produce more interesting images by learning the parameters.
-    Often this is done by evolution  <d-cite key="stanley2007cppn,Nguyen2015:easilyFooled"></d-cite> but, since the network is differentiable, we can also do gradient descent.
+    Random parameters can produce aesthetically interesting images <d-cite key="CPPN:random"></d-cite>, but we can produce more interesting images by learning the parameters of the CPPN.
+    Often this is done by evolution  <d-cite key="stanley2007cppn,Nguyen2015:easilyFooled"></d-cite>; here we explore the possibility to backpropagate some objective function, such a feature visualization objective.
+    This is easily done since the CPPN network is differentiable as the convolutional neural network and the objective function can be propagated also trough the CPPN to update its parameters accordingly.
     That is to say, CPPNs are a differentiable image parameterization --
     a general tool for parameterizing images in any neural art or visualization task.
   </p>
@@ -326,7 +327,9 @@ We refer to the result of this procedure as the optimization for a feature visua
     </figcaption>
   </figure>
     <p>
-  The style of resulting images is heavily influenced the architecture of the CPPN, activation functions, presence of normalization and so on. We encourage readers to experiment with CPPN image generation using supplementary notebooks.
+  The visual quality of the generated images is heavily influenced by the architecture of the chosen CPPN.
+  Not only the shape of the network, i.e., the number of layers and filters, plays a role, but also the chosen activation functions and the presence of normalization.  For example, deeper networks produce ?????? while ??????.
+  We encourage readers to experiment in generating different images by changing the architecture of the CPPN. This can be easily done by changing the code  in the supplementary notebook. ???? Make a link here ????
     </p>
 
     <p>
