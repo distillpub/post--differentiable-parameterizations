@@ -65,7 +65,7 @@
 
 <d-article>
 
-  
+
   <p>
     Neural networks trained to classify images have a remarkable -- and surprising! -- capacity to generate images.
     Techniques such as DeepDream <d-cite key="mordvintsev2015inceptionism"></d-cite>, style transfer<d-cite key="gatys2015"></d-cite>, and feature visualization<d-cite key="olah2017feature"></d-cite> leverage this capacity as a powerful tool for exploring the inner workings of neural networks, and to fuel a small artistic movement based neural art.
@@ -100,17 +100,17 @@
   </figure>
 
   <p>
-  
+
     Differentiable image parameterizations invite us to ask "what kind of image generation process can we backpropagate through?"
     The answer is quite a lot, and some of the more exotic possibilities can create a wide range of interesting effects, including 3D neural art, images with transparency, and aligned interpolation.
     Previous work using specific unusual image parameterizations <d-cite key="Nguyen2015:easilyFooled,athalye2017synthesizing,olah2017feature"></d-cite> has shown exciting results -- we think that zooming out and looking at this area as a whole suggests there's even more potential.
   </p>
-  
-  
+
+
   <!-- <aside>For each demonstration, we provide a colab notebook so that you can easily reproduce and build on our results.</aside> -->
 <!--
   <p>
-    Alternative parameterizations can achieve a lot of interesting effects, including 3D neural art, images with transparency, and aligned interpolation. 
+    Alternative parameterizations can achieve a lot of interesting effects, including 3D neural art, images with transparency, and aligned interpolation.
     We believe
     While recent work has begun to explore some of these possibilities [], we think that there’s a lot of untapped potential
   </p>
@@ -119,19 +119,28 @@
 <h3>Why Does Parameterization Matter?</h3>
 
 <p>
-  It may seem surprising that changing the parameterization can have such dramatic effects
-  -- after all, it's still the same optimization problem.
-  But there are actually a number of reasons why it can impact the result:
+  It may seem surprising that, without changing the objective function of the optimization, a change in the chosen parameterization leads to a substantial change in the produced output.
+  We identified four reasons that make changing the parameterization without modifying the objective function a compelling choice:
 </p>
 
-<p><b>Improved Optimization</b> - Some parameterization, can make optimization easier. Linearly transforming the parameterization to improve conditioning ("preconditioning") is a fundamental technique in optimization; we're just generalizing this to non-linear reparameterizations. <b>Example:</b> Using decorrelated parameterization can make style transfer work when it previously didn't.</p>
+<p><b>1 - Improved Optimization</b> -
+In optimization, the input problem is often transformed in a different form that is more suitable for numerical solving methods.
+The application of this transformation takes the name of <i>preconditioning</i>, hence the name of <i>preconditioner</i> for the transformation itself.
+In this work we show that, by simply changing the parameterization, some objective function are more effectively optimized by an iterative gradient descent approach.
 
-<p><b>Constraints / Regularization</b> - If one uses a parameterization that doesn't represent the entire solution space, they can optimize within a set of constraints. These could be simple constraints (eg. the boundary of the image must be black) but it's also possible to have parameterizations impose rich, subtle constraints. <b>Example:</b> When we look at CPPNs we will implicitly be constraining something like the computational complexity of the image.</p>
+<p><b>2 - Aditional Constraints </b> - If one uses a parameterization that doesn't represent the entire solution space, they can optimize within a set of constraints. These could be simple constraints (eg. the boundary of the image must be black) but it's also possible to have parameterizations impose rich, subtle constraints. <b>Example:</b> When we look at CPPNs we will implicitly be constraining something like the computational complexity of the image.</p>
 
-<p><b>Basins of Attraction</b> - A parameterization may allow for all possible solutions, but make the basins of attraction for some much bigger than others, changing the outcomes of the process. <b>Example:</b> In the alignment section, we will use parameterization to manipulate which basins of attraction are most likely.</p>
+<p><b>3 - Basins of Attraction</b> - Deep neural networks are characterized by complex optimization landscapes <d-cite key="choromanska2015loss"></d-cite>.
+The optimization problem aims at finding the minimum for the objective function at hand.
+Often, several local minima are equally good
+<d-footnote> Note that finding the global minimum is not always desirable as it may result in an overfitted model <d-cite key="choromanska2015loss"></d-cite>.
+</d-footnote> and the probability to choose one over another is given by its base of attraction, i.e., the region of the optimization landscape under the influence of the minimum.
+Here we show that, by changing the parameterization, we can make the basins of attraction for some minimum much bigger than others, hence exerting a direct control on the outcomes of the process.
+</p>
 
-<p><b>Implicitly Optimizing other Objects</b> - A parameterization may internally use a different kind of object than the one it outputs; this usually involves a <i>stochastic</i> parameterization, which produces a distribution of images. <b>Example:</b> Using a 3D object to generate images from random perspectives. </p>
+<p><b>4 - Implicitly Optimizing other Objects</b> - A parameterization may internally use a different kind of object than the one it outputs and we optimize for. For example, when we optimize an objective function that acts on a convolutional neural networks, the more natual parameterization is an RGB image. However, we can use parameterizations that generates RGB images of 3D object rendered from different perspectives and, through some proper transformation, backpropagate the gradient of the desired function to the 3D object.</p>
 
+In the rest of the article we give concrete examples were such approaches are beneficial and lead to surprising and interesting visual results.
 
 <!-- =================================================== -->
   <style>
@@ -151,7 +160,7 @@
       /* visibility: hidden; */
     }
   </style>
-  
+
   <!-- <div class="h2" id='experiment-aligned'> -->
     <!-- <div class="section-number">Section 1</div> -->
     <h2>Aligned Neuron Interpolation</h2>
@@ -171,14 +180,14 @@ We refer to the result of this procedure as the optimization for a feature visua
     If we do this naively, different frames of the resulting visualization will be unaligned--visual landmarks such as eyes appear in different locations in each frame.
     This is because the optimization process that creates the visualization is stochastic: even optimizing for the same objective will lead to the visualization being laid out different each time.
   </p>
-  
+
   <p>
     Unfortunately, this randomness can make it harder to compare slightly different objectives.
     We can see the issue with independent optimization if we look at the interpolated frames as an animation:
   </p>
-  
+
   <d-figure id='AlignedUnalignedComparison'></d-figure>
-  
+
   <!-- <figure class="">
     <div style="margin-bottom: 1em;" id='UnalignedInterpolation'></div>
     <figcaption>
@@ -186,9 +195,9 @@ We refer to the result of this procedure as the optimization for a feature visua
       This happens because each image starts the optimization from a different, random initialization.
     </figcaption>
   </figure> -->
-  
+
   <p>
-    How can we achieve this aligned interpolation, where visual landmarks do not move between frames? 
+    How can we achieve this aligned interpolation, where visual landmarks do not move between frames?
     There are a number of possible approaches one could try
     <d-footnote>
       For example, one could explicitly penalize differences between adjacent frames. Our final result and our colab notebook use this technique in combination with a shared parameterization.
@@ -198,7 +207,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 
   <d-figure id='AlignedInterpolationExamples'></d-figure>
-  
+
   <p>
     By partially sharing a parameterization between frames, we encourage the resulting visualizations to naturally align.
     Intuitively, the shared parameterization provides a common reference for the displacement of visual landmarks, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
@@ -214,11 +223,11 @@ We refer to the result of this procedure as the optimization for a feature visua
       $(x,y) = (1,1)$, $(x,y) = (-1,1)$, $(x,y) = (1,-1)$, or $(x,y) = (-1,-1)$.
       Let's consider randomly initializing $x$ and $y$, and then optimizing them.
       Normally, the optimization problems are independent, so $x$ and $y$ are equally likely to come to unaligned solutions (where they have different signs) as aligned ones.
-      But if we add a shared parameterization, the problems become coupled and the basin of attraction where they're aligned becomes bigger.<br>  
+      But if we add a shared parameterization, the problems become coupled and the basin of attraction where they're aligned becomes bigger.<br>
       <img style="width: 100%; margin-top: 15px; max-width: 500px;" src="images/diagrams/basin-alignment.png"/>
     </d-footnote>
   </p>
-  
+
   <!-- <figure class="">
     <div style="margin-bottom: 1em;" id='AlignedInterpolation'></div>
     <figcaption>
@@ -271,7 +280,7 @@ We refer to the result of this procedure as the optimization for a feature visua
       Transformation robustness is achieved by stochastically jittering, rotating and scaling the image before applying the optimization step.
     </d-footnote>
     that Olah et al.<d-cite key="olah2017feature"></d-cite> found helpful for feature visualization.
-    
+
   </p>
 
   <figure class="subgrid">
@@ -292,8 +301,8 @@ We refer to the result of this procedure as the optimization for a feature visua
 
 
   <!-- =================================================== -->
-  
-  
+
+
   <h2 id='experiment-xy2rgb'>Compositional Pattern Producing Networks</h2>
 
   <p>
@@ -322,14 +331,14 @@ We refer to the result of this procedure as the optimization for a feature visua
   <figure>
     <%= require("../static/images/diagrams/cppn.svg") %>
     <figcaption>CPPNs are a differentiable image parameterization. We can use them for neural art or visualization tasks by backproping not only through the CNN to the image, but then past the image, through the CPPN to its parameters.</figcaption>
-    
+
   </figure>
 
   <p>
     Using CPPNs as your parameterization can add an interesting artistic quality to neural art, vaguely reminiscent of light-paintings.<d-footnote>Light-painting is an artistic medium where images are created by manipulating colorful light beams with prisms and mirrors. Notable examples of this technique are the <a href="http://www.lightpaintings.com/">work of Stephen Knapp</a>.</d-footnote>
     At a more theoretical level, they can be seen as constraining the computational complexity of your images.
     When used for feature visualization, they produce distinctive images:
-  </p> 
+  </p>
 
 
   <!--
@@ -366,20 +375,20 @@ We refer to the result of this procedure as the optimization for a feature visua
   Neural networks, a CPPN in this case, can be used to parameterize an image that is optimized for a given objective function.
   More specifically, we combined a feature-visualization objective function with a CPPN parameterization to create computer generated light-paintings.
     </p>
-    
+
 <!-- =================================================== -->
 
   <h2 id='experiment-featureviz-rgba'>Generation of Semi-Transparent Patterns</h2>
-  
+
   <p>
     Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
     Unfortunately, there is no way for these visualization to distuingish what the neuron cares about strongly from what it cares about marginally.
-    <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote> 
+    <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>
     For example, notice the geometric structures around the center of these neuron visualizations:
   </p>
-  
+
   <d-figure style="grid-column-gap: inherit;" id="NonTransparentNeuronExamples"></d-figure>
-  
+
   <p>
     Ideally, we would like a way for our visualizations to make this distinction in importance.
     One natural way to represent that a part of the image doesn't matter is for it to be transparent.
@@ -395,7 +404,7 @@ We refer to the result of this procedure as the optimization for a feature visua
       <img>
     </d-footnote>
   </p>
-  
+
   <figure class="subgrid" style="margin-top: 0;">
     <div class="l-body">
       <%= require("../static/images/diagrams/transparency.svg") %>
@@ -406,34 +415,34 @@ We refer to the result of this procedure as the optimization for a feature visua
       Transparent areas are blended with a random background at each step of the optimization.
     </figcaption>
   </figure>
-  
+
   <p>
-    Introducing transparency does help separate areas the neuron cares about. 
+    Introducing transparency does help separate areas the neuron cares about.
     It can be intersting to compare to a normal neuron visualization and observe the differences.
   </p>
-  
+
   <d-figure class="subgrid" id="TransparentNeuronExamples"></d-figure>
-  
+
   <!-- <figure class="base-grid shaded-figure">
     <figcaption style="grid-column: kicker;">
       The image is parameterized as the combination of the RGB and alpha channel.
     </figcaption>
     <d-figure style="grid-column: text-start / screen-end; overflow: visible; contain: unset;" id="SemiTransparentCombination"></d-figure>
   </figure> -->
-  
+
   <!-- <p>
     TODO: Paragraph discussing importance of different noise distributions for the background.
   </p>
-  
+
   <figure class="base-grid shaded-figure">
     <p class="l-body">
       different noise distributions on background!
     </p>
   </figure> -->
-  
-  
-  
-<!-- 
+
+
+
+<!--
   <p>
     Most existing optimization techniques work on an input-space that has the same format as the networks training data.
     For networks trained to process images, the input usually corresponds to a 2D array of pixels, where each pixel is represented by RGB channel values.
@@ -540,7 +549,7 @@ Here we adopt a different approach that overcomes this limitation by making use 
 Intuitively, we optimize not directly in the texture space, but rather through the images that are generated by the 3D renderer and, therefore, are closer to what a user will see.
 The following diagram presents an overview of the proposed pipeline:
   </p>
-  
+
   <figure>
     <%= require("../static/images/diagrams/featurevis-3d.svg") %>
     <figcaption>
@@ -577,7 +586,7 @@ Once that we have a framework for the efficient backpropagation of the gradients
 Similarly to the 2D case, we aim at redrawing the original object's texture with the style of a user-provided image.
 The following diagram presents an overview of the approach:
   </p>
-  
+
   <figure style="grid-column: text-start / page-end;">
     <%= require("../static/images/diagrams/styletransfer-3d.svg") %>
     <!-- <img src="images/diagrams/styletransfer-3d.png"/> -->
@@ -625,24 +634,24 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
 <!-- =================================================== -->
 
   <h2 id='conclusions'>Conclusions</h2>
-  
+
   <p>
-    For the creative artist or researcher, there's a large space of ways to parameterize images for optimization. 
+    For the creative artist or researcher, there's a large space of ways to parameterize images for optimization.
     This opens up not only dramatically different image results, but also animations and 3D objects!
     We think the possibilities explored in this article only scratch the surface.
     For example, one could explore extending the optimization of 3d object textures to optimizing the material or reflectance -- or even go the direction of Kato et al.<d-cite key="kato2017neural3D"></d-cite> and optimize the mesh vertex positions.
   </p>
-  
+
   <p>
     This article focused on <i>differentiable</i> image parameterizations, because they are easy to optimize and cover a wide range of possible applications.
     But it's certain possible to optimize image parameterizations that aren't differentiable, or are only partly differentiable, using reinforcement learning or evolutionary strategies <d-cite key="wierstra2014naturalEvolutionStrategies,salimans2017evolution"></d-cite>.
     Using non-differentiable parameterizations could open up exciting possibilities for image or scene parameterization.
   </p>
-  
+
   <p>
-    
+
   </p>
-  
+
   <p>
     Finally, we think thoughtful use of parameterization can be useful in other optimization problems, providing additional control over the outcome.
     For example, dimensionality reduction is often framed as an optimization problem over the position of points;
@@ -653,7 +662,7 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
   </p>
   <!-- TODO: remove? -->
   <aside>WIP, may drop this paragraph</aside>
- 
+
 
 </d-article>
 
