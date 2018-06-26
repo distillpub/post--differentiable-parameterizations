@@ -355,6 +355,36 @@ We refer to the result of this procedure as the optimization for a feature visua
   <h2 id='experiment-featureviz-rgba'>Generation of Semi-Transparent Patterns</h2>
   
   <p>
+    Neural network that we use in this article, was trained to receive 2D RGB images as input. Can we use the same network to synthesize artifacts that span beyond this domain? Turns out we can do this, by making our differentiable parameterization to define a <i>family</i> of images instead of a single image, and then sampling one or a few images from that family on each optimization step.
+  </p>
+
+  <p>
+    Let’s consider the case of semi-transparent images, i.e. images that have yet another Alpha channel, encoding pixels opacity in range [0..1], in addition to standard RGB colors. In order to feed such images to the pretrained neural network, we need to collapse the alpha channel somehow. One way to achieve this is to overlay current RGBA image ($I$) over some background $(BG$) using a standard alpha blending formula <d-footnote>In our experiments we actually use <a href="https://en.wikipedia.org/wiki/Alpha_compositing#Composing_alpha_blending_with_gamma_correction"> gamma-corrected blending</a> </d-footnote>
+  </p>
+
+  <div class="math-overflow" style="margin-right: auto; margin-left: auto; margin-top: 0px; margin-bottom: 20px;">
+      $O_{rgb} = I_{rgb} * I_a + BG_{rgb} * (1 - I_a)$.
+  </div>
+
+  <p>
+    In order to prevent optimization from making the image fully opaque, we replace the original optimization objective with
+  </p>
+  <div class="math-overflow" style="margin-right: auto; margin-left: auto; margin-top: 0px; margin-bottom: 20px;">
+      $obj_{new} = obj_{old} * (1-mean(I_a))$.
+  </div>
+  <p>
+    Thus, optimization must find a balance between the fully transparent and fully opaque image in order to maximize the objective.
+  </p>
+
+  <p>
+    The last missing piece of our image parameterization is the background. Using static background will make optimization to adapt to it, so the result may look bad on a different background. Instead we sample random background on each iteration from some distribution. This can be random crops of real, or some procedurally generated images. In our experiments we use a smooth 2d noise.
+  </p>
+
+  <d-figure class="base-grid" id='SemiTransparentExamples'></d-figure>
+
+  <p><b>TODO:</b> Merge this text with the above</p>
+
+  <p>
     Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
     Unfortunately, there is no way for these visualization to distuingish what the neuron cares about strongly from what it cares about marginally.
     <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote> 
@@ -362,6 +392,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
   
   <d-figure style="grid-column-gap: inherit;" id="NonTransparentNeuronExamples"></d-figure>
+  
   
   <p>
     Ideally, we would like a way for our visualizations to make this distinction in importance.
@@ -396,8 +427,6 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
   
   <d-figure class="subgrid" id="TransparentNeuronExamples"></d-figure>
-  
-  <d-figure class="base-grid" id='SemiTransparentExamples'></d-figure>
 
   <!-- <figure class="base-grid shaded-figure">
     <figcaption style="grid-column: kicker;">
