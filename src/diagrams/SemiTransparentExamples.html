@@ -16,17 +16,17 @@
   </figcaption>
   <div id='container' class="{mode}">
     {#each images as img, i}
-      <svg width="100%" height="224px" viewBox="0 0 448 448">
+      <svg width="100%" height="224px" viewBox="0 0 288 288">
         <defs>
           {#if mode!='alpha' & mode!='rgb'}
             <mask id="mask{i}">
               <image xlink:href="images/transparent/alpha/{img}"
-              x="0" y="0" height="448px" width="448px"/>
+              x="0" y="0" height="288px" width="288px"/>
             </mask>
           {/if}
         </defs>
         <image xlink:href="images/transparent/{mode=='alpha' ? 'alpha' : 'rgb'}/{img}"
-            x="0" y="0" height="448px" width="448px"
+            x="0" y="0" height="288px" width="288px"
             mask="url(#mask{i})"/>
       </svg>
     {/each}
@@ -37,7 +37,7 @@
 <style>
   #container {
     display: grid;
-    grid-gap: 10px;
+    grid-gap: 5px;
     grid-template-columns: repeat(3, 1fr);
     grid-column: text-start / text-end;
   }
@@ -57,7 +57,7 @@
   }
 
   svg:hover{
-    transform: scale(1.6);
+    transform: scale(1.5);
   }
 
 
