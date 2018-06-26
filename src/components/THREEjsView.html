@@ -130,7 +130,6 @@ export default {
       mesh = new Mesh(emptyGeometry, material);
       scene.add(mesh);
 
-      //SceneTexture draws the background texture
       var bgMaterial = material.clone();
       bgMaterial.uniforms.shadeFlag.value = 0.0;
       bgMaterial.uniforms.unfolding_perc.value = 1.0;
@@ -234,7 +233,6 @@ export default {
           const state = self.get();
           // check if model/tex pair is still needed (user didn't switch during loading)
           if ((state['textureUrl'] != textureUrl) | (state['modelFolder'] != modelFolder)) {
-            console.log('rejected', textureUrl, modelFolder)
             return;
           }
           const [texture, geometry] = args;
@@ -243,7 +241,6 @@ export default {
           backgroundPlane.material.uniforms.texture.value = texture;
           self.refs.status.innerText = '';
           update();
-          console.log('updated', textureUrl, modelFolder)
         })
       }
     }
