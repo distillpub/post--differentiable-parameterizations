@@ -307,7 +307,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     <p>
   The visual quality of the generated images is heavily influenced by the architecture of the chosen CPPN.
   Not only the shape of the network, i.e., the number of layers and filters, plays a role, but also the chosen activation functions and normalization.  For example, deeper networks produce more fine grained details compared to shallow ones.
-  We encourage readers to experiment in generating different images by changing the architecture of the CPPN. This can be easily done by changing the code  in the supplementary notebook.
+  We encourage readers to experiment in generating different images by changing the architecture of the CPPN. This can be easily done by changing the code in the supplementary notebook.
     </p>
 
     <p>
@@ -363,11 +363,25 @@ We refer to the result of this procedure as the optimization for a feature visua
     Thus, optimization must find a balance between the fully transparent and fully opaque image in order to maximize the objective.
   </p>
 
-  <p>
+  <!-- <p>
     The last missing piece of our image parameterization is the background. Using static background will make optimization to adapt to it, so the result may look bad on a different background. Instead we sample random background on each iteration from some distribution. This can be random crops of real, or some procedurally generated images. In our experiments we use a smooth 2d noise.
+  </p> -->
+  
+  <p>
+    However, vision models expect their input to be an RGB-only image, so we will need to collapse the alpha channel.
+    If we did this with a consistent background, such as black, transparency would merely indicate positions in which that background contributes to the optimization objective.
+    (In fact, it would be equivalent to penalizing an RGB image to be close to that background!)
+    One way to avoid this is to use a random background, which changes at every optimization step.
+    <d-footnote>
+      We have tried both sampling from real images, and using different types of noise. 
+      As long as they were sufficiently randomized, the different distributions did not meaningfully influence the resulting optimization.
+      Thus, for simplicity, we use a smooth 2D gaussian noise<br><br>
+      Another possibility is to use an adversarial background! We initially thought this was a clever, principled idea—but it, too, produced very similar results to the default noise.
+      TODO: example image <img>
+    </d-footnote>
   </p>
 
-  <d-figure class="base-grid" id='SemiTransparentExamples'></d-figure>
+  <d-figure class="base-grid" id='SemiTransparentExamples' style="padding: 0; border: none;"></d-figure>
 
   <p><b>TODO:</b> Merge this text with the above</p>
 
@@ -392,7 +406,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     One way to avoid this is to use a random background, which changes at every optimization step.
     <d-footnote>
       Another possibility is to use an adversarial background.
-      <img>
+      TODO: example image <img>
     </d-footnote>
   </p>
 
