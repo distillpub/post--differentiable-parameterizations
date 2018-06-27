@@ -1,3 +1,7 @@
+section {
+  display: contents;
+}
+
 .subgrid {
   grid-column: screen; 
   display: grid; 
@@ -33,9 +37,21 @@ d-figure > figure {
 }
 
 .pointer {
-  position: absolute;
-  width: 26px;
-  height: 26px;
-  top: 26px;
-  left: -48px;
+  grid-column: kicker;
+  justify-self: start;
+  margin-bottom: 1em;
 }
+
+@media (min-width: 1000px) {
+  .pointer {
+    justify-self: end;
+  }
+}
+
+/* Workaround for katex incorrectly computing bounding boxes. 
+   Unsets contain: content and downgrades to style-onyl containment.
+   Usage: manually add the "math-overflow" class to offending d-math tags. */
+.math-overflow .katex {
+  contain: style;
+}
+

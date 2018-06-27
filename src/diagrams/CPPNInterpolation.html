@@ -1,39 +1,48 @@
-<div class='grid' on:mouseover='set({paused: false})' on:mouseout='set({paused: true})'>
-  <img class="pointer" src="images/pointer.svg">
-  {#each range(3) as x}
-    <SpriteAnimation {run} {paused} {interval_seconds} {n_images} {width} {height} offset={x}  image_url={sprite_url}/>
+<div class='grid'>
+  {#each names as name, i}
+    <video loop
+        poster="images/cppn_anim/{posters[i]}.jpg"
+        on:mouseover='this.setAttribute("controls", true)'
+        on:mouseout='this.removeAttribute("controls")'>
+      <source src="images/cppn_anim/{name}.mp4" type="video/mp4"/>
+      Your browser does not support the video tag.
+    </video>
   {/each}
 </div>
 
 
 <style>
-.grid {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 10px;
-  grid-auto-columns: min-content;
-}
+  .grid {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 512px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  video {
+    width: 100%;
+    max-width: 224px;
+    border-radius: 4px;
+  }
 </style>
 
 
 <script>
-  import SpriteAnimation from '../components/SpriteAnimation';
-  function range(n){
-    return Array(n).fill().map((_, i) => i);
-  }
-  export default {
-    data() {
-      return {
-        paused: true,
-        run: true,
-        interval_seconds: 3.0,
-        n_images: 30,
-        width: 224,
-        height: 224,
-        sprite_url: 'images/cppn-interpolation.jpg',
-      }
-    },
-    components: { SpriteAnimation },
-    helpers: { range }
-  }
-</script> 
+export default {
+  data() {
+    return {
+      names: ['loop1', 'loop2', 'loop3'],
+      posters: [
+        'xy2rgb_mixed4d_3x3_bottleneck_pre_relu_114',
+        'xy2rgb_mixed4d_3x3_bottleneck_pre_relu_139',
+        'xy2rgb_mixed4b_3x3_pre_relu_77',
+      ]
+    }
+  },
+}
+</script>

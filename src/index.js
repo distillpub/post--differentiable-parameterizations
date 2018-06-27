@@ -90,12 +90,12 @@ const visualTOC = new VisualTOC({target: tocNav});
 //   });
 // }
 
-// {
-//   const figure = document.getElementById('SemiTransparentExamples');
-//   figure.addEventListener("ready", function() {
-//     const semiTransparentExamples = new SemiTransparentExamples({target: figure});
-//   });
-// }
+{
+  const figure = document.getElementById('SemiTransparentExamples');
+  figure.addEventListener("ready", function() {
+    const semiTransparentExamples = new SemiTransparentExamples({target: figure});
+  });
+}
 
 //Add event listener
 // new CPPNExamples({target: document.getElementById("CPPN-Examples")});
