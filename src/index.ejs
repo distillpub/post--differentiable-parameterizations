@@ -116,8 +116,34 @@
   </p>
 -->
 
+<h3>Why Does Parameterization Matter?</h3>
+
+<p>
+  It may seem surprising that, without changing the objective function of the optimization, a change in the chosen parameterization leads to a substantial change in the produced output.
+  We identified four reasons that make changing the parameterization without modifying the objective function a compelling choice:
+</p>
+
+<p><b>1 - Improved Optimization</b> -
+In optimization, the input problem is often transformed in a different form that is more suitable for numerical solving methods.
+The application of this transformation takes the name of <i>preconditioning</i>, hence the name of <i>preconditioner</i> for the transformation itself.
+In this work we show that, by simply changing the parameterization, some objective function are more effectively optimized by an iterative gradient descent approach.
+
+<p><b>2 - Aditional Constraints </b> - If one uses a parameterization that doesn't represent the entire solution space, they can optimize within a set of constraints. These could be simple constraints (eg. the boundary of the image must be black) but it's also possible to have parameterizations impose rich, subtle constraints. <b>Example:</b> When we look at CPPNs we will implicitly be constraining something like the computational complexity of the image.</p>
+
+<p><b>3 - Basins of Attraction</b> - Deep neural networks are characterized by complex optimization landscapes <d-cite key="choromanska2015loss"></d-cite>.
+The optimization problem aims at finding the minimum for the objective function at hand.
+Often, several local minima are equally good
+<d-footnote> Note that finding the global minimum is not always desirable as it may result in an overfitted model <d-cite key="choromanska2015loss"></d-cite>.
+</d-footnote> and the probability to choose one over another is given by its base of attraction, i.e., the region of the optimization landscape under the influence of the minimum.
+Here we show that, by changing the parameterization, we can make the basins of attraction for some minimum much bigger than others, hence exerting a direct control on the outcomes of the process.
+</p>
+
+<p><b>4 - Implicitly Optimizing other Objects</b> - A parameterization may internally use a different kind of object than the one it outputs and we optimize for. For example, when we optimize an objective function that acts on a convolutional neural networks, the more natual parameterization is an RGB image. However, we can use parameterizations that generates RGB images of 3D object rendered from different perspectives and, through some proper transformation, backpropagate the gradient of the desired function to the 3D object.</p>
+
+In the rest of the article we give concrete examples were such approaches are beneficial and lead to surprising and interesting visual results.
+
 <!-- =================================================== -->
-  
+
   <hr/>
   <h2>Aligned Neuron Interpolation</h2>
 
@@ -140,7 +166,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     Unfortunately, this randomness can make it harder to compare slightly different objectives.
     We can see the issue with independent optimization if we look at the interpolated frames as an animation:
   </p>
-  
+
   <!-- <img class="pointer" src="images/pointer.svg"> -->
   <d-figure id='AlignedUnalignedComparison'></d-figure>
 
@@ -161,7 +187,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     , one of which is using a <em>shared parameterization</em>: each frame is parameterized as a combination of it's own unique parameterization, and a single shared parameterization.
     <!-- The shared parameterization makes it easier for the optimization process to find frames in which visual landmarks stay in the same position then frames where they don't. In order to produce an unaligned frame, this frame's unique parameterization would have to overpower the shared parameterization. -->
   </p>
-  
+
   <d-figure id='AlignedInterpolationExamples'></d-figure>
 
   <p>
@@ -197,7 +223,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 
 <!-- =================================================== -->
-  
+
   <hr/>
   <h2 id='experiment-styletransfer'>Style Transfer with non-VGG architectures</h2>
 
@@ -258,7 +284,7 @@ We refer to the result of this procedure as the optimization for a feature visua
 
 
   <!-- =================================================== -->
-  
+
   <hr/>
   <h2 id='experiment-xy2rgb'>Compositional Pattern Producing Networks</h2>
 
@@ -316,7 +342,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   Because the iterative changes have a more global effect compared to, for example, a pixel parameterization, at the beginning of the optimization only major patterns are visible.
   By iteratively adjusting the weights, our immaginary beams are positioned in such a way that fine details emerge.
     </p>
-    
+
     <img class="pointer" src="images/pointer.svg">
     <d-figure id='CPPNAnimations'></d-figure>
 
@@ -326,7 +352,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   This result is in fact achieved by interpolating the weights of the CPPN representations of the two patterns. A number of intermediate frames are then generated by generating an image given the interpolated CPPN representation.
   As before, changes in the parameter have a global effect and create visually appealing intermediate frames.
     </p>
-    
+
     <img class="pointer" src="images/pointer.svg">
     <d-figure id='CPPNInterpolations'></d-figure>
 
@@ -342,72 +368,25 @@ We refer to the result of this procedure as the optimization for a feature visua
   <h2 id='experiment-featureviz-rgba'>Generation of Semi-Transparent Patterns</h2>
 
   <p>
-    Neural network that we use in this article, was trained to receive 2D RGB images as input. Can we use the same network to synthesize artifacts that span beyond this domain? Turns out we can do this, by making our differentiable parameterization to define a <i>family</i> of images instead of a single image, and then sampling one or a few images from that family on each optimization step.
+    Neural networks used in this article, ware trained to receive 2D RGB images as input. Is it possible to use the same network to synthesize artifacts that span beyond this domain? Turns out that we can do it by making our differentiable parameterization define a <i>family</i> of images instead of a single image, and then sampling one or a few images from that family at each optimization step.
   </p>
 
   <p>
-    Let’s consider the case of semi-transparent images, i.e. images that have yet another Alpha channel, encoding pixels opacity in range [0..1], in addition to standard RGB colors. In order to feed such images to the pretrained neural network, we need to collapse the alpha channel somehow. One way to achieve this is to overlay current RGBA image ($I$) over some background $(BG$) using a standard alpha blending formula <d-footnote>In our experiments we actually use <a href="https://en.wikipedia.org/wiki/Alpha_compositing#Composing_alpha_blending_with_gamma_correction"> gamma-corrected blending</a> </d-footnote>
+    Let’s consider the case of semi-transparent images, i.e. images that have, in addition to the RGB channels, also the Alpha channel that encodes pixels opacity in the range $[0,1]$. In order to feed such images to the pretrained neural network, we need to somehow collapse the alpha channel. One way to achieve this is to overlay the current RGBA image $I$ over some background image $BG$ using the standard alpha blending formula <d-footnote>In our experiments we use <a href="https://en.wikipedia.org/wiki/Alpha_compositing#Composing_alpha_blending_with_gamma_correction"> gamma-corrected blending</a> </d-footnote>
   </p>
 
   <div class="math-overflow" style="margin-right: auto; margin-left: auto; margin-top: 0px; margin-bottom: 20px;">
-      $O_{rgb} = I_{rgb} * I_a + BG_{rgb} * (1 - I_a)$.
+      $O_{rgb} = I_{rgb} * I_a + BG_{rgb} * (1 - I_a)$,
   </div>
 
   <p>
-    In order to prevent optimization from making the image fully opaque, we replace the original optimization objective with
+    where $I_a$ is the alpha channel of the image $I$. Without any additional constraint on the objective function $I$ will be a fully opaque image. To avoid that we replace the original optimization objective with the following:
   </p>
   <div class="math-overflow" style="margin-right: auto; margin-left: auto; margin-top: 0px; margin-bottom: 20px;">
-      $obj_{new} = obj_{old} * (1-mean(I_a))$.
+      $obj_{new} = obj_{old} * (1-mean(I_a))$,
   </div>
   <p>
-    Thus, optimization must find a balance between the fully transparent and fully opaque image in order to maximize the objective.
-  </p>
-
-  <!-- <p>
-    The last missing piece of our image parameterization is the background. Using static background will make optimization to adapt to it, so the result may look bad on a different background. Instead we sample random background on each iteration from some distribution. This can be random crops of real, or some procedurally generated images. In our experiments we use a smooth 2d noise.
-  </p> -->
-  
-  <p>
-    However, vision models expect their input to be an RGB-only image, so we will need to collapse the alpha channel.
-    If we did this with a consistent background, such as black, transparency would merely indicate positions in which that background contributes to the optimization objective.
-    (In fact, it would be equivalent to penalizing an RGB image to be close to that background!)
-    One way to avoid this is to use a random background, which changes at every optimization step.
-    <d-footnote>
-      We have tried both sampling from real images, and using different types of noise. 
-      As long as they were sufficiently randomized, the different distributions did not meaningfully influence the resulting optimization.
-      Thus, for simplicity, we use a smooth 2D gaussian noise<br><br>
-      Another possibility is to use an adversarial background! We initially thought this was a clever, principled idea—but it, too, produced very similar results to the default noise.
-      TODO: example image <img>
-    </d-footnote>
-  </p>
-
-  <d-figure class="base-grid" id='SemiTransparentExamples' style="padding: 0; border: none;"></d-figure>
-
-  <p><b>TODO:</b> Merge this text with the above</p>
-
-  <p>
-    Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
-    Unfortunately, there is no way for these visualization to distuingish what the neuron cares about strongly from what it cares about marginally.
-    <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>
-    For example, notice the geometric structures around the center of these neuron visualizations:
-  </p>
-
-  <d-figure style="grid-column-gap: inherit;" id="NonTransparentNeuronExamples"></d-figure>
-
-  <p>
-    Ideally, we would like a way for our visualizations to make this distinction in importance.
-    One natural way to represent that a part of the image doesn't matter is for it to be transparent.
-    More broadly, if we optimize an image with an alpha channel and encourage the image to be transparent, unimportant parts of the image should become transparent.
-  </p>
-  <p>
-    However, vision models expect their input to be an RGB image, so we will need to collapse the alpha channel.
-    If we did this with a consistent background, such as black, transparency would indicate positions where the default background is OK, rather than positions that are unimportant.
-    (In fact, it would be equivalent to penalizing the image to be close to that background!)
-    One way to avoid this is to use a random background, which changes at every optimization step.
-    <d-footnote>
-      Another possibility is to use an adversarial background.
-      TODO: example image <img>
-    </d-footnote>
+    Thus, the optimizer can act on both the objective $obj_{old}$ and the transparency $I_a$ to find a balance between that maximizes the objective $obj_{new}$.
   </p>
 
   <figure class="subgrid" style="margin-top: 0;">
@@ -422,8 +401,47 @@ We refer to the result of this procedure as the optimization for a feature visua
   </figure>
 
   <p>
-    Introducing transparency does help separate areas the neuron cares about.
-    It can be intersting to compare to a normal neuron visualization and observe the differences.
+    However, most of the vision models expect their input to be an RGB-only image, so we will need to collapse the alpha channel in order to feed $I$ to them.
+    If we did this with a static background $BG$, such as black, the transparency would merely indicate pixel positions in which that background contributes directly to the optimization objective.
+    In fact, this is equivalent to making the RGB image transparend in the areas where its color matches with the background!
+    A way to avoid this undesired effect is to change the background randomly at every optimization step.
+    <d-footnote>
+      We have tried both sampling from real images, and using different types of noise.
+      As long as they were sufficiently randomized, the different distributions did not meaningfully influence the resulting optimization.
+      Thus, for simplicity, we use a smooth 2D gaussian noise<br><br>
+      Another possibility is to use an adversarial background! We initially thought this was a clever, principled idea—but it, too, produced very similar results to the default noise.
+      TODO: example image <img>
+    </d-footnote>
+  </p>
+
+  <d-figure class="base-grid" id='SemiTransparentExamples' style="padding: 0; border: none;"></d-figure>
+
+  <p><b>TODO:</b> Merge this text with the above</p>
+
+<!--
+  <p>
+    Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
+    Unfortunately, there is no way for these visualization to distuingish what the neuron cares about strongly from what it cares about marginally
+    <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>.
+    For example, notice the geometric structures around the center of these neuron visualizations:
+  </p>
+-->
+
+<p>
+  It turns out that the generation of semi-transparent images is useful also for the interpretation of deep neural network computations.
+  Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
+  Unfortunately, there is no way for these visualization to distuingish what the neuron cares about strongly from what it cares about marginally
+  <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>.
+  For example, notice the geometric structures around the center of these neuron visualizations:
+</p>
+
+  <d-figure style="grid-column-gap: inherit;" id="NonTransparentNeuronExamples"></d-figure>
+
+  <p>
+    Ideally, we would like a way for our visualizations to make this distinction in importance.
+    One natural way to represent that a part of the image doesn't matter is for it to be transparent.
+    More broadly, if we optimize an image with an alpha channel and encourage the image to be transparent, unimportant parts of the image, according to the feature visualization objective, should become transparent.
+    Introducing transparency does help separate areas the neuron cares about:
   </p>
 
   <d-figure class="subgrid" id="TransparentNeuronExamples"></d-figure>
