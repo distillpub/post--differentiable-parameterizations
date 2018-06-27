@@ -7,7 +7,7 @@
       <div class="background-controls">
         <a on:click="set({backgroundMode: 'light'})" class="bright {backgroundMode == 'light' ? 'active' : ''}" title="Use bright background">bright</a>
         <a on:click="set({backgroundMode: 'black'})" class="dark {backgroundMode == 'black' ? 'active' : ''}" title="Use dark background">dark</a>
-        <a on:click="set({backgroundMode: 'checkerboard'})" class="checkerboard {backgroundMode == 'checkerboard' ? 'active' : ''}" title="Use heckerboard pattern background">checkerboard</a>
+        <a on:click="set({backgroundMode: 'checkerboard'})" class="checkerboard {backgroundMode == 'checkerboard' ? 'active' : ''}" title="Use checkerboard pattern background">checkerboard</a>
         <div class="separator"></div>
         <a id="toggle-alpha" on:click="toggleMode()" class={mode == 'alpha' ? 'active' : ''} title="Show only alpha masks">Alpha mask</a>
       </div>
