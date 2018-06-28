@@ -136,7 +136,7 @@ Often, several local minima are equally good
 Here we show that, by changing the parameterization, we can make the basins of attraction for some minimum much bigger than others, hence exerting a direct control on the outcomes of the process.
 </p>
 
-<p><b>(3) - Aditional Constraints </b> - A parameterization can introduce a constraint that changes the optimization landscape. These could be simple constraints, e.g., the boundary of the image must be black, but it's also possible to use parameterizations that impose rich, subtle constraints.
+<p><b>(3) - Additional Constraints </b> - A parameterization can introduce a constraint that changes the optimization landscape. These could be simple constraints, e.g., the boundary of the image must be black, but it's also possible to use parameterizations that impose rich, subtle constraints.
 In this setting, the optimizer will find solutions that minimize or maximize the objective function but, at the same time, are influenced by the constraints imposed by the parameterization.
 
 <p><b>(4) - Implicitly Optimizing other Objects</b> - A parameterization may internally use a different kind of object than the one it outputs and we optimize for. For example, when we optimize an objective function that acts on a convolutional neural networks, the more natual parameterization is an RGB image. However, we can use parameterizations that generates RGB images of 3D object rendered from different perspectives and, through some proper transformation, backpropagate the gradient of the desired function to the 3D object.</p>
