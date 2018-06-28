@@ -1,15 +1,15 @@
-<figure class="base-grid {backgroundMode}">
+<figure id="figure-rgba-examples" class="base-grid {backgroundMode}">
   
   <div id="checkerboard" class={backgroundMode}></div>
   
   <div id='container'>
     <div class="controls">
       <div class="background-controls">
-        <a on:click="set({backgroundMode: 'light'})" class="bright {backgroundMode == 'light' ? 'active' : ''}" title="Use bright background">bright</a>
-        <a on:click="set({backgroundMode: 'black'})" class="dark {backgroundMode == 'black' ? 'active' : ''}" title="Use dark background">dark</a>
-        <a on:click="set({backgroundMode: 'checkerboard'})" class="checkerboard {backgroundMode == 'checkerboard' ? 'active' : ''}" title="Use checkerboard pattern background">checkerboard</a>
+        <button on:click="set({backgroundMode: 'light'})" class="bright {backgroundMode == 'light' ? 'active' : ''}" title="Use bright background" tabindex=0>bright</button>
+        <button on:click="set({backgroundMode: 'black'})" class="dark {backgroundMode == 'black' ? 'active' : ''}" title="Use dark background" tabindex=0>dark</button>
+        <button on:click="set({backgroundMode: 'checkerboard'})" class="checkerboard {backgroundMode == 'checkerboard' ? 'active' : ''}" title="Use checkerboard pattern background" tabindex=0>checkerboard</button>
         <div class="separator"></div>
-        <a id="toggle-alpha" on:click="toggleMode()" class={mode == 'alpha' ? 'active' : ''} title="Show only alpha masks">Alpha mask</a>
+        <button id="toggle-alpha" on:click="toggleMode()" class={mode == 'alpha' ? 'active' : ''} title="Show only alpha masks" tabindex=0>Alpha mask</button>
       </div>
       <div class="blending-controls { mode == 'alpha' ? 'disabled' : '' }">
         <span class="figcaption">masked</span>
@@ -39,10 +39,6 @@
 
   </div>
   
-  <figcaption>
-    Examples of the optimization of semi transparent images for different layers and units.
-  </figcaption>
-  
 </figure>
 
 
@@ -53,7 +49,9 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     
-    transition: background 0.25s;
+    transition: background 0.35s;
+    
+    grid-row-gap: 10px;
   }
 
   #container {
@@ -107,7 +105,7 @@
   
   .svg-container {
     font-size: 1rem;
-    line-height: 1.0;
+    line-height: 0;
   }
 
   svg:hover{
@@ -125,7 +123,7 @@
     
     background-color: hsla(0, 0%, 97%, 75%);
     border-radius: 4px;
-    padding: 4px;
+    padding: 10px;
     
     z-index: 2;
   }
@@ -140,26 +138,22 @@
     
     background-color: hsla(0, 0%, 97%, 75%);
     border-radius: 4px;
-    padding: 4px;
+    padding: 10px;
     
-    transition: opacity 0.25s, background-color 0.25s;
+    transition: opacity 0.35s, background-color 0.35s;
   }
   
   .checkerboard .controls,
   .checkerboard figcaption {
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
-    background-color: hsla(0, 0%, 92%, 85%);
+    /* box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); */
+    background-color: hsl(0, 0%, 92%);
   }
   
   .disabled {
     opacity: 0.5;
   }
   
-  .background-controls {
-    padding: 5px;
-  }
-  
-  .background-controls > a {
+  .background-controls > button {
     display: inline-block;
     position: relative;
     width: 24px;
@@ -174,7 +168,7 @@
     background-clip: content-box;
   }
   
-  .background-controls > a.active {
+  .background-controls > button.active {
     border: 2px solid #f60;
   }
   
@@ -226,6 +220,42 @@
     max-width: 200px; */
     /* flex-basis: auto; */
     /* flex-grow: 1; */
+  }
+  
+  button {
+    align-items: normal;
+    background-color: rgba(0,0,0,0);
+    border-color: rgb(0, 0, 238);
+    border-style: none;
+    box-sizing: content-box;
+    color: rgb(0, 0, 238); 
+    cursor: pointer;
+    display: inline;
+    font: inherit;
+    height: auto;
+    padding: 0;
+    perspective-origin: 0 0;
+    text-align: start;
+    text-decoration: underline;
+    transform-origin: 0 0;
+    width: auto;
+    -moz-appearance: none;
+    -webkit-logical-height: 1em; /* Chrome ignores auto, so we have to use this hack to set the correct height  */
+    -webkit-logical-width: auto; /* Chrome ignores auto, but here for completeness */
+  }
+
+  /* Mozilla uses a pseudo-element to show focus on buttons, */
+  /* but anchors are highlighted via the focus pseudo-class. */
+
+  @supports (-moz-appearance:none) { /* Mozilla-only */
+    button::-moz-focus-inner { /* reset any predefined properties */ 
+      border: none;
+      padding: 0;
+    }
+    button:focus { /* add outline to focus pseudo-class */
+      outline-style: dotted;
+      outline-width: 1px;
+    }
   }
 
 </style>

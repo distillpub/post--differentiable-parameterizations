@@ -39,12 +39,20 @@ d-figure > figure {
 .pointer {
   grid-column: kicker;
   justify-self: start;
-  margin-bottom: 1em;
+  /* margin-bottom: 1em; */
+}
+
+.kicker-text-align {
+  text-align: left;
 }
 
 @media (min-width: 1000px) {
   .pointer {
     justify-self: end;
+  }
+  
+  .kicker-text-align {
+    text-align: right;
   }
 }
 
@@ -55,3 +63,38 @@ d-figure > figure {
   contain: style;
 }
 
+/* Figure numbers */
+
+/* body {
+  counter-reset: distill-figure-counter;
+} */
+
+figure {
+  counter-increment: distill-figure-counter;
+}
+
+.figure-number-increment {
+  /* We can't use display: none because we want counter-increment to work! */
+  visibility: hidden;
+  counter-increment: distill-figure-counter;
+}
+
+a.figure-number::after {
+  content: "Figure " counter(distill-figure-counter) ":";
+}
+
+a.figure-number:last-child::after {
+  content: "Figure " counter(distill-figure-counter);
+}
+
+a.figure-number {
+  border-bottom: none;
+  text-transform: uppercase;
+  font-size: .85em;
+  color: hsla(206, 90%, 20%, 0.7);
+}
+
+a.figure-number:hover {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}

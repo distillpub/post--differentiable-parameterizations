@@ -84,9 +84,9 @@
     And, as long as the mapping from parameters to images is differentiable, we can still optimize alternative parameterizations with gradient descent.
   </p>
 
-  <figure class="subgrid">
+  <figure class="subgrid" id="figure-differentiable-parameterizations">
     <figcaption style="grid-column: kicker">
-      <!-- <span class="figure-number">Figure 1:</span> -->
+      <a href="#figure-differentiable-parameterizations" class="figure-number"></a>
       <span style="hyphens: manual;">As long as an </span>
       <span style="background-color: #FFF1E7; padding-left: 2px; padding-right: 2px;">image para&shy;meter&shy;ization</span>
       <span>is differ&shy;entiable, we can back&shy;propagate</span>
@@ -147,7 +147,7 @@ In the rest of the article we give concrete examples were such approaches are be
 <!-- =================================================== -->
 
   <hr/>
-  <h2>Aligned Neuron Interpolation</h2>
+  <h2 id="section-aligned-interpolation">Aligned Neuron Interpolation</h2>
 
 <!--
   <p>
@@ -170,6 +170,10 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 
   <!-- <img class="pointer" src="images/pointer.svg"> -->
+  <span class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+    <span class="figure-number-increment"></span>
+    <a href="#figure-aligned-interpolation-comparison" class="figure-number"></a>
+  </span>
   <d-figure id='AlignedUnalignedComparison'></d-figure>
 
   <!-- <figure class="">
@@ -189,7 +193,11 @@ We refer to the result of this procedure as the optimization for a feature visua
     , one of which is using a <em>shared parameterization</em>: each frame is parameterized as a combination of it's own unique parameterization, and a single shared parameterization.
     <!-- The shared parameterization makes it easier for the optimization process to find frames in which visual landmarks stay in the same position then frames where they don't. In order to produce an unaligned frame, this frame's unique parameterization would have to overpower the shared parameterization. -->
   </p>
-
+  
+  <span class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+    <span class="figure-number-increment"></span>
+    <a href="#figure-aligned-interpolation-examples" class="figure-number"></a>
+  </span>
   <d-figure id='AlignedInterpolationExamples'></d-figure>
 
   <p>
@@ -227,7 +235,7 @@ We refer to the result of this procedure as the optimization for a feature visua
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='experiment-styletransfer'>Style Transfer with non-VGG architectures</h2>
+  <h2 id='section-styletransfer'>Style Transfer with non-VGG architectures</h2>
 
   <p>
     Neural style transfer has a mystery:
@@ -252,7 +260,13 @@ We refer to the result of this procedure as the optimization for a feature visua
     For example, with the right image parameterization, GoogLeNet<d-cite key="szegedy2015googlenet"></d-cite> can produce images of comparable quality to VGG.
   </p>
 
-  <d-figure class="base-grid" id='StyleTransferExamples'></d-figure>
+  <d-figure id='StyleTransferExamples' class="base-grid"></d-figure>
+  
+  <p class="figcaption l-body">
+    <span class="figure-number-increment"></span>
+    <a href="#figure-style-transfer-examples" class="figure-number"></a>
+    Move the slider under "final image optimization" to compare optimization in pixel space and in the fourier basis. Both images were created with the same optimization objective and differ only in their parameterization.
+  </p>
 
   <p>
     We use the same decorrelated parameterization
@@ -268,15 +282,16 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   </p>
 
-  <figure class="subgrid">
+  <figure id="figure-style-transfer-diagram" class="subgrid">
     <!-- <img src="images/diagrams/styletransfer.png"/> -->
     <div style="grid-column: text-start / page-end; font-family: 'SF Pro Text';">
       <%= require("../static/images/diagrams/styletransfer.svg") %>
     </div>
-    <!-- <figcaption class="l-body">
+    <figcaption class="l-body">
+      <a href="#figure-style-transfer-diagram" class="figure-number"></a>
       Style Transfer optimizes an image for two objectives: a <strong>content objective</strong>, which aims to get neurons to fire in the same position as they did for the content image, and a <strong>style objective</strong>, which aims to create similar patterns of neuron activation anywhere as in the style image without regard to position.
       Normally, this process is sensitive to the choice of model. By parameterizing the optimized image in a decorrelated space it works for many more models.
-    </figcaption> -->
+    </figcaption>
   </figure>
 
   <p>
@@ -288,7 +303,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   <!-- =================================================== -->
 
   <hr/>
-  <h2 id='experiment-xy2rgb'>Compositional Pattern Producing Networks</h2>
+  <h2 id='section-xy2rgb'>Compositional Pattern Producing Networks</h2>
 
   <p>
     So far, we’ve explored image parameterizations that are relatively close to how we normally think of images, using pixels or Fourier components.
@@ -314,9 +329,12 @@ We refer to the result of this procedure as the optimization for a feature visua
     a general tool for parameterizing images in any neural art or visualization task.
   </p>
 
-  <figure>
+  <figure id="figure-xy2rgb-diagram">
     <%= require("../static/images/diagrams/cppn.svg") %>
-    <figcaption>CPPNs are a differentiable image parameterization. We can use them for neural art or visualization tasks by backproping not only through the CNN to the image, but then past the image, through the CPPN to its parameters.</figcaption>
+    <figcaption>
+      <a href="#figure-xy2rgb-diagram" class="figure-number"></a>
+      <span>CPPNs are a differentiable image parameterization. We can use them for neural art or visualization tasks by backpropagating past the image, through the CPPN to its parameters.</span>
+    </figcaption>
 
   </figure>
 
@@ -326,9 +344,10 @@ We refer to the result of this procedure as the optimization for a feature visua
     When used to optimize a feature visualization objective, they produce distinctive images:
   </p>
 
-  <figure class="base-grid">
+  <figure id="figure-xy2rgb-examples" class="base-grid">
     <d-figure style="grid-column: screen;" id="CPPN-Examples"></d-figure>
     <figcaption style="grid-column: text;">
+      <a href="#figure-xy2rgb-examples" class="figure-number"></a>
       A <d-cite key="stanley2007cppn">Compositional Pattern Producing Network (CPPN)</d-cite> is used as differentiable parameterization for visualizing features at different layers<d-cite key="olah2017feature"></d-cite>.
     </figcaption>
   </figure>
@@ -344,8 +363,13 @@ We refer to the result of this procedure as the optimization for a feature visua
   Because the iterative changes have a more global effect compared to, for example, a pixel parameterization, at the beginning of the optimization only major patterns are visible.
   By iteratively adjusting the weights, our immaginary beams are positioned in such a way that fine details emerge.
     </p>
-
-    <img class="pointer" src="images/pointer.svg">
+    
+    <span id="figure-xy2rgb-training" class="figcaption kicker-text-align" style="grid-column: kicker;">
+      <img class="pointer" src="images/pointer.svg"><br/>
+      <span class="figure-number-increment"></span>
+      <a href="#figure-xy2rgb-training" class="figure-number"></a>
+      <span>Output of CPPNs during training. <em>Control each video by hovering, or tapping it if you are on a mobile device.</em></span>
+    </span>
     <d-figure id='CPPNAnimations'></d-figure>
 
      <p>
@@ -354,8 +378,14 @@ We refer to the result of this procedure as the optimization for a feature visua
   This result is in fact achieved by interpolating the weights of the CPPN representations of the two patterns. A number of intermediate frames are then generated by generating an image given the interpolated CPPN representation.
   As before, changes in the parameter have a global effect and create visually appealing intermediate frames.
     </p>
-
-    <img class="pointer" src="images/pointer.svg">
+    
+    <span id="figure-xy2rgb-interpolation" class="figcaption kicker-text-align" style="grid-column: kicker;">
+      <img class="pointer" src="images/pointer.svg"><br/>
+      <span class="figure-number-increment"></span>
+      <a href="#figure-xy2rgb-interpolation" class="figure-number"></a>
+      <span>Interpolating CPPN weights between two learned points.</span>
+    </span>
+    
     <d-figure id='CPPNInterpolations'></d-figure>
 
     <p>
@@ -367,7 +397,7 @@ We refer to the result of this procedure as the optimization for a feature visua
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='experiment-featureviz-rgba'>Generation of Semi-Transparent Patterns</h2>
+  <h2 id='section-rgba'>Generation of Semi-Transparent Patterns</h2>
 
   <p>
     Neural networks used in this article, ware trained to receive 2D RGB images as input. Is it possible to use the same network to synthesize artifacts that span beyond this domain? Turns out that we can do it by making our differentiable parameterization define a <i>family</i> of images instead of a single image, and then sampling one or a few images from that family at each optimization step.
@@ -391,14 +421,15 @@ We refer to the result of this procedure as the optimization for a feature visua
     Thus, the optimizer can act on both the objective $obj_{old}$ and the transparency $I_a$ to find a balance between that maximizes the objective $obj_{new}$.
   </p>
 
-  <figure class="subgrid" style="margin-top: 0;">
+  <figure id="figure-rgba-diagram" class="subgrid" style="margin-top: 0;">
     <div class="l-body">
       <%= require("../static/images/diagrams/transparency.svg") %>
     </div>
     <!-- <img src="images/diagrams/transparency.svg"/> -->
     <figcaption class="l-body">
-      Adding an alpha channel to the image parameterization allows it to represent transparency.
-      Transparent areas are blended with a random background at each step of the optimization.
+      <a href="#figure-rgba-diagram" class="figure-number"></a>
+      <span>Adding an alpha channel to the image parameterization allows it to represent transparency.
+      Transparent areas are blended with a random background at each step of the optimization.</span>
     </figcaption>
   </figure>
 
@@ -417,6 +448,11 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 
   <d-figure class="base-grid" id='SemiTransparentExamples' style="padding: 0; border: none;"></d-figure>
+  <p class="l-body figcaption">
+    <span class="figure-number-increment"></span>
+    <a href="#figure-rgba-examples" class="figure-number"></a>
+    <span>Examples of the optimization of semi transparent images for different layers and units.</span>
+  </p>
 
 <!--
   <p>
@@ -523,7 +559,7 @@ We can observe that only the most dominant features are visible after the optimi
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='experiment-featureviz-3d'>Efficient Texture Optimization through 3D Rendering</h2>
+  <h2 id='section-featureviz-3d'>Efficient Texture Optimization through 3D Rendering</h2>
 
   <p>
 In previous sections we generated artistic images and animations using various image parameterization.
@@ -555,6 +591,11 @@ However, this approach generates a texture that does not consider the underlying
 </p>
 
 <d-figure class="base-grid" id="BunnyModelTextureSpaceOptimization"></d-figure>
+<p class="l-body figcaption">
+  <span class="figure-number-increment"></span>
+  <a href="#figure-featureviz-3d-explanation" class="figure-number"></a>
+  <span>3D model of the famous Stanford Bunny<d-cite key="turk2005stanfordBunny"></d-cite>. You can interact with the model by rotating and zooming. Moreover, you can unfold the object to its two-dimensional texture representation. This unfolding reveals the UV mapping used to store the texture in the texture image. Note how the render-based optimized texture is divided in several patches that allows for a complete and undistorted coverage of the object.</span>
+</p>
 
 <p>
   Second, the generated patterns are randomly oriented on different parts of the textured object.
@@ -576,7 +617,8 @@ The following diagram presents an overview of the proposed pipeline:
   <figure>
     <%= require("../static/images/diagrams/featurevis-3d.svg") %>
     <figcaption>
-      We optimize a texture by backpropagating through the rendering process. This is possible because we know how pixels in the rendered image correspond to pixels in the texture.
+      <a href="#figure-featureviz-3d-explanation" class="figure-number"></a>
+      <span>We optimize a texture by backpropagating through the rendering process. This is possible because we know how pixels in the rendered image correspond to pixels in the texture.</span>
     </figcaption>
   </figure>
 
@@ -593,6 +635,12 @@ By modifying the texture, during the following optimization iterations, the rend
   </p>
 
 <d-figure class="base-grid" id="3DFeatureVizExamples"></d-figure>
+<p class="l-body figcaption">
+  <span class="figure-number-increment"></span>
+  <a href="#figure-featureviz-3d-examples" class="figure-number"></a>
+  <span>Textures are generated by optimizing for a feature visualization objective function.
+  Seams in the textures are hardly visible and the patterns are correctly oriented.</span>
+</p>
 
 <p>
 The resulting textures are consistently optimized along the cuts, hence removing the seams and enforcing an uniform orientation for the rendered object.
@@ -603,17 +651,24 @@ In the next section we will se how this framework can be reused for performing a
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='experiment-styletransfer-3d'>Style Transfer for Textures through 3D Rendering</h2>
+  <h2 id='section-style-transfer-3d'>Style Transfer for Textures through 3D Rendering</h2>
 
   <p>
-Once that we have a framework for the efficient backpropagation of the gradients in the UV-mapped texture, we can adapt existing style transfer techniques for 3D objects.
+Now that we have established a framework for efficient backpropagation into the UV-mapped texture, we can use it to adapt existing style transfer techniques for 3D objects.
 Similarly to the 2D case, we aim at redrawing the original object's texture with the style of a user-provided image.
 The following diagram presents an overview of the approach:
   </p>
 
-  <figure style="grid-column: text-start / page-end;">
-    <%= require("../static/images/diagrams/styletransfer-3d.svg") %>
-    <!-- <img src="images/diagrams/styletransfer-3d.png"/> -->
+  <figure id="figure-style-transfer-3d-diagram" style="display: contents">
+    <div class="base-grid">
+      <figcaption class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+        <span class="figure-number-increment"></span>
+        <a href="#figure-style-transfer-3d-diagram" class="figure-number"></a>
+      </figcaption>
+      <div style="grid-column: text-start / page-end">
+        <%= require("../static/images/diagrams/styletransfer-3d.svg") %>
+      </div>
+    </div>
   </figure>
 
   <p>
@@ -622,11 +677,16 @@ At each iteration, we sample a random view point oriented toward the center of m
   </p>
 
   <p>
-Once that the images are rendered, we optimize for the style-transfer objective function introduced by Gatys et al.<d-cite key="gatys2015"></d-cite> and we map the parameterization back in the UV-mapped texture as introduced in the previous section.
+After the <em>content image</em> and <em>learned image</em> are rendered, we optimize for the style-transfer objective function introduced by Gatys et al.<d-cite key="gatys2015"></d-cite> and we map the parameterization back in the UV-mapped texture as introduced in the previous section.
 The procedure is then iterated until the desired blend of content and style is obtained in the target texture.
   </p>
 
   <d-figure class="base-grid" id="3DStyleTransferExamples"></d-figure>
+  <p class="l-body figcaption">
+    <span class="figure-number-increment"></span>
+    <a href="#figure-style-transfer-3d-examples" class="figure-number"></a>
+    <span>Style Transfer onto various 3D models. Note that visual landmarks in the content texture, such as eyes, show up correctly in the generated texture.</span>
+  </p>
 
   <p>
 Because every view is optimized independently, the optimization is forced to add all the style elements at every iteration.
@@ -643,10 +703,14 @@ However, despite the style image contains only cold tones, the resulting fur has
 Even more interesting is how the eyes of the bunny are preserved when different styles are transfered.
 For example, when the style is obtained from the Van Gogh's painting, the eyes are transformed in a star-like swirl, while if Kandinsky's work is used, they become abstract patterns that still resemble the original eyes.
   </p>
-
-<div>
-  <div style="background-image: url('images/printed_bunny.jpg'); height: 400px; width: 450px; background-size: cover; background-position: center; width: 50%;  margin: 0 auto;margin-bottom:15px;"></div>
-</div>
+  
+  <figure id="figure-style-transfer-3d-picture">
+    <img style="width: 100%; border-radius: 4px;" src="images/printed_bunny_extended.jpg">
+    <figcaption>
+      <a href="#figure-style-transfer-3d-picture" class="figure-number"></a>
+      <span>Styletransfer of "The large one parades on red bottom" (Fernand Leger, 1953) onto the 3D model "Stanford Bunny" by Greg Turk & Marc Levoy.</span>
+    </figcaption>
+  </figure>
 
 
 <p>
@@ -717,7 +781,6 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
   <d-citation-list></d-citation-list>
 </d-appendix>
 
-<!-- bibliography will be inlined during Distill pipeline's pre-rendering -->
 <d-bibliography src="bibliography.bib"></d-bibliography>
 
 </body>

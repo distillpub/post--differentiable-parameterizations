@@ -1,6 +1,6 @@
 <svelte:window on:resize="resize()"/>
 
-<figure id="style-transfer-examples" class="grid">
+<figure id="figure-style-transfer-3d-examples" class="grid">
 
 <div id="input-content" class="input-wrapper">
   <h4>Content Model</h4>
@@ -26,7 +26,7 @@
 <img class="arrow" src="images/vertical-join-arrow.svg"/>
 
 <div id="output">
-  <h4>Final image Optimization</h4>
+  <h4>Model with optimized texture</h4>
   <div ref:sizer class="THREEjsview">
     <THREEjsView ref:view2 on:animate {camera} {modelFolder} {textureUrl} {width} {height} bind:unfoldFlag autoRotate={false}></THREEjsView>
   </div>
@@ -45,7 +45,7 @@
 
 <style>
 
-#style-transfer-examples {
+figure {
   grid-column: text;
 }
 
