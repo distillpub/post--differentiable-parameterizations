@@ -691,8 +691,10 @@ The procedure is then iterated until the desired blend of content and style is o
   <p>
 Because every view is optimized independently, the optimization is forced to add all the style elements at every iteration.
 For example, if we use as style image the Van Gogh's "Starry Night" painting, stars will be added in every single view.
-We found that more pleasing results, as those presented above, are obtained by introducing a sort of "memory" of the style of previous views.
-To this end, the style loss is computed as the weighted average of the loss at the current an previous iteration.
+We found that more pleasing results, as those presented above, are obtained by introducing a sort of "memory" of the style of
+previous views. To this end, we maintain moving averages of style-representing Gram matrices <d-cite key="gatys2015"></d-cite>
+over the recently sampled viewpoints. On each optimization iteration we compute style loss against those averaged matrices,
+instead of the ones computed for the particular view.
   </p>
 
   <p>
