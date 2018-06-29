@@ -1,7 +1,9 @@
 <svelte:window on:mouseup='set({dragging: false})'/>
 
 <div ref:container class="container" 
-     on:mousemove="mousemove(event)">
+     on:mousemove="mousemove(event)"
+     on:touchstart="touch(event)"
+     on:touchmove="touch(event)">
   <img ref:imgBackground class="background" src={right} on:click="toggle()">
   <div class="right label">{rightName}</div>
   <div class="resizeable" style="width: {overlayPercentage}%">
@@ -131,6 +133,14 @@ export default {
       let overlayWidthRatio = 100 * (event.clientX - bbox.left) / bbox.width;
       overlayWidthRatio = clamp(overlayWidthRatio, 2, 98);
       this.set({overlayPercentage: overlayWidthRatio});
+    },
+    touch(event) {
+      const bbox = this.refs.container.getBoundingClientRect();
+      const clientX = event.touches[0].clientX;
+      let overlayWidthRatio = 100 * (clientX - bbox.left) / bbox.width;
+      overlayWidthRatio = clamp(overlayWidthRatio, 2, 98);
+      this.set({overlayPercentage: overlayWidthRatio});
+      console.log(overlayWidthRatio, event.clientX)
     },
     toggle() {
       const { overlayPercentage } = this.get();
