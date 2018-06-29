@@ -157,7 +157,7 @@ export default {
   },
   methods: {
     toggle: function (toggledIndex) {
-      const { currentIndex } = this.get();
+      const { index: currentIndex } = this.get();
       if (toggledIndex == currentIndex) {
         this.set({index: 0});
       } else {
@@ -166,7 +166,6 @@ export default {
       const { index } = this.get();
       const targetPos = cameraPositions[index];
       this.refs.view1.flyTo(targetPos);
-      // this.refs.view2.flyTo(targetPos); -- views are in sync
     },
     resize: function() {
       const bb = this.refs.outputExample.getBoundingClientRect();
