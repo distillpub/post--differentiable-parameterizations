@@ -4,7 +4,7 @@
 
   <div class="l-body">
     <div class="controls">
-      <ExampleSelector {spriteUrl} bind:index spriteWidth={128} spriteColumns={8}></ExampleSelector>
+      <ExampleSelector {spriteUrl} bind:index spriteWidth={128} spriteColumns={8} spriteNumItems={8}></ExampleSelector>
       <div><ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch></div>
     </div>
     <div ref:threejsContainer class="THREEjsview">
