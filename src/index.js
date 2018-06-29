@@ -38,14 +38,14 @@ const visualTOC = new VisualTOC({target: tocNav});
   });
 }
 
-{
-  const figure = document.getElementById('NonTransparentNeuronExamples');
-  figure.addEventListener("ready", function() {
-    const nonTransparentNeuronExamples = new NonTransparentNeuronExamples({target: figure, data: {
-      url: 'images/neurons.jpg', width: 176, columns: 5
-    }});
-  });
-}
+// {
+//   const figure = document.getElementById('NonTransparentNeuronExamples');
+//   figure.addEventListener("ready", function() {
+//     const nonTransparentNeuronExamples = new NonTransparentNeuronExamples({target: figure, data: {
+//       url: 'images/neurons.jpg', width: 176, columns: 5
+//     }});
+//   });
+// }
 
 {
   const figure = document.getElementById('AlignedInterpolationExamples');
@@ -147,4 +147,30 @@ const visualTOC = new VisualTOC({target: tocNav});
   figure.addEventListener("ready", function() {
     const styleTransferExamples = new ThreeDFeatureVizExamples({target: figure});
   });
+}
+
+{
+  function determineTextZoomLevel() {
+    const p = document.getElementById('first-paragraph');
+    if (p) {
+      const brWidth = p.getBoundingClientRect().width;
+      const zoomlevel = brWidth / 704; // magic: default text body width
+      document.body.style = "--textzoomlevel: " + zoomlevel;
+      
+      const tags = document.getElementsByClassName("distill-experimental-autoresize");
+      for (const tag of tags) {
+        // magic, supposed to be figure tag within d-figure
+        if (tag.children.length == 1) {
+          const innerFigure = tag.children[0];
+          const height = parseInt(innerFigure.style.height);
+          const padding = 40;
+          tag.style.height = (height + padding) * zoomlevel + "px";
+        }
+        
+      }
+    }
+  }
+  
+  window.onresize = determineTextZoomLevel;
+  determineTextZoomLevel();
 }

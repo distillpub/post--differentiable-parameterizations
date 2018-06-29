@@ -69,22 +69,10 @@ d-figure > figure {
   counter-reset: distill-figure-counter;
 } */
 
-figure {
-  counter-increment: distill-figure-counter;
-}
 
-.figure-number-increment {
-  /* We can't use display: none because we want counter-increment to work! */
-  visibility: hidden;
-  counter-increment: distill-figure-counter;
-}
 
-a.figure-number::after {
-  content: "Figure " counter(distill-figure-counter) ":";
-}
-
-a.figure-number:last-child::after {
-  content: "Figure " counter(distill-figure-counter);
+a.figure-number::before {
+  content: "Figure ";
 }
 
 a.figure-number {
@@ -97,4 +85,13 @@ a.figure-number {
 a.figure-number:hover {
   border-bottom-width: 1px;
   border-bottom-style: solid;
+  border-bottom-color: hsla(206, 90%, 20%, 0.7);
+}
+
+figure canvas {
+  display: block;
+}
+
+d-article h2 {
+  margin-top: 0;
 }

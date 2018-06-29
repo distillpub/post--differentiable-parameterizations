@@ -66,7 +66,7 @@
 <d-article>
 
 
-  <p>
+  <p id="first-paragraph">
     Neural networks trained to classify images have a remarkable -- and surprising! -- capacity to generate images.
     Techniques such as DeepDream <d-cite key="mordvintsev2015inceptionism"></d-cite>, style transfer<d-cite key="gatys2015"></d-cite>, and feature visualization<d-cite key="olah2017feature"></d-cite> leverage this capacity as a powerful tool for exploring the inner workings of neural networks, and to fuel a small artistic movement based neural art.
   </p>
@@ -86,14 +86,13 @@
 
   <figure class="subgrid" id="figure-differentiable-parameterizations">
     <figcaption style="grid-column: kicker">
-      <a href="#figure-differentiable-parameterizations" class="figure-number"></a>
+      <a href="#figure-differentiable-parameterizations" class="figure-number">1</a>:
       <span style="hyphens: manual;">As long as an </span>
       <span style="background-color: #FFF1E7; padding-left: 2px; padding-right: 2px;">image para&shy;meter&shy;ization</span>
       <span>is differ&shy;entiable, we can back&shy;propagate</span>
       <span style="white-space: nowrap;">( <img src="images/diagrams/backprop-arrow.svg" style="width: unset;"/> )</span>
       <span>through it.</span>
     </figcaption>
-    <!-- <img class="l-body" src="images/diagrams/general.png"/> -->
     <div class="l-body">
       <%= require("../static/images/diagrams/general.svg") %>
     </div>
@@ -171,8 +170,7 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <!-- <img class="pointer" src="images/pointer.svg"> -->
   <span class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
-    <span class="figure-number-increment"></span>
-    <a href="#figure-aligned-interpolation-comparison" class="figure-number"></a>
+    <a href="#figure-aligned-interpolation-comparison" class="figure-number">2</a>
   </span>
   <d-figure id='AlignedUnalignedComparison'></d-figure>
 
@@ -195,10 +193,9 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
   
   <span class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
-    <span class="figure-number-increment"></span>
-    <a href="#figure-aligned-interpolation-examples" class="figure-number"></a>
+    <a href="#figure-aligned-interpolation-examples" class="figure-number">3</a>
   </span>
-  <d-figure id='AlignedInterpolationExamples'></d-figure>
+  <d-figure class="distill-experimental-autoresize" id='AlignedInterpolationExamples'></d-figure>
 
   <p>
     By partially sharing a parameterization between frames, we encourage the resulting visualizations to naturally align.
@@ -263,8 +260,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   <d-figure id='StyleTransferExamples' class="base-grid"></d-figure>
   
   <p class="figcaption l-body">
-    <span class="figure-number-increment"></span>
-    <a href="#figure-style-transfer-examples" class="figure-number"></a>
+    <a href="#figure-style-transfer-examples" class="figure-number">4</a>:
     Move the slider under "final image optimization" to compare optimization in pixel space and in the fourier basis. Both images were created with the same optimization objective and differ only in their parameterization.
   </p>
 
@@ -284,14 +280,14 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <figure id="figure-style-transfer-diagram" class="subgrid">
     <!-- <img src="images/diagrams/styletransfer.png"/> -->
+    <figcaption class="kicker-text-align" style="grid-column: kicker;">
+      <a href="#figure-style-transfer-diagram" class="figure-number">5</a>
+      <!-- Style Transfer optimizes an image for two objectives: a <strong>content objective</strong>, which aims to get neurons to fire in the same position as they did for the content image, and a <strong>style objective</strong>, which aims to create similar patterns of neuron activation anywhere as in the style image without regard to position.
+      Normally, this process is sensitive to the choice of model. By parameterizing the optimized image in a decorrelated space it works for many more models. -->
+    </figcaption>
     <div style="grid-column: text-start / page-end;">
       <%= require("../static/images/diagrams/styletransfer.svg") %>
     </div>
-    <figcaption class="l-body">
-      <a href="#figure-style-transfer-diagram" class="figure-number"></a>
-      Style Transfer optimizes an image for two objectives: a <strong>content objective</strong>, which aims to get neurons to fire in the same position as they did for the content image, and a <strong>style objective</strong>, which aims to create similar patterns of neuron activation anywhere as in the style image without regard to position.
-      Normally, this process is sensitive to the choice of model. By parameterizing the optimized image in a decorrelated space it works for many more models.
-    </figcaption>
   </figure>
 
   <p>
@@ -332,8 +328,8 @@ We refer to the result of this procedure as the optimization for a feature visua
   <figure id="figure-xy2rgb-diagram">
     <%= require("../static/images/diagrams/cppn.svg") %>
     <figcaption>
-      <a href="#figure-xy2rgb-diagram" class="figure-number"></a>
-      <span>CPPNs are a differentiable image parameterization. We can use them for neural art or visualization tasks by backpropagating past the image, through the CPPN to its parameters.</span>
+      <a href="#figure-xy2rgb-diagram" class="figure-number">6</a>:
+      CPPNs are a differentiable image parameterization. We can use them for neural art or visualization tasks by backpropagating past the image, through the CPPN to its parameters.
     </figcaption>
 
   </figure>
@@ -347,7 +343,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   <figure id="figure-xy2rgb-examples" class="base-grid">
     <d-figure style="grid-column: screen;" id="CPPN-Examples"></d-figure>
     <figcaption style="grid-column: text;">
-      <a href="#figure-xy2rgb-examples" class="figure-number"></a>
+      <a href="#figure-xy2rgb-examples" class="figure-number">7</a>:
       A <d-cite key="stanley2007cppn">Compositional Pattern Producing Network (CPPN)</d-cite> is used as differentiable parameterization for visualizing features at different layers<d-cite key="olah2017feature"></d-cite>.
     </figcaption>
   </figure>
@@ -366,8 +362,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     
     <span id="figure-xy2rgb-training" class="figcaption kicker-text-align" style="grid-column: kicker;">
       <img class="pointer" src="images/pointer.svg"><br/>
-      <span class="figure-number-increment"></span>
-      <a href="#figure-xy2rgb-training" class="figure-number"></a>
+      <a href="#figure-xy2rgb-training" class="figure-number">8</a>:
       <span>Output of CPPNs during training. <em>Control each video by hovering, or tapping it if you are on a mobile device.</em></span>
     </span>
     <d-figure id='CPPNAnimations'></d-figure>
@@ -381,11 +376,9 @@ We refer to the result of this procedure as the optimization for a feature visua
     
     <span id="figure-xy2rgb-interpolation" class="figcaption kicker-text-align" style="grid-column: kicker;">
       <img class="pointer" src="images/pointer.svg"><br/>
-      <span class="figure-number-increment"></span>
-      <a href="#figure-xy2rgb-interpolation" class="figure-number"></a>
-      <span>Interpolating CPPN weights between two learned points.</span>
+      <a href="#figure-xy2rgb-interpolation" class="figure-number">9</a>:
+      Interpolating CPPN weights between two learned points.
     </span>
-    
     <d-figure id='CPPNInterpolations'></d-figure>
 
     <p>
@@ -427,9 +420,9 @@ We refer to the result of this procedure as the optimization for a feature visua
     </div>
     <!-- <img src="images/diagrams/transparency.svg"/> -->
     <figcaption class="l-body">
-      <a href="#figure-rgba-diagram" class="figure-number"></a>
-      <span>Adding an alpha channel to the image parameterization allows it to represent transparency.
-      Transparent areas are blended with a random background at each step of the optimization.</span>
+      <a href="#figure-rgba-diagram" class="figure-number">10</a>:
+      Adding an alpha channel to the image parameterization allows it to represent transparency.
+      Transparent areas are blended with a random background at each step of the optimization.
     </figcaption>
   </figure>
 
@@ -449,9 +442,8 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <d-figure class="base-grid" id='SemiTransparentExamples' style="padding: 0; border: none;"></d-figure>
   <p class="l-body figcaption">
-    <span class="figure-number-increment"></span>
-    <a href="#figure-rgba-examples" class="figure-number"></a>
-    <span>Examples of the optimization of semi transparent images for different layers and units.</span>
+    <a href="#figure-rgba-examples" class="figure-number">11</a>:
+    Examples of the optimization of semi transparent images for different layers and units.
   </p>
 
 <!--
@@ -463,98 +455,16 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 -->
 
-<p>
-  It turns out that the generation of semi-transparent images is useful also for the interpretation of deep neural network computations.
-  Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
-  Unfortunately, there is no way for these visualization to distuingish what the neuron cares about strongly from what it cares about marginally
-  <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>.
-  For example, notice the geometric structures around the center of these neuron visualizations:
-</p>
-
-  <d-figure style="grid-column-gap: inherit;" id="NonTransparentNeuronExamples"></d-figure>
-
   <p>
-    Ideally, we would like a way for our visualizations to make this distinction in importance.
-    One natural way to represent that a part of the image doesn't matter is for it to be transparent.
-    More broadly, if we optimize an image with an alpha channel and encourage the image to be transparent, unimportant parts of the image, according to the feature visualization objective, should become transparent.
-    Introducing transparency does help separate areas the neuron cares about:
+    It turns out that the generation of semi-transparent images is useful in feature visualization.
+    Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
+    Unfortunately, there is no way for these visualizations to distuingish what areas of an image a neuron cares about strongly from what it cares about marginally.
+    <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>
+    Ideally, we would like a way for our visualizations to make this distinction in importance--one natural way to represent that a part of the image doesn't matter is for it to be transparent.
+    Thus, if we optimize an image with an alpha channel and encourage the image to be transparent, unimportant parts of the image, according to the feature visualization objective, should become transparent.
   </p>
 
   <d-figure class="subgrid" id="TransparentNeuronExamples"></d-figure>
-
-  <!-- <figure class="base-grid shaded-figure">
-    <figcaption style="grid-column: kicker;">
-      The image is parameterized as the combination of the RGB and alpha channel.
-    </figcaption>
-    <d-figure style="grid-column: text-start / screen-end; overflow: visible; contain: unset;" id="SemiTransparentCombination"></d-figure>
-  </figure> -->
-
-  <!-- <p>
-    TODO: Paragraph discussing importance of different noise distributions for the background.
-  </p>
-
-  <figure class="base-grid shaded-figure">
-    <p class="l-body">
-      different noise distributions on background!
-    </p>
-  </figure> -->
-
-
-
-<!--
-  <p>
-    Most existing optimization techniques work on an input-space that has the same format as the networks training data.
-    For networks trained to process images, the input usually corresponds to a 2D array of pixels, where each pixel is represented by RGB channel values.
-    In this section we investigate how to optimize channels that were not used to train the network.
-    Specifically, we create semi-transparent images by optimizing the alpha channel of an image in combination with its RGB channels.
-  </p>
-
-
-
-  <p>
-    We assume that the <b>alpha channel</b> has values ranging from 0, when they are fully transparent, to 1 if they are completely opaque.
-    We'll do feature visualization<d-cite key="olah2017feature"></d-cite> while imposing a desired amount of transparency in the generated image.
-    <d-footnote>
-      We optimize for the feature to be visualized in the RGB image multiplied by its alpha channel and, at the same time, minimize the squared loss of the average alpha value to a desired threshold $\alpha_t$.
-    </d-footnote>
-  </p>
-
-<figure class="base-grid shaded-figure">
-  <figcaption style="grid-column: kicker;">
-    The image is parameterized as the combination of the RGB and alpha channel.
-  </figcaption>
-  <d-figure style="grid-column: text-start / screen-end; overflow: visible; contain: unset;" id="SemiTransparentCombination"></d-figure>
-</figure>
-
-  <p>
-By multiplying the RGB channels with the alpha channel, we are de-facto imposing a black background for transparent areas.
-Therefore, if the target feature detects black or dark colors, the optimization has two ways for optimizing the result.
-It may either generate a dark color in the RGB channels or reduce the transparency accordingly.
-  </p>
-  <p>
-Since we constraint the level of transparency, given by the $\alpha_t$ threshold, the optimization is incentivized to apply the latter of the two strategies.
-Unfortunately, this will lead to missing colors in the RGB channels.
-The same problem holds if different static colors are chosen as background.
-The optimization is never incentivized to propagate the chosen color to the generated image.
-  </p>
-
-  <p>
-To solve this problem, we randomly change every background pixel at each iteration of the optimization.
-In this way, we force the optimization to propagate the colors to the RGB channels and do not "cheat" by making use of a static background.
-  </p>
-  <p>
-We experimented with two different strategies for generating the background.
-The first approach rely on a randomly generated background for each pixel, while the second one uses a user provided image which is randomly cropped and used as background.
-For the latter, we found that the chosen image must have a diverse palette or the same problem may arise.
-  </p>
-
- <d-figure class="base-grid" id='SemiTransparentExamples'></d-figure>
-
-  <p>
-In this section we have shown how we can extend optimization techniques beyond the input space that was initially used for training the network.
-While this approach can be seen as an artistic content generation technique, it may also improve the interpretability of the generated patterns.
-We can observe that only the most dominant features are visible after the optimization.
-  </p>-->
 
 <!-- =================================================== -->
 
@@ -593,8 +503,8 @@ However, this approach generates a texture that does not consider the underlying
 <d-figure class="base-grid" id="BunnyModelTextureSpaceOptimization"></d-figure>
 <p class="l-body figcaption">
   <span class="figure-number-increment"></span>
-  <a href="#figure-featureviz-3d-explanation" class="figure-number"></a>
-  <span>3D model of the famous Stanford Bunny<d-cite key="turk2005stanfordBunny"></d-cite>. You can interact with the model by rotating and zooming. Moreover, you can unfold the object to its two-dimensional texture representation. This unfolding reveals the UV mapping used to store the texture in the texture image. Note how the render-based optimized texture is divided in several patches that allows for a complete and undistorted coverage of the object.</span>
+  <a href="#figure-featureviz-3d-explanation" class="figure-number">13</a>:
+  3D model of the famous Stanford Bunny<d-cite key="turk2005stanfordBunny"></d-cite>. You can interact with the model by rotating and zooming. Moreover, you can unfold the object to its two-dimensional texture representation. This unfolding reveals the UV mapping used to store the texture in the texture image. Note how the render-based optimized texture is divided in several patches that allows for a complete and undistorted coverage of the object.
 </p>
 
 <p>
@@ -614,11 +524,11 @@ Intuitively, we optimize not directly in the texture space, but rather through t
 The following diagram presents an overview of the proposed pipeline:
   </p>
 
-  <figure>
+  <figure id="figure-featureviz-3d-diagram">
     <%= require("../static/images/diagrams/featurevis-3d.svg") %>
     <figcaption>
-      <a href="#figure-featureviz-3d-explanation" class="figure-number"></a>
-      <span>We optimize a texture by backpropagating through the rendering process. This is possible because we know how pixels in the rendered image correspond to pixels in the texture.</span>
+      <a href="#figure-featureviz-3d-diagram" class="figure-number">14</a>:
+      We optimize a texture by backpropagating through the rendering process. This is possible because we know how pixels in the rendered image correspond to pixels in the texture.
     </figcaption>
   </figure>
 
@@ -636,10 +546,9 @@ By modifying the texture, during the following optimization iterations, the rend
 
 <d-figure class="base-grid" id="3DFeatureVizExamples"></d-figure>
 <p class="l-body figcaption">
-  <span class="figure-number-increment"></span>
-  <a href="#figure-featureviz-3d-examples" class="figure-number"></a>
-  <span>Textures are generated by optimizing for a feature visualization objective function.
-  Seams in the textures are hardly visible and the patterns are correctly oriented.</span>
+  <a href="#figure-featureviz-3d-examples" class="figure-number">15</a>:
+  Textures are generated by optimizing for a feature visualization objective function.
+  Seams in the textures are hardly visible and the patterns are correctly oriented.
 </p>
 
 <p>
@@ -659,15 +568,12 @@ Similarly to the 2D case, we aim at redrawing the original object's texture with
 The following diagram presents an overview of the approach:
   </p>
 
-  <figure id="figure-style-transfer-3d-diagram" style="display: contents">
-    <div class="base-grid">
-      <figcaption class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
-        <span class="figure-number-increment"></span>
-        <a href="#figure-style-transfer-3d-diagram" class="figure-number"></a>
-      </figcaption>
-      <div style="grid-column: text-start / page-end">
-        <%= require("../static/images/diagrams/styletransfer-3d.svg") %>
-      </div>
+  <figure class="subgrid" id="figure-style-transfer-3d-diagram">
+    <figcaption class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+      <a href="#figure-style-transfer-3d-diagram" class="figure-number">16</a>
+    </figcaption>
+    <div style="grid-column: text-start / page-end">
+      <%= require("../static/images/diagrams/styletransfer-3d.svg") %>
     </div>
   </figure>
 
@@ -683,9 +589,8 @@ The procedure is then iterated until the desired blend of content and style is o
 
   <d-figure class="base-grid" id="3DStyleTransferExamples"></d-figure>
   <p class="l-body figcaption">
-    <span class="figure-number-increment"></span>
-    <a href="#figure-style-transfer-3d-examples" class="figure-number"></a>
-    <span>Style Transfer onto various 3D models. Note that visual landmarks in the content texture, such as eyes, show up correctly in the generated texture.</span>
+    <a href="#figure-style-transfer-3d-examples" class="figure-number">17</a>:
+    Style Transfer onto various 3D models. Note that visual landmarks in the content texture, such as eyes, show up correctly in the generated texture.
   </p>
 
   <p>
@@ -707,8 +612,8 @@ For example, when the style is obtained from the Van Gogh's painting, the eyes a
   <figure id="figure-style-transfer-3d-picture">
     <img style="width: 100%; border-radius: 4px;" src="images/printed_bunny_extended.jpg">
     <figcaption>
-      <a href="#figure-style-transfer-3d-picture" class="figure-number"></a>
-      <span>Styletransfer of "<a href="https://www.wikiart.org/en/fernand-leger/the-large-one-parades-on-red-bottom-1953" target="_blank">The large one parades on red bottom</a>" (Fernand Leger, 1953) onto the 3D model "<a href="http://alice.loria.fr/index.php/software/7-data/37-unwrapped-meshes.html" target="_blank">Stanford Bunny</a>" by Greg Turk & Marc Levoy.</span>
+      <a href="#figure-style-transfer-3d-picture" class="figure-number">18</a>:
+      Styletransfer of "<a href="https://www.wikiart.org/en/fernand-leger/the-large-one-parades-on-red-bottom-1953" target="_blank">The large one parades on red bottom</a>" (Fernand Leger, 1953) onto the 3D model "<a href="http://alice.loria.fr/index.php/software/7-data/37-unwrapped-meshes.html" target="_blank">Stanford Bunny</a>" by Greg Turk & Marc Levoy.
     </figcaption>
   </figure>
 
