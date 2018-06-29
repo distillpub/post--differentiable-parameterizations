@@ -84,7 +84,7 @@
 }
 .visual-toc-colab {
   border-radius: 5px;
-  border: dashed 1px rgba(0,0,0,0.1);
+  border: solid 1px rgba(0,0,0,0.1);
   margin-top: 1em;
   padding-left: 1.2em;
   padding-right: 1.2em;
@@ -94,6 +94,7 @@
   color: #aaa;
   font-size: 10.5px;
   line-height: 24px;
+  /* background-color: yellow; */
 
 }
 .visual-toc-colab > img {
@@ -132,12 +133,12 @@ export default {
   data() {
     return {
       sections: [
-        { title: "Aligned Neuron Interpolation", colab_url: "", anchor: "#section-aligned-interpolation", sprite_index: 0  },
-        { title: "Style Transfer on non-VGG", colab_url: "", anchor: "#section-styletransfer", sprite_index: 1 },
+        { title: "Aligned Feature Vis interpolation", colab_url: "", anchor: "#section-aligned-interpolation", sprite_index: 0  },
+        { title: "Style Transfer in Fourier Space", colab_url: "", anchor: "#section-styletransfer", sprite_index: 1 },
         { title: "Feature Vis with CPPNs", colab_url: "", anchor: "#section-xy2rgb", sprite_index: 3 },
         { title: "Feature Vis with transparency", colab_url: "", anchor: "#section-rgba", sprite_index: 2 },
-        { title: "Feature Vis in 3D", colab_url: "", anchor: "#section-featureviz-3d", sprite_index: 4 },
-        { title: "Style Transfer in 3D", colab_url: "", anchor: "#section-style-transfer-3d", sprite_index: 5 },
+        { title: "3D Feature Vis", colab_url: "", anchor: "#section-featureviz-3d", sprite_index: 4 },
+        { title: "3D Style Transfer", colab_url: "", anchor: "#section-style-transfer-3d", sprite_index: 5 },
       ]
     }
   },
