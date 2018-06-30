@@ -148,7 +148,10 @@ In the rest of the article we give concrete examples were such approaches are be
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id="section-aligned-interpolation">Aligned Neuron Interpolation</h2>
+  <p class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+    <a href="#section-aligned-interpolation" class="section-number">1</a>
+  </p>
+  <h2 id="section-aligned-interpolation"><a href="#section-aligned-interpolation">Aligned Neuron Interpolation</a></h2>
 
 <!--
   <p>
@@ -234,7 +237,10 @@ We refer to the result of this procedure as the optimization for a feature visua
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='section-styletransfer'>Style Transfer with non-VGG architectures</h2>
+  <p class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+    <a href="#section-styletransfer" class="section-number">2</a>
+  </p>
+  <h2 id='section-styletransfer'><a href="#section-styletransfer">Style Transfer with non-VGG architectures</a></h2>
 
   <p>
     Neural style transfer has a mystery:
@@ -301,7 +307,10 @@ We refer to the result of this procedure as the optimization for a feature visua
   <!-- =================================================== -->
 
   <hr/>
-  <h2 id='section-xy2rgb'>Compositional Pattern Producing Networks</h2>
+  <p class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+    <a href="#section-xy2rgb" class="section-number">3</a>
+  </p>
+  <h2 id='section-xy2rgb'><a href="#section-xy2rgb">Compositional Pattern Producing Networks</a></h2>
 
   <p>
     So far, we’ve explored image parameterizations that are relatively close to how we normally think of images, using pixels or Fourier components.
@@ -392,7 +401,10 @@ We refer to the result of this procedure as the optimization for a feature visua
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='section-rgba'>Generation of Semi-Transparent Patterns</h2>
+  <p class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+    <a href="#section-rgba" class="section-number">4</a>
+  </p>
+  <h2 id='section-rgba'><a href="#section-rgba">Generation of Semi-Transparent Patterns</a></h2>
 
   <p>
     Neural networks used in this article, ware trained to receive 2D RGB images as input. Is it possible to use the same network to synthesize artifacts that span beyond this domain? Turns out that we can do it by making our differentiable parameterization define a <i>family</i> of images instead of a single image, and then sampling one or a few images from that family at each optimization step.
@@ -471,7 +483,10 @@ We refer to the result of this procedure as the optimization for a feature visua
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='section-featureviz-3d'>Efficient Texture Optimization through 3D Rendering</h2>
+  <p class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+    <a href="#section-featureviz-3d" class="section-number">5</a>
+  </p>
+  <h2 id='section-featureviz-3d'><a href="#section-featureviz-3d">Efficient Texture Optimization through 3D Rendering</a></h2>
 
   <p>
 In previous sections we generated artistic images and animations using various image parameterization.
@@ -562,7 +577,10 @@ In the next section we will se how this framework can be reused for performing a
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='section-style-transfer-3d'>Style Transfer for Textures through 3D Rendering</h2>
+  <p class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
+    <a href="#section-style-transfer-3d" class="section-number">6</a>
+  </p>
+  <h2 id='section-style-transfer-3d'><a href="#section-style-transfer-3d">Style Transfer for Textures through 3D Rendering</a></h2>
 
   <p>
 Now that we have established a framework for efficient backpropagation into the UV-mapped texture, we can use it to adapt existing style transfer techniques for 3D objects.
@@ -617,7 +635,7 @@ For example, when the style is obtained from the Van Gogh's painting, the eyes a
     <img style="width: 100%; border-radius: 4px;" src="images/printed_bunny_extended.jpg">
     <figcaption>
       <a href="#figure-style-transfer-3d-picture" class="figure-number">18</a>:
-      Styletransfer of "<a href="https://www.wikiart.org/en/fernand-leger/the-large-one-parades-on-red-bottom-1953" target="_blank">The large one parades on red bottom</a>" (Fernand Leger, 1953) onto the 3D model "<a href="http://alice.loria.fr/index.php/software/7-data/37-unwrapped-meshes.html" target="_blank">Stanford Bunny</a>" by Greg Turk & Marc Levoy.
+      3D print of a style transfer of "<a href="https://www.wikiart.org/en/fernand-leger/the-large-one-parades-on-red-bottom-1953" target="_blank">The large one parades on red bottom</a>" (Fernand Leger, 1953) onto the "<a href="http://alice.loria.fr/index.php/software/7-data/37-unwrapped-meshes.html" target="_blank">Stanford Bunny</a>" by Greg Turk & Marc Levoy.
     </figcaption>
   </figure>
 
@@ -631,7 +649,8 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
 <!-- =================================================== -->
 
   <hr/>
-  <h2 id='conclusions'>Conclusions</h2>
+  
+  <h2 id='conclusions'><a href="#conclusions">Conclusions</a></h2>
 
   <p>
     For the creative artist or researcher, there's a large space of ways to parameterize images for optimization.

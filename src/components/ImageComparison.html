@@ -122,7 +122,7 @@ export default {
   oncreate() {
     const imgTags = [this.refs.imgForeground, this.refs.imgBackground];
     for (const imgTag of imgTags) {
-      // imgTag.on('dragstart', (event) => event.preventDefault() );
+      imgTag.ondragstart = (event) => false;
     }
   },
   methods: {

@@ -52,7 +52,7 @@ d-figure > figure {
   }
   
   .kicker-text-align {
-    text-align: right;
+    /* text-align: right; */
   }
 }
 
@@ -69,20 +69,24 @@ d-figure > figure {
   counter-reset: distill-figure-counter;
 } */
 
-
+a.section-number::before {
+  content: "Section ";
+}
 
 a.figure-number::before {
   content: "Figure ";
 }
 
-a.figure-number {
-  border-bottom: none;
+a.figure-number,
+a.section-number {
+  border-bottom-color: hsla(206, 90%, 20%, 0.3);
   text-transform: uppercase;
   font-size: .85em;
   color: hsla(206, 90%, 20%, 0.7);
 }
 
-a.figure-number:hover {
+a.figure-number:hover,
+a.section-number:hover {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: hsla(206, 90%, 20%, 0.7);
@@ -94,4 +98,8 @@ figure canvas {
 
 d-article h2 {
   margin-top: 0;
+}
+
+d-article h2 a {
+  border-bottom: none;
 }
