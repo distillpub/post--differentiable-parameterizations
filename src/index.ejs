@@ -122,11 +122,11 @@
 
 <p>
   It may seem surprising that changing the parameterization of an optimization problem can significantly change the result, despite the objective function that is actually being optimized remaining the same.
-  We see four reasons why the choice parameterization can have a significant effect:
+  We see four reasons why the choice of parameterization can have a significant effect:
 </p>
 
 <p><b>(1) - Improved Optimization</b> -
-Transforming the input to make an optimization problem easier -- a technique call "preconditioning" -- is a staple of optimization.
+Transforming the input to make an optimization problem easier -- a technique called "preconditioning" -- is a staple of optimization.
   <d-footnote> 
     Preconditioning is most often presented as a transformation of the gradient 
      (usually multiplying it by a positive definite "preconditioner" matrix).
@@ -142,19 +142,19 @@ When we optimize the input to a neural network, there are often many different s
     (Note that finding the global minimum is not always desirable as it may result in an overfitted model <d-cite key="choromanska2015loss"></d-cite>.)
     Thus, it's probably not surprising that optimizing the input to a neural network would also have many local minima.
   </d-footnote>
-The probability of our optimization process falling into any particular local minima is controlled by it's basin of attraction (i.e., the region of the optimization landscape under the influence of the minimum).
+The probability of our optimization process falling into any particular local minima is controlled by its basin of attraction (i.e., the region of the optimization landscape under the influence of the minimum).
 Changing the parameterization of an optimization problem is known to change the sizes of different basins of attraction, influencing the likely result.
 </p>
 
 <p><b>(3) - Additional Constraints </b> - 
 Some parameterizations only parameterize a subset of possible inputs, rather than the entire space.
 An optimizer working in such a parameterization will still find solutions that minimize or maximize the objective function, but they'll be subject to the constraints of the parameterization.
-By picking the right parameterization, one can impose a variety of constraints, ranging from  simple constraints (e.g., the boundary of the image must be black), to rich, subtle constraints.
+By picking the right parameterization, one can impose a variety of constraints, ranging from simple constraints (e.g., the boundary of the image must be black), to rich, subtle constraints.
 
 <p><b>(4) - Implicitly Optimizing other Objects</b> -
   A parameterization may internally use a different kind of object than the one it outputs and we optimize for.
   For example, while the natural input to a vision network is an RGB image, we can parameterize that image as a rendering of a 3D object and, by backpropagating through the rendering process, optimize that instead.
-  Because the 3D object has more degrees of freedom than the image, we generally use a <i>stochastic</i> paramterization that produces images rendered from different perspectives.</p>
+  Because the 3D object has more degrees of freedom than the image, we generally use a <em>stochastic</em> parameterization that produces images rendered from different perspectives.</p>
 
 <p>
 In the rest of the article we give concrete examples were such approaches are beneficial and lead to surprising and interesting visual results.
@@ -208,7 +208,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     <d-footnote>
       For example, one could explicitly penalize differences between adjacent frames. Our final result and our colab notebook use this technique in combination with a shared parameterization.
     </d-footnote>
-    , one of which is using a <em>shared parameterization</em>: each frame is parameterized as a combination of it's own unique parameterization, and a single shared parameterization.
+    , one of which is using a <em>shared parameterization</em>: each frame is parameterized as a combination of its own unique parameterization, and a single shared parameterization.
     <!-- The shared parameterization makes it easier for the optimization process to find frames in which visual landmarks stay in the same position then frames where they don't. In order to produce an unaligned frame, this frame's unique parameterization would have to overpower the shared parameterization. -->
   </p>
 
@@ -420,12 +420,12 @@ We refer to the result of this procedure as the optimization for a feature visua
   <p>
     The neural networks used in this article were trained to receive 2D RGB images as input.
     Is it possible to use the same network to synthesize artifacts that span <b> (4) beyond this domain</b>?
-    It turns out that we can do so by making our differentiable parameterization define a <i>family</i> of images instead of a single image, and then sampling one or a few images from that family at each optimization step.
+    It turns out that we can do so by making our differentiable parameterization define a <em>family</em> of images instead of a single image, and then sampling one or a few images from that family at each optimization step.
     This is important because many of the objects we'll explore optimizing have more degrees of freedom than the images going into the network.
   </p>
 
   <p>
-    To be concrete, let’s consider the case of semi-transparent images. These images have, in addition to the RGB channels, an alpha channel that encodes pixel's opacity (in the range $[0,1]$). In order to feed such images into a neural network trained on RGB images, we need to somehow collapse the alpha channel. One way to achieve this is to overlay the RGBA image $I$ on top of a background image $BG$ using the standard alpha blending formula <d-footnote>In our experiments we use <a href="https://en.wikipedia.org/wiki/Alpha_compositing#Composing_alpha_blending_with_gamma_correction"> gamma-corrected blending</a> </d-footnote>
+    To be concrete, let’s consider the case of semi-transparent images. These images have, in addition to the RGB channels, an alpha channel that encodes each pixel's opacity (in the range $[0,1]$). In order to feed such images into a neural network trained on RGB images, we need to somehow collapse the alpha channel. One way to achieve this is to overlay the RGBA image $I$ on top of a background image $BG$ using the standard alpha blending formula <d-footnote>In our experiments we use <a href="https://en.wikipedia.org/wiki/Alpha_compositing#Composing_alpha_blending_with_gamma_correction"> gamma-corrected blending</a> </d-footnote>
   </p>
 
   <div class="math-overflow" style="margin-right: auto; margin-left: auto; margin-top: 0px; margin-bottom: 20px;">
@@ -463,7 +463,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </figure>
   
   <p>
-    By default, optimizing our semi-transparent image will make the image fully opaque, so the network can always get it's optimal input.
+    By default, optimizing our semi-transparent image will make the image fully opaque, so the network can always get its optimal input.
     To avoid this, we need to change our objective with an objective that encourages some transparency.
     We find it effective to replace the original objective with:
   </p>
@@ -554,7 +554,7 @@ You can use the following WebGL view to familiarize with these concepts. The vie
 
   <p>
     We take a different approach.
-    Instead of directly optimizing the texture, we optimize the texture <i>through</i> renderings of the 3D object, like those the user would eventually see.
+    Instead of directly optimizing the texture, we optimize the texture <em>through</em> renderings of the 3D object, like those the user would eventually see.
     The following diagram presents an overview of the proposed pipeline:
   </p>
 
@@ -677,7 +677,7 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
   </p>
 
   <p>
-    This article focused on <i>differentiable</i> image parameterizations, because they are easy to optimize and cover a wide range of possible applications.
+    This article focused on <em>differentiable</em> image parameterizations, because they are easy to optimize and cover a wide range of possible applications.
     But it's certain possible to optimize image parameterizations that aren't differentiable, or are only partly differentiable, using reinforcement learning or evolutionary strategies <d-cite key="wierstra2014naturalEvolutionStrategies,salimans2017evolution"></d-cite>.
     Using non-differentiable parameterizations could open up exciting possibilities for image or scene parameterization.
   </p>
