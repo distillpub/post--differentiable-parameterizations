@@ -1,59 +1,111 @@
-<figure class="base-grid">
-  <figcaption>
-    <p>
-      Examples of the optimization of semi transparent images for different layers and units.
-    </p>
+<figure id="figure-rgba-examples" class="base-grid {backgroundMode}">
+  
+  <div id="checkerboard" class={backgroundMode}></div>
+  
+  <div id='container'>
+    <div class="controls">
+      <div class="background-controls">
+        <button on:click="set({backgroundMode: 'light'})" class="bright {backgroundMode == 'light' ? 'active' : ''}" title="Use bright background" tabindex=0>bright</button>
+        <button on:click="set({backgroundMode: 'black'})" class="dark {backgroundMode == 'black' ? 'active' : ''}" title="Use dark background" tabindex=0>dark</button>
+        <button on:click="set({backgroundMode: 'checkerboard'})" class="checkerboard {backgroundMode == 'checkerboard' ? 'active' : ''}" title="Use checkerboard pattern background" tabindex=0>checkerboard</button>
+        <div class="separator"></div>
+        <button id="toggle-alpha" on:click="toggleMode()" class={mode == 'alpha' ? 'active' : ''} title="Show only alpha masks" tabindex=0>Alpha mask</button>
+      </div>
+      <div class="blending-controls { mode == 'alpha' ? 'disabled' : '' }">
+        <span class="figcaption">masked</span>
+        <div class="slider-wrapper"><Slider bind:value="backgroundOpacity" type="range" min="0" max="1" step="0.01" ticks=false/></div>
+        <span class="figcaption">opaque</span>
+      </div>
+    </div>
 
-    <p>
-      {#each modes as _, i}
-        <label>
-          <input type='radio' bind:group='mode' value='{modes[i]}' />
-          {mode_names[i]} <br/>
-        </label>
-      {/each}
-    </p>
-
-  </figcaption>
-  <div id='container' class="{mode}">
     {#each images as img, i}
-      <svg width="100%" height="224px" viewBox="0 0 288 288">
+    <div class="svg-container">
+      <svg width="100%" height="100%" viewBox="0 0 448 448">
         <defs>
-          {#if mode!='alpha' & mode!='rgb'}
-            <mask id="mask{i}">
-              <image xlink:href="images/transparent/alpha/{img}"
-              x="0" y="0" height="288px" width="288px"/>
-            </mask>
-          {/if}
+          <mask id="mask{i}">
+            <image xlink:href="images/transparent/alpha/{img}"
+            x="0" y="0" height="448px" width="448px"/>
+          </mask>
         </defs>
         <image xlink:href="images/transparent/{mode=='alpha' ? 'alpha' : 'rgb'}/{img}"
-            x="0" y="0" height="288px" width="288px"
-            mask="url(#mask{i})"/>
+            x="0" y="0" height="448px" width="448px"
+            mask={ mode == 'alpha' ? '' : "url(#mask"+i+")"}/>
+        <image xlink:href="images/transparent/rgb/{img}"
+            x="0" y="0" height="448px" width="448px"
+            opacity={ mode == 'alpha' ? 0 : backgroundOpacity }/>
       </svg>
+    </div>
     {/each}
+
   </div>
+  
 </figure>
 
 
 <style>
+
+  figure {
+    padding: 20px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    
+    transition: background 0.35s;
+    
+    grid-row-gap: 10px;
+  }
+
   #container {
     display: grid;
     grid-gap: 5px;
     grid-template-columns: repeat(3, 1fr);
     grid-column: text-start / text-end;
+    z-index: 2;
+  }
+  
+  @media (min-width: 768px) {
+    #container {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  #checkerboard {
+    content:'';
+    position: absolute;
+    left:0; 
+    top:0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    
+    transition: opacity .25s;
+    background: url("images/checkerboard.png") center;
+  }
+  
+  #checkerboard.checkerboard {
+    opacity: 1;
   }
 
   .checkerboard {
-    background-image: url("images/checkerboard.png");
+    background: hsla(0, 0%, 0%, 0%);
   }
     
   .black {
-    background-color: black;
+    background: hsl(0, 0%, 3%);
+  }
+  
+  .light {
+    background: hsl(0, 0%, 97%);
   }
 
 
   svg {
     border-radius: 4px;
     transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+  }
+  
+  .svg-container {
+    font-size: 1rem;
+    line-height: 0;
   }
 
   svg:hover{
@@ -67,37 +119,180 @@
   }
 
   figcaption {
-    grid-column: kicker;
+    grid-column: text;
+    
+    background-color: hsla(0, 0%, 97%, 75%);
+    border-radius: 4px;
+    padding: 10px;
+    
+    z-index: 2;
+  }
+  
+  .controls {
+    grid-column: 1 / -1;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    
+    background-color: hsla(0, 0%, 97%, 75%);
+    border-radius: 4px;
+    padding: 10px;
+    
+    transition: opacity 0.35s, background-color 0.35s;
+  }
+  
+  .checkerboard .controls,
+  .checkerboard figcaption {
+    /* box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); */
+    background-color: hsl(0, 0%, 92%);
+  }
+  
+  .disabled {
+    opacity: 0.5;
+  }
+  
+  .background-controls > button {
+    display: inline-block;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    font-size: 0;
+    border-radius: 4px;
+    margin: 2px;
+    border: 2px solid #fff;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(0, 0, 0, 0.1);
+    background-clip: content-box;
+  }
+  
+  .background-controls > button.active {
+    border: 2px solid #f60;
+  }
+  
+  .background-controls > .bright {
+    background-color: hsl(0, 0%, 97%);
+  }
+  
+  .background-controls > .dark {
+    background-color: black;
+  }
+  
+  .background-controls > .checkerboard {
+    background-image: url("images/checkerboard.png");
+    background-size: 200%;
+  }
+  
+  .blending-controls {
+    display: flex;
+    flex-flow: row;
+    align-content: stretch;
+    min-width: 200px;
+    max-width: 300px;
+    flex-basis: auto;
+    flex-grow: 1;
+  }
+  
+  .blending-controls > span {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  #toggle-alpha {
+    margin-left: 12px;
+    background-image: url("images/transparent/alpha/mixed4b_pool_reduce_pre_relu_46.jpg");
+    background-size: cover;
+  }
+  
+  .separator {
+    display: inline-block;
+    content: '';
+    width: 5px;
+    height: 100%;
+    background-color: red;
+  }
+  
+  .slider-wrapper {
+    width: 100%;
+    /* min-width: 100px;
+    max-width: 200px; */
+    /* flex-basis: auto; */
+    /* flex-grow: 1; */
+  }
+  
+  button {
+    align-items: normal;
+    background-color: rgba(0,0,0,0);
+    border-color: rgb(0, 0, 238);
+    border-style: none;
+    box-sizing: content-box;
+    color: rgb(0, 0, 238); 
+    cursor: pointer;
+    display: inline;
+    font: inherit;
+    height: auto;
+    padding: 0;
+    perspective-origin: 0 0;
+    text-align: start;
+    text-decoration: underline;
+    transform-origin: 0 0;
+    width: auto;
+    -moz-appearance: none;
+    -webkit-logical-height: 1em; /* Chrome ignores auto, so we have to use this hack to set the correct height  */
+    -webkit-logical-width: auto; /* Chrome ignores auto, but here for completeness */
+  }
+
+  /* Mozilla uses a pseudo-element to show focus on buttons, */
+  /* but anchors are highlighted via the focus pseudo-class. */
+
+  @supports (-moz-appearance:none) { /* Mozilla-only */
+    button::-moz-focus-inner { /* reset any predefined properties */ 
+      border: none;
+      padding: 0;
+    }
+    button:focus { /* add outline to focus pseudo-class */
+      outline-style: dotted;
+      outline-width: 1px;
+    }
   }
 
 </style>
 
 
 <script>
+import Slider from '../components/Slider';
+
 export default {
   data() {
     return {
-      mode: 'light',
-      modes: ['light', 'checkerboard', 'black', 'alpha', 'rgb'],
-      mode_names: [
-        'light background',
-        'checkerboard background',
-        'black background',
-        'alpha channel',
-        'rgb channels'
-      ],
+      mode: 'normal',
+      backgroundMode: 'light',
       images: [
         "mixed4a_pool_reduce_pre_relu_15.jpg",
         "mixed4a_pool_reduce_pre_relu_29.jpg",
         "mixed4a_pool_reduce_pre_relu_52.jpg",
         "mixed4b_pool_reduce_pre_relu_14.jpg",
-        "mixed4b_pool_reduce_pre_relu_16.jpg",
+        // "mixed4b_pool_reduce_pre_relu_16.jpg",
         "mixed4b_pool_reduce_pre_relu_27.jpg",
         "mixed4b_pool_reduce_pre_relu_40.jpg",
         "mixed4b_pool_reduce_pre_relu_46.jpg",
         "mixed4d_3x3_bottleneck_pre_relu_139.jpg",
-      ]
+      ],
+      backgroundOpacity: 0.5
     }
   },
+  methods: {
+    toggleMode: function() {
+      const { mode } = this.get('mode');
+      if (mode == 'alpha') {
+        this.set({mode: 'normal'});
+      } else {
+        this.set({mode: 'alpha'});
+      }
+    }
+  },
+  components: { Slider }
 }
 </script>

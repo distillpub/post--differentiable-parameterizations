@@ -101,7 +101,7 @@
     <use fill="#000" filter="url(#cppn-j)" xlink:href="#cppn-k" />
     <use fill="url(#cppn-l)" xlink:href="#cppn-k" />
     <text fill="#4A4A4A" font-family="SFProText-Regular, SF Pro Text" font-size="13">
-      <tspan x="287" y="151">image/RGB </tspan> <tspan x="287" y="168">space</tspan>
+      <tspan x="287" y="151">image/RGB</tspan>
     </text>
   </g>
 </svg>

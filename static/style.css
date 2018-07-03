@@ -1,3 +1,7 @@
+section {
+  display: contents;
+}
+
 .subgrid {
   grid-column: screen; 
   display: grid; 
@@ -33,21 +37,24 @@ d-figure > figure {
 }
 
 .pointer {
-  position: absolute;
-  width: 26px;
-  height: 26px;
-  top: 26px;
-  left: -48px;
-  /* top: -48px;
-  left: 26px; */
+  grid-column: kicker;
+  justify-self: start;
+  /* margin-bottom: 1em; */
 }
 
-/* @media (min-width: 768px) {
+.kicker-text-align {
+  text-align: left;
+}
+
+@media (min-width: 1000px) {
   .pointer {
-    top: 26px;
-    left: -48px;
+    justify-self: end;
   }
-} */
+  
+  .kicker-text-align {
+    /* text-align: right; */
+  }
+}
 
 /* Workaround for katex incorrectly computing bounding boxes. 
    Unsets contain: content and downgrades to style-onyl containment.
@@ -56,3 +63,43 @@ d-figure > figure {
   contain: style;
 }
 
+/* Figure numbers */
+
+/* body {
+  counter-reset: distill-figure-counter;
+} */
+
+a.section-number::before {
+  content: "Section ";
+}
+
+a.figure-number::before {
+  content: "Figure ";
+}
+
+a.figure-number,
+a.section-number {
+  border-bottom-color: hsla(206, 90%, 20%, 0.3);
+  text-transform: uppercase;
+  font-size: .85em;
+  color: hsla(206, 90%, 20%, 0.7);
+}
+
+a.figure-number:hover,
+a.section-number:hover {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: hsla(206, 90%, 20%, 0.7);
+}
+
+figure canvas {
+  display: block;
+}
+
+d-article h2 {
+  margin-top: 0;
+}
+
+d-article h2 a {
+  border-bottom: none;
+}

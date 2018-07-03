@@ -1,6 +1,6 @@
 <svelte:window on:resize="resize()"/>
 
-<figure id="style-transfer-examples" class="grid">
+<figure id="figure-style-transfer-3d-examples" class="grid">
 
 <div id="input-content" class="input-wrapper">
   <h4>Content Model</h4>
@@ -26,7 +26,7 @@
 <img class="arrow" src="images/vertical-join-arrow.svg"/>
 
 <div id="output">
-  <h4>Final image Optimization</h4>
+  <h4>Model with optimized texture</h4>
   <div ref:sizer class="THREEjsview">
     <THREEjsView ref:view2 on:animate {camera} {modelFolder} {textureUrl} {width} {height} bind:unfoldFlag autoRotate={false}></THREEjsView>
   </div>
@@ -35,7 +35,7 @@
 </figure>
 
 <span class="figcaption l-body">
-  Styletransfer of "{styleImage.title}" onto the 3D model "{contentImage.title}" by {contentImage.author}.
+  Styletransfer of "<a href="{styleImage.link}" target="_blank">{styleImage.title}</a>" onto the 3D model "<a href="{contentImage.link}" target="_blank">{contentImage.title}</a>" by {contentImage.author}.
   <div class="controls">
     <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
   </div>
@@ -45,7 +45,7 @@
 
 <style>
 
-#style-transfer-examples {
+figure {
   grid-column: text;
 }
 
@@ -264,10 +264,10 @@ h4 {
           },
         ],
         contentImages: [
-          {model: 'bunny', src: 'models/bunny/preview.jpg', title: 'Stanford Bunny', author: 'Greg Turk & Marc Levoy'},
-          {model: 'david', src: 'models/david/preview.jpg', title: 'David by Michelangelo', author: 'Jerry Fisher'},
-          {model: 'horse', src: 'models/horse/preview.jpg', title: 'Marly - Louvre Museum', author: 'Benjamin Bardou'},
-          {model: 'skull', src: 'models/skull/preview.jpg', title: 'Skull', author: 'Martín Jario'},
+          {model: 'bunny', src: 'models/bunny/preview.jpg', title: 'Stanford Bunny', author: 'Greg Turk & Marc Levoy', link: "http://alice.loria.fr/index.php/software/7-data/37-unwrapped-meshes.html"},
+          {model: 'david', src: 'models/david/preview.jpg', title: 'David by Michelangelo', author: 'Jerry Fisher', link: "https://sketchfab.com/models/3a8f65d7db8e4ba7a0ea886e2b636128"},
+          {model: 'horse', src: 'models/horse/preview.jpg', title: 'Marly - Louvre Museum', author: 'Benjamin Bardou', link: "https://sketchfab.com/models/864497a206024c8e832b5127e9e23f2f"},
+          {model: 'skull', src: 'models/skull/preview.jpg', title: 'Skull', author: 'Martín Jario', link: "https://sketchfab.com/models/1a9db900738d44298b0bc59f68123393"},
         ]
       };
     },

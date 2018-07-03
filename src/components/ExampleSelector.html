@@ -1,8 +1,8 @@
 <div class="icons" style="--thumbnail-size: {thumbnail_size}px;">
   {#if spriteUrl}
-    {#each range(spriteColumns) as i}
+    {#each range(spriteNumItems) as i}
       <div class="icon {(index == i)? 'selected' : ''}" on:click='set({index: i})'>
-        <Sprite url={spriteUrl} width={spriteWidth} columns={spriteColumns} index={i}></Sprite>
+        <Sprite url={spriteUrl} width={spriteWidth} columns={spriteColumns} index={i+spriteIndexOffset}></Sprite>
       </div>
     {/each}
   {:elseif items}
@@ -47,7 +47,7 @@
 }
 
 .icon div,
-.icon canvas {
+.icon :global(canvas) {
   display: block;
   opacity: 0.5;
   image-rendering: auto;
@@ -58,7 +58,7 @@
 }
 
 .icon.selected div,
-.icon.selected canvas {
+.icon.selected :global(canvas) {
   opacity: 1;
 }
 
@@ -80,7 +80,8 @@ export default {
       items: [],
       spriteUrl: null,
       thumbnail_size: 44,
-      image_accessor: 'src'
+      image_accessor: 'src',
+      spriteIndexOffset: 0
     }
   },
   computed: {

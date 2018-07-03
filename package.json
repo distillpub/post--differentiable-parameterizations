@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "serve": "cd public && python3 -m http.server 8000 --bind 127.0.0.1 && cd -",
     "profile": "cross-env NODE_ENV=production webpack --profile --json > webpack-stats.json"
   },
   "dependencies": {

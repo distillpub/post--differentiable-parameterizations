@@ -1,9 +1,9 @@
 <div class='grid'>
-  <img class="pointer" src="images/pointer.svg">
   {#each patterns as pattern}
     <video loop
         poster="images/cppn_anim/xy2rgb_{pattern}.jpg" 
         on:mouseover='this.setAttribute("controls", true)'
+        on:touchstart='this.setAttribute("controls", true)'
         on:mouseout='this.removeAttribute("controls")'>
       <source src="images/cppn_anim/xy2rgb_{pattern}.mp4" type="video/mp4"/>
       Your browser does not support the video tag.
