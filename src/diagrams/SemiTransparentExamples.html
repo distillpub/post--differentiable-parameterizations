@@ -20,18 +20,18 @@
 
     {#each images as img, i}
     <div class="svg-container">
-      <svg width="100%" height="100%" viewBox="0 0 448 448">
+      <svg width="100%" height="100%" viewBox="0 0 288 288">
         <defs>
           <mask id="mask{i}">
             <image xlink:href="images/transparent/alpha/{img}"
-            x="0" y="0" height="448px" width="448px"/>
+            x="0" y="0" height="288px" width="288px"/>
           </mask>
         </defs>
         <image xlink:href="images/transparent/{mode=='alpha' ? 'alpha' : 'rgb'}/{img}"
-            x="0" y="0" height="448px" width="448px"
+            x="0" y="0" height="288px" width="288px"
             mask={ mode == 'alpha' ? '' : "url(#mask"+i+")"}/>
         <image xlink:href="images/transparent/rgb/{img}"
-            x="0" y="0" height="448px" width="448px"
+            x="0" y="0" height="288px" width="288px"
             opacity={ mode == 'alpha' ? 0 : backgroundOpacity }/>
       </svg>
     </div>
