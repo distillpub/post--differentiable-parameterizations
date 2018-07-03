@@ -119,28 +119,42 @@
 
 <h3>Why Does Parameterization Matter?</h3>
 
+
 <p>
-  It may seem surprising that, without changing the objective function of the optimization, a change in the chosen parameterization leads to a substantial change in the produced output.
-  We identified four reasons that make changing the parameterization without modifying the objective function a compelling choice:
+  It may seem surprising that changing the parameterization of an optimization problem can significantly change the result, despite the objective function that is actually being optimized remaining the same.
+  We see four reasons why the choice parameterization can have a significant effect:
 </p>
 
 <p><b>(1) - Improved Optimization</b> -
-In optimization, the input problem is often transformed in a different form that is more suitable for numerical solving methods.
-The application of this transformation takes the name of <i>preconditioning</i>, hence the name of <i>preconditioner</i> for the transformation itself.
-In this work we show that, by simply changing the parameterization, some objective function are more effectively optimized by an iterative gradient descent approach.
-
-<p><b>(2) - Basins of Attraction</b> - Deep neural networks are characterized by complex optimization landscapes <d-cite key="choromanska2015loss"></d-cite>.
-The optimization problem aims at finding the minimum for the objective function at hand.
-Often, several local minima are equally good
-<d-footnote> Note that finding the global minimum is not always desirable as it may result in an overfitted model <d-cite key="choromanska2015loss"></d-cite>.
-</d-footnote> and the probability to choose one over another is given by its basin of attraction, i.e., the region of the optimization landscape under the influence of the minimum.
-Here we show that, by changing the parameterization, we can make the basins of attraction for some minimum much bigger than others, hence exerting a direct control on the outcomes of the process.
+Transforming the input to make an optimization problem easier -- a technique call "preconditioning" -- is a staple of optimization.
+  <d-footnote> 
+    Preconditioning is most often presented as a transformation of the gradient 
+     (usually multiplying it by a positive definite "preconditioner" matrix).
+    However, this is equivalent to optimizing an alternate parameterization of the input.
+  </d-footnote>
+We find that simple changes in parameterization make image optimization for neural art and image optimization much easier.
 </p>
 
-<p><b>(3) - Additional Constraints </b> - A parameterization can introduce a constraint that changes the optimization landscape. These could be simple constraints, e.g., the boundary of the image must be black, but it's also possible to use parameterizations that impose rich, subtle constraints.
-In this setting, the optimizer will find solutions that minimize or maximize the objective function but, at the same time, are influenced by the constraints imposed by the parameterization.
+<p><b>(2) - Basins of Attraction</b> -
+When we optimize the input to a neural network, there are often many different solutions, corresponding to different local minima. 
+  <d-footnote> 
+    Training deep neural networks characterized by complex optimization landscapes <d-cite key="choromanska2015loss"></d-cite>, which may have many equally good local minima for a given objective.
+    (Note that finding the global minimum is not always desirable as it may result in an overfitted model <d-cite key="choromanska2015loss"></d-cite>.)
+    Thus, it's probably not surprising that optimizing the input to a neural network would also have many local minima.
+  </d-footnote>
+The probability of our optimization process falling into any particular local minima is controlled by it's basin of attraction (i.e., the region of the optimization landscape under the influence of the minimum).
+Changing the parameterization of an optimization problem is known to change the sizes of different basins of attraction, influencing the likely result.
+</p>
 
-<p><b>(4) - Implicitly Optimizing other Objects</b> - A parameterization may internally use a different kind of object than the one it outputs and we optimize for. For example, when we optimize an objective function that acts on a convolutional neural networks, the more natual parameterization is an RGB image. However, we can use parameterizations that generates RGB images of 3D object rendered from different perspectives and, through some proper transformation, backpropagate the gradient of the desired function to the 3D object.</p>
+<p><b>(3) - Additional Constraints </b> - 
+Some parameterizations only parameterize a subset of possible inputs, rather than the entire space.
+An optimizer working in such a parameterization will still find solutions that minimize or maximize the objective function, but they'll be subject to the constraints of the parameterization.
+By picking the right parameterization, one can impose a variety of constraints, ranging from  simple constraints (e.g., the boundary of the image must be black), to rich, subtle constraints.
+
+<p><b>(4) - Implicitly Optimizing other Objects</b> -
+  A parameterization may internally use a different kind of object than the one it outputs and we optimize for.
+  For example, while the natural input to a vision network is an RGB image, we can parameterize that image as a rendering of a 3D object and, by backpropagating through the rendering process, optimize that instead.
+  Because the 3D object has more degrees of freedom than the image, we generally use a <i>stochastic</i> paramterization that produces images rendered from different perspectives.</p>
 
 <p>
 In the rest of the article we give concrete examples were such approaches are beneficial and lead to surprising and interesting visual results.
@@ -404,27 +418,38 @@ We refer to the result of this procedure as the optimization for a feature visua
   <h2 id='section-rgba'><a href="#section-rgba">Generation of Semi-Transparent Patterns</a></h2>
 
   <p>
-    Neural networks used in this article, ware trained to receive 2D RGB images as input. Is it possible to use the same network to synthesize artifacts that span <b> (4) beyond this domain</b>? Turns out that we can do it by making our differentiable parameterization define a <i>family</i> of images instead of a single image, and then sampling one or a few images from that family at each optimization step.
+    The neural networks used in this article were trained to receive 2D RGB images as input.
+    Is it possible to use the same network to synthesize artifacts that span <b> (4) beyond this domain</b>?
+    It turns out that we can do so by making our differentiable parameterization define a <i>family</i> of images instead of a single image, and then sampling one or a few images from that family at each optimization step.
+    This is important because many of the objects we'll explore optimizing have more degrees of freedom than the images going into the network.
   </p>
 
   <p>
-    Let’s consider the case of semi-transparent images, i.e. images that have, in addition to the RGB channels, also the Alpha channel that encodes pixels opacity in the range $[0,1]$. In order to feed such images to the pretrained neural network, we need to somehow collapse the alpha channel. One way to achieve this is to overlay the current RGBA image $I$ over some background image $BG$ using the standard alpha blending formula <d-footnote>In our experiments we use <a href="https://en.wikipedia.org/wiki/Alpha_compositing#Composing_alpha_blending_with_gamma_correction"> gamma-corrected blending</a> </d-footnote>
+    To be concrete, let’s consider the case of semi-transparent images. These images have, in addition to the RGB channels, an alpha channel that encodes pixel's opacity (in the range $[0,1]$). In order to feed such images into a neural network trained on RGB images, we need to somehow collapse the alpha channel. One way to achieve this is to overlay the RGBA image $I$ on top of a background image $BG$ using the standard alpha blending formula <d-footnote>In our experiments we use <a href="https://en.wikipedia.org/wiki/Alpha_compositing#Composing_alpha_blending_with_gamma_correction"> gamma-corrected blending</a> </d-footnote>
   </p>
 
   <div class="math-overflow" style="margin-right: auto; margin-left: auto; margin-top: 0px; margin-bottom: 20px;">
-      $O_{rgb} = I_{rgb} * I_a + BG_{rgb} * (1 - I_a)$,
+      $O_{rgb} ~~=~~ I_{rgb} * I_a ~~+~~ BG_{rgb} * (1 - I_a)$,
   </div>
 
   <p>
-    where $I_a$ is the alpha channel of the image $I$. Without any additional constraint on the objective function $I$ will be a fully opaque image. To avoid that we replace the original optimization objective with the following:
+    where $I_a$ is the alpha channel of the image $I$.
   </p>
-  <div class="math-overflow" style="margin-right: auto; margin-left: auto; margin-top: 0px; margin-bottom: 20px;">
-      $obj_{new} = obj_{old} * (1-mean(I_a))$,
-  </div>
+  
   <p>
-    Thus, the optimizer can act on both the objective $obj_{old}$ and the transparency $I_a$ to find a balance between that maximizes the objective $obj_{new}$.
+    If we used a static background $BG$, such as black, the transparency would merely indicate pixel positions in which that background contributes directly to the optimization objective.
+    In fact, this is equivalent to optimizing an RGB image and making it transparent in areas where its color matches with the background!
+    Intuitively, we'd like transparent areas to correspond to something like "the content of this area could be anything."
+    Building on this intuition, we use a different random background at every optimization step.
+    <d-footnote>
+      We have tried both sampling from real images, and using different types of noise.
+      As long as they were sufficiently randomized, the different distributions did not meaningfully influence the resulting optimization.
+      Thus, for simplicity, we use a smooth 2D gaussian noise.<br><br>
+      Another possibility is to use an adversarial background! We initially thought this was a clever, principled idea—but it, too, produced very similar results to the default noise.
+      TODO: example image <img>
+    </d-footnote>
   </p>
-
+  
   <figure id="figure-rgba-diagram" class="subgrid" style="margin-top: 0;">
     <div class="l-body">
       <%= require("../static/images/diagrams/transparency.svg") %>
@@ -436,20 +461,21 @@ We refer to the result of this procedure as the optimization for a feature visua
       Transparent areas are blended with a random background at each step of the optimization.
     </figcaption>
   </figure>
-
+  
   <p>
-    However, most of the vision models expect their input to be an RGB-only image, so we will need to collapse the alpha channel in order to feed $I$ to them.
-    If we did this with a static background $BG$, such as black, the transparency would merely indicate pixel positions in which that background contributes directly to the optimization objective.
-    In fact, this is equivalent to making the RGB image transparend in the areas where its color matches with the background!
-    A way to avoid this undesired effect is to change the background randomly at every optimization step.
-    <d-footnote>
-      We have tried both sampling from real images, and using different types of noise.
-      As long as they were sufficiently randomized, the different distributions did not meaningfully influence the resulting optimization.
-      Thus, for simplicity, we use a smooth 2D gaussian noise<br><br>
-      Another possibility is to use an adversarial background! We initially thought this was a clever, principled idea—but it, too, produced very similar results to the default noise.
-      TODO: example image <img>
-    </d-footnote>
+    By default, optimizing our semi-transparent image will make the image fully opaque, so the network can always get it's optimal input.
+    To avoid this, we need to change our objective with an objective that encourages some transparency.
+    We find it effective to replace the original objective with:
   </p>
+  <div class="math-overflow" style="margin-right: auto; margin-left: auto; margin-top: 0px; margin-bottom: 20px;">
+      $\text{obj}_{\text{new}} ~~=~~ \text{obj}_{\text{old}} ~~*~~ (1-\text{mean}(I_a))$,
+  </div>
+  <p>
+    This new objective automatically balances the original objective $\text{obj}_{\text{old}}$ with reducing the mean transparency.
+    If the image becomes very transparent, it will focus on the original objective. If it becomes too opaque, it will temporarily stop caring about the original objective and focus on decreasing the average opacity.
+  </p>
+
+
 
   <d-figure class="base-grid" id='SemiTransparentExamples' style="padding: 0; border: none;"></d-figure>
   <p class="l-body figcaption">
@@ -477,6 +503,9 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <d-figure class="subgrid" id="TransparentNeuronExamples"></d-figure>
 
+
+
+
 <!-- =================================================== -->
 
   <hr/>
@@ -486,16 +515,20 @@ We refer to the result of this procedure as the optimization for a feature visua
   <h2 id='section-featureviz-3d'><a href="#section-featureviz-3d">Efficient Texture Optimization through 3D Rendering</a></h2>
 
   <p>
-In previous sections we generated artistic images and animations using various image parameterization.
-Would it be possible to extend this approach also for the creation of <b>(4) artistic 3D objects</b>?
-In this section we present a generative approach that makes use of the 3D rendering pipeline as a mean to generate artistic textures for 3D objects.
-Our technique is similar to the approach that Athalye et al.<d-cite key="athalye2017synthesizing"></d-cite> used for the creation of real-world adversarial examples, as we rely on the backpropagation of the objective function to randomly sampled views of the 3D model.
-We differ from existing approaches for artistic texture generation<d-cite key="kato2017neural3D"></d-cite>, as we do not modify the geometry of the object during back-propagation.
-By disentangling the generation of the texture from the position of their vertices, we can create very detailed texture for complex objects.
+    In the previous section, we were able to use a neural network for RGB images to create a semi-transparent RGBA image.
+    Can we push this even further, creating <b>(4) other kinds of objects</b> even further removed from the RGB input?
+    In this section we explore optimizing <b>3D objects</b> for a feature-visualization objective<d-cite key="olah2017feature"></d-cite>.
+    We use a 3D rendering process to turn them into 2D RGB images that can be fed into the network, and backpropegate through the rendering process to optimize the texture of the 3D object.
+  </p>
+  
+  <p>
+    Our technique is similar to the approach that Athalye et al.<d-cite key="athalye2017synthesizing"></d-cite> used for the creation of real-world adversarial examples, as we rely on the backpropagation of the objective function to randomly sampled views of the 3D model.
+    We differ from existing approaches for artistic texture generation<d-cite key="kato2017neural3D"></d-cite>, as we do not modify the geometry of the object during back-propagation.
+    By disentangling the generation of the texture from the position of their vertices, we can create very detailed texture for complex objects.
   </p>
 
   <p>
-Before we can describe our approach, we first need to understand how a 3D object is stored and rendered on screen. The object's geometry is usually saved as a collection of interconnected triangles called <b>triangular mesh</b> or, simply, <b>mesh</b>. To render a realistic model, a <b>texture</b> is painted over the mesh. The texture is saved as an image that is applied to the model by using the so called <b>UV-mapping</b>. Every vertex $c_i$ in the mesh is associated to a $(u_i,v_i)$ coordinate in the texture image. The model is then rendered, i.e. drawn on screen, by coloring every triangle with the region of the image that is delimited by the $(u,v)$ coordinates of its vertices.
+Before we can describe our approach, we first need to understand how a 3D object is stored and rendered on screen. The object's geometry is usually saved as a collection of interconnected triangles called <b>triangle mesh</b> or, simply, mesh. To render a realistic model, a <b>texture</b> is painted over the mesh. The texture is saved as an image that is applied to the model by using the so called <b>UV-mapping</b>. Every vertex $c_i$ in the mesh is associated to a $(u_i,v_i)$ coordinate in the texture image. The model is then rendered, i.e. drawn on screen, by coloring every triangle with the region of the image that is delimited by the $(u,v)$ coordinates of its vertices.
   </p>
 
   <!-- <p>
@@ -505,13 +538,11 @@ You can use the following WebGL view to familiarize with these concepts. The vie
   <d-figure id="BunnyModel"></d-figure> -->
 
   <p>
-We aim at generating textures by optimizing for a feature-visualization objective function<d-cite key="olah2017feature"></d-cite>. A simple and straightforward way to achieve this result is to use, as texture to paint on the object, an image that is obtained by optimizing for one or more features in a layer.
-However, this approach generates a texture that does not consider the underlying UV-mapping and, therefore, will create visual artifacts in the rendered object.
-  </p>
-
-<p>
-  By interacting with the following model, you can identify these artifacts and compare the result with our render-based approach.
-  First, seams are visible on the rendered texture, as the optimization is not aware of the underling UV-mapping and, therefore, does not optimize the texture consistently along the splitted patches of the texture.
+    A simple naive way to create the 3D object would be to optimize an image the normal way and then use it as a texture to paint on the object.
+    However, this approach generates a texture that does not consider the underlying UV-mapping and, therefore, will create a variety of visual artifacts in the rendered object.
+    First, <b>seams</b> are visible on the rendered texture, because the optimization is not aware of the underlying UV-mapping and, therefore, does not optimize the texture consistently along the split patches of the texture.
+    Second, the generated patterns are <b>randomly oriented</b> on different parts of the object (see, e.g., the vertical and wigly patterns) because they are not consistently oriented in the underlying UV-mapping.
+    Finally generated patterns are <b>inconsistently scaled</b> because the UV-mapping does not enforce a consistent scale  between triangle areas and their mapped triangle in the texture.
 </p>
 
 <d-figure class="base-grid" id="BunnyModelTextureSpaceOptimization"></d-figure>
@@ -521,21 +552,10 @@ However, this approach generates a texture that does not consider the underlying
   3D model of the famous Stanford Bunny<d-cite key="turk2005stanfordBunny"></d-cite>. You can interact with the model by rotating and zooming. Moreover, you can unfold the object to its two-dimensional texture representation. This unfolding reveals the UV mapping used to store the texture in the texture image. Note how the render-based optimized texture is divided in several patches that allows for a complete and undistorted coverage of the object.
 </p>
 
-<p>
-  Second, the generated patterns are randomly oriented on different parts of the textured object.
-  In this example, the feature correspond to vertical and wigly patterns.
-  Beacause the texture patches are not consistently oriented in the underlying UV-mapping, the vertical pattern is lost in the rendered model.
-</p>
-<p>
-  Finally scaling artifacts can be seen in the rendered object, which correspond to areas where the same pattern is rendered at different scales.
-  In fact, the mapping does not enforce a 1:1 correspondence between triangle areas and their mapped triangle in the texture.
-  Therefore, a non uniform UV-mapping may lead to major changes in size of the rendered patterns.
-</p>
-
   <p>
-Here we adopt a different approach that overcomes this limitation by making use of the 3D rendering pipeline.
-Intuitively, we optimize not directly in the texture space, but rather through the images that are generated by the 3D renderer and, therefore, are closer to what a user will see.
-The following diagram presents an overview of the proposed pipeline:
+    We take a different approach.
+    Instead of directly optimizing the texture, we optimize the texture <i>through</i> renderings of the 3D object, like those the user would eventually see.
+    The following diagram presents an overview of the proposed pipeline:
   </p>
 
   <figure id="figure-featureviz-3d-diagram">
