@@ -1,7 +1,9 @@
 <svelte:window on:mouseup='set({dragging: false})'/>
 
 <div ref:container class="container" 
-     on:mousemove="mousemove(event)">
+     on:mousemove="mousemove(event)"
+     on:touchstart="touch(event)"
+     on:touchmove="touch(event)">
   <img ref:imgBackground class="background" src={right} on:click="toggle()">
   <div class="right label">{rightName}</div>
   <div class="resizeable" style="width: {overlayPercentage}%">
@@ -59,8 +61,7 @@
     height: 100%;
     background-color: white;
     cursor: ew-resize;
-    box-shadow: 0px 0px 4px rgba(0,0,0,0.75);
-    opacity: 0.8;
+    /* opacity: 0.8; */
   }
   
   .handle::after {
@@ -69,9 +70,9 @@
     width: 17px;
     height: 17px;
     transform: translate(-7px, -8px);
-    content: url('data:image/svg+xml; utf8, <svg width="16px" height="16px" viewBox="-0.5 6 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square" stroke-opacity="0.33"><path d="M8,2.5 L8,14.5" id="Line-Copy-5" stroke="#000000"></path><path d="M5,2.5 L5,14.5" id="Line-Copy-4" stroke="#000000"></path><path d="M11,2.5 L11,14.5" id="Line-Copy-3" stroke="#000000"></path></g>    </svg>');
-    background: white;
-    border-radius: 50%;
+    content: url('data:image/svg+xml; utf8, <svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><circle id="Oval" fill="#FFFFFF" cx="8.5" cy="8.5" r="8"></circle><path d="M8.5,3.5 L8.5,13.5" id="Line" stroke-opacity="0.33" stroke="#000000" stroke-linecap="square"></path><path d="M10.5,3.5 L10.5,13.5" id="Line-Copy" stroke-opacity="0.33" stroke="#000000" stroke-linecap="square"></path><path d="M6.5,3.5 L6.5,13.5" id="Line-Copy-2" stroke-opacity="0.33" stroke="#000000" stroke-linecap="square"></path></g></svg>');
+    /* background: white; */
+    /* border-radius: 50%; */
   }
   
   .handle::before {
@@ -91,6 +92,7 @@
     height: 100%;
     width: 50%;
     overflow: hidden;
+    background-color: white;
   }
   .resizeable img {
     height: 100%;
@@ -120,7 +122,7 @@ export default {
   oncreate() {
     const imgTags = [this.refs.imgForeground, this.refs.imgBackground];
     for (const imgTag of imgTags) {
-      // imgTag.on('dragstart', (event) => event.preventDefault() );
+      imgTag.ondragstart = (event) => false;
     }
   },
   methods: {
@@ -131,6 +133,14 @@ export default {
       let overlayWidthRatio = 100 * (event.clientX - bbox.left) / bbox.width;
       overlayWidthRatio = clamp(overlayWidthRatio, 2, 98);
       this.set({overlayPercentage: overlayWidthRatio});
+    },
+    touch(event) {
+      const bbox = this.refs.container.getBoundingClientRect();
+      const clientX = event.touches[0].clientX;
+      let overlayWidthRatio = 100 * (clientX - bbox.left) / bbox.width;
+      overlayWidthRatio = clamp(overlayWidthRatio, 2, 98);
+      this.set({overlayPercentage: overlayWidthRatio});
+      console.log(overlayWidthRatio, event.clientX)
     },
     toggle() {
       const { overlayPercentage } = this.get();
