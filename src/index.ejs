@@ -68,7 +68,7 @@
 
   <p id="first-paragraph">
     Neural networks trained to classify images have a remarkable -- and surprising! -- capacity to generate images.
-    Techniques such as DeepDream <d-cite key="mordvintsev2015inceptionism"></d-cite>, style transfer<d-cite key="gatys2015"></d-cite>, and feature visualization<d-cite key="olah2017feature"></d-cite> leverage this capacity as a powerful tool for exploring the inner workings of neural networks, and to fuel a small artistic movement based neural art.
+    Techniques such as DeepDream <d-cite key="mordvintsev2015inceptionism"></d-cite>, style transfer<d-cite key="gatys2015"></d-cite>, and feature visualization<d-cite key="olah2017feature"></d-cite> leverage this capacity as a powerful tool for exploring the inner workings of neural networks, and to fuel a small artistic movement based on neural art.
   </p>
 
   <p>
@@ -251,7 +251,7 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <p>
     Neural style transfer has a mystery:
-    despite it's remarkable success, almost all style transfer is done with variants of the <b>VGG architecture</b><d-cite key="simonyan2014vgg"></d-cite>.
+    despite its remarkable success, almost all style transfer is done with variants of the <b>VGG architecture</b><d-cite key="simonyan2014vgg"></d-cite>.
     This isn't because no one is interested in doing style transfer on other architectures, but because attempts to do it on other architectures consistently work poorly.
     <d-footnote>
       Examples of experiments performed with different architectures can be found on <a href="https://medium.com/mlreview/getting-inception-architectures-to-work-with-style-transfer-767d53475bf8">Medium</a>, <a href="https://www.reddit.com/r/MachineLearning/comments/7rrrk3/d_eat_your_vggtables_or_why_does_neural_style/">Reddit</a> and <a href="https://twitter.com/hardmaru/status/954173051330904065">Twitter</a>.
@@ -541,7 +541,7 @@ You can use the following WebGL view to familiarize with these concepts. The vie
     A simple naive way to create the 3D object would be to optimize an image the normal way and then use it as a texture to paint on the object.
     However, this approach generates a texture that does not consider the underlying UV-mapping and, therefore, will create a variety of visual artifacts in the rendered object.
     First, <b>seams</b> are visible on the rendered texture, because the optimization is not aware of the underlying UV-mapping and, therefore, does not optimize the texture consistently along the split patches of the texture.
-    Second, the generated patterns are <b>randomly oriented</b> on different parts of the object (see, e.g., the vertical and wigly patterns) because they are not consistently oriented in the underlying UV-mapping.
+    Second, the generated patterns are <b>randomly oriented</b> on different parts of the object (see, e.g., the vertical and wiggly patterns) because they are not consistently oriented in the underlying UV-mapping.
     Finally generated patterns are <b>inconsistently scaled</b> because the UV-mapping does not enforce a consistent scale  between triangle areas and their mapped triangle in the texture.
 </p>
 
@@ -692,7 +692,7 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
     while each point is normally parameterized as a simple position, one could easily use alternate parameterizations.
     This may accelerate dimensionality reduction, or may be a tool in aligning several related dimensionality reductions.
     Of course, people do think very carefully about the way they parameterize the objects they optimize in many domains (eg. neural networks); we just think it's worth considering more generally.
-    This kind more general use of parameterization is in some ways similar to preconditioning and natural gradients.
+    This kind of more general use of parameterization is in some ways similar to preconditioning and natural gradients.
   </p>
   <!-- TODO: remove? -->
   <aside>WIP, may drop this paragraph</aside>
