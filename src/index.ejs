@@ -176,17 +176,32 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 -->
 
-  <p>
-    Sometimes we'd like to visualize how two neurons interact.
-    We can do this by optimizing <a href="https://en.wikipedia.org/wiki/Convex_combination">convex combinations</a> of two neurons.
-    If we do this naively, different frames of the resulting visualization will be unaligned--visual landmarks such as eyes appear in different locations in each frame.
-    This is because the optimization process that creates the visualization is stochastic: even optimizing for the same objective will lead to the visualization being laid out different each time.
-  </p>
+<p>
+  Feature visualization is most often used to visualize individual neurons,
+  but it can also be used to <a href="https://distill.pub/2017/feature-visualization/#interaction">visualize combinations of neurons</a>, in order to study how they interact <d-cite key="olah2017feature"></d-cite>.
+  Instead of optimizing an image to make a single neuron fire, one optimizes it to make multiple neurons fire.
+</p>
 
-  <p>
-    Unfortunately, this randomness can make it harder to compare slightly different objectives.
-    We can see the issue with independent optimization if we look at the interpolated frames as an animation:
-  </p>
+<p>
+  When we want to really understand the interaction between two neurons,
+  we can go a step further and create multiple visualizations,
+  gradually shifting the objective from optimizing one neuron to putting more weight on the other neuron firing.
+  This is in some ways similar to interpolation in the latent spaces of generative models like GANs.
+</p>
+
+<p>
+  Despite this, there is a small challenge: feature visualization is stochastic.
+  Even if you optimize for the exact same objective, the visualization will be laid out differently each time.
+  Normally, this isn’t a problem, but it does detract from the interpolation visualizations.
+  If we make them naively, the resulting visualizations will be <i>unaligned</i>:
+  visual landmarks such as eyes appear in different locations in each image.
+  This lack of alignment can make it harder to see the difference due to slightly different objectives,
+  because they're swamped by the much larger differences in layout.
+</p>
+
+<p>
+  We can see the issue with independent optimization if we look at the interpolated frames as an animation:
+</p>
 
   <!-- <img class="pointer" src="images/pointer.svg"> -->
   <span class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
