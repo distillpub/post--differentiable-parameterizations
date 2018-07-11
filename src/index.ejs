@@ -117,7 +117,7 @@
   </p>
 -->
 
-<h3>Why Does Parameterization Matter?</h3>
+<h3 id="why-does-parameterization-matter">Why Does Parameterization Matter?</h3>
 
 
 <p>
@@ -166,7 +166,7 @@ In the rest of the article we give concrete examples were such approaches are be
   <p class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
     <a href="#section-aligned-interpolation" class="section-number">1</a>
   </p>
-  <h2 id="section-aligned-interpolation"><a href="#section-aligned-interpolation">Aligned Neuron Interpolation</a></h2>
+  <h2 id="section-aligned-interpolation"><a href="#section-aligned-interpolation">Aligned Feature Visualization Interpolation</a></h2>
 
 <!--
   <p>
@@ -283,29 +283,21 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 
   <p>
-    We find that the way we parameterize the image is just as important as the model we use for style transfer, hence acting as a preconditioner for the problem and helping in <b>(1) improving the optmization</b>.
-    For example, with the right image parameterization, GoogLeNet<d-cite key="szegedy2015googlenet"></d-cite> can produce images of comparable quality to VGG.
+    In previous work we found that a <a href="//distill.pub/2017/feature-visualization/#preconditioning">decorrelated parameterization can significantly improve optimization</a><d-cite key="olah2017feature"></d-cite>.
+    We find the same approach also improves style transfer, allowing us to use a model that did not otherwise produce visually appealing style transfer results:
   </p>
 
   <d-figure id='StyleTransferExamples' class="base-grid"></d-figure>
 
   <p class="figcaption l-body">
     <a href="#figure-style-transfer-examples" class="figure-number">4</a>:
-    Move the slider under "final image optimization" to compare optimization in pixel space and in the fourier basis. Both images were created with the same optimization objective and differ only in their parameterization.
+    Move the slider under "final image optimization" to compare optimization in pixel space with optimization in a decorrelated space. Both images were created with the same objective and differ only in their parameterization.
   </p>
-
+  
   <p>
-    We use the same decorrelated parameterization
-    <d-footnote>
-      <span>For images, this means that the gradient descent must not be performed in the pixel space, but rather in the space of the Fourier basis where frequencies are scaled so that they all have equal energy. </span><br/><br/>
-      <span>A reference implementation of this parameterization is available in our visualization library <a href="https://github.com/tensorflow/lucid"  target="_blank">lucid</a> as <a href="https://github.com/tensorflow/lucid/blob/a40d0e411eee8c18a2e2ca1958383049354478c3/lucid/optvis/param/spatial.py#L38" target="_blank"><code>param.fft_image</code></a>. We have found it robust enough that it is the default behavior of <code>param.image</code>.</span>
-    </d-footnote>
-    and transformation robustness
-    <d-footnote>
-      Transformation robustness is achieved by stochastically jittering, rotating and scaling the image before applying the optimization step.
-    </d-footnote>
-    that Olah et al.<d-cite key="olah2017feature"></d-cite> found helpful for feature visualization.
-
+    Let's consider this change in a bit more detail. Style transfer involves three images: a content image, a style image, and the image we optimize. 
+    All three of these feed into the CNN, and the style transfer objective<d-cite key="gatys2015"></d-cite> is based on the differences in how these images activate the CNN.
+    The only change we make is how we parameterize the optimized image. Instead of parameterizing it in terms of pixels (which are highly correlated with their neighbors), we use a scaled Fourier transform<d-cite key="olah2017feature"></d-cite>.
   </p>
 
   <figure id="figure-style-transfer-diagram" class="subgrid">
@@ -321,8 +313,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </figure>
 
   <p>
-    When we use this parameterization, we find that the style transfer objective proposed by Gatys<d-cite key="gatys2015"></d-cite> produces convincing results even on architectures other than VGG.
-    Picking the right parameterization can be the difference between techniques like style transfer working and failing.
+    Our exact implementation can be found in this notebook. Note that it also uses <a href="https://distill.pub/2017/feature-visualization/#regularizer-playground-robust">transformation robustness</a><d-cite key="olah2017feature"></d-cite>, which not all implementations of style transfer use.
   </p>
 
 
