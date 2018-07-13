@@ -638,10 +638,21 @@ The procedure is then iterated until the desired blend of content and style is o
 Because every view is optimized independently, the optimization is forced to add all the style elements at every iteration.
 For example, if we use as style image the Van Gogh's "Starry Night" painting, stars will be added in every single view.
 We found that more pleasing results, as those presented above, are obtained by introducing a sort of "memory" of the style of
-previous views. To this end, we maintain moving averages of style-representing Gram matrices <d-cite key="gatys2015"></d-cite>
+previous views. To this end, we maintain moving averages of style-representing Gram matrices
 over the recently sampled viewpoints. On each optimization iteration we compute style loss against those averaged matrices,
-instead of the ones computed for the particular view.
-  </p>
+instead of the ones computed for the particular view
+<d-footnote>
+    We use TensorFlow 'tf.stop_gradient' trick to substitute current Gram matrices
+    with their moving averages on forward pass, while still propagating gradients
+    to current Gram matrices. <br/><br/>
+
+    Alternative approach, employed by <d-cite key="kato2017neural3D"></d-cite>,
+    would require sampling multiple viewpoints of the  scene at each step,
+    increasing memory requirements. Contrary, our substitution trick can be also
+    used to style transfer high resolution (>10Mpix) images on a
+    single consumer-grade GPU.
+</d-footnote>
+</p>
 
   <p>
 The resulting textures combine elements models of the desired style, while preserving the characteristics of the original texture.
