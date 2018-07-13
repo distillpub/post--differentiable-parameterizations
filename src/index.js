@@ -139,6 +139,16 @@ const visualTOC = new VisualTOC({target: tocNav});
   const figure = document.getElementById('3DStyleTransferExamples');
   figure.addEventListener("ready", function() {
     const styleTransferExamples = new ThreeDStyleTransferExamples({target: figure});
+    const settings = [{id: '3DStyleTransferExamples-VanGogh', data: {contentIndex: 0, styleIndex: 5}}, 
+                      {id:'3DStyleTransferExamples-Kandinsky', data: {contentIndex: 0, styleIndex: 0}}]
+    for (const {id, data} of settings) {
+      const aTag = document.getElementById(id);
+      const options = {block: "start", behavior: "smooth"};
+      aTag.onclick = () => {
+        figure.scrollIntoView(options);
+        styleTransferExamples.set(data);
+      }
+    }
   });
 }
 
@@ -174,3 +184,4 @@ const visualTOC = new VisualTOC({target: tocNav});
   window.onresize = determineTextZoomLevel;
   determineTextZoomLevel();
 }
+
