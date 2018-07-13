@@ -45,7 +45,7 @@
 <style>
 
   figure {
-    padding: 20px 0;
+    padding: 16px 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     
@@ -56,7 +56,7 @@
 
   #container {
     display: grid;
-    grid-gap: 10px;
+    grid-gap: 8px;
     grid-template-columns: repeat(3, 1fr);
     grid-column: text-start / text-end;
     z-index: 2;
@@ -65,6 +65,12 @@
   @media (min-width: 768px) {
     #container {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (min-width: 1180px) {
+    #container {
+      grid-template-columns: repeat(4, 168px);
     }
   }
   
@@ -78,7 +84,11 @@
     opacity: 0;
     
     transition: opacity .25s;
-    background: url("images/checkerboard.png") center;
+    image-rendering: pixelated;
+    background-image: url(images/checkerboard-pattern.png);
+    background-repeat: repeat;
+    background-size: 16px;
+    background-position: center;
   }
   
   #checkerboard.checkerboard {
@@ -138,7 +148,7 @@
     
     background-color: hsla(0, 0%, 97%, 75%);
     border-radius: 4px;
-    padding: 10px;
+    padding: 8px;
     
     transition: opacity 0.35s, background-color 0.35s;
   }
