@@ -620,7 +620,7 @@ The following diagram presents an overview of the approach:
 
   <p>
 The algorithm works in similar way to the one presented in the previous section, starting from a randomly initialized texture.
-At each iteration, we sample a random view point oriented toward the center of mass of the object and we render two images of it, one with the original texture and one with the texture that we are currently optimizing.
+At each iteration, we sample a random view point oriented toward the center of mass of the object and we render two images of it: one with the original texture, the <em>content image</em>, and one with the texture that we are currently optimizing, the <em>learned image</em>.
   </p>
 
   <p>
@@ -635,32 +635,32 @@ The procedure is then iterated until the desired blend of content and style is o
   </p>
 
   <p>
-Because every view is optimized independently, the optimization is forced to add all the style elements at every iteration.
+Because every view is optimized independently, the optimization is forced to try to add all the style's elements at every iteration.
 For example, if we use as style image the Van Gogh's "Starry Night" painting, stars will be added in every single view.
-We found that more pleasing results, as those presented above, are obtained by introducing a sort of "memory" of the style of
+We found we obtain more pleasing results, such as those presented above, by introducing a sort of "memory" of the style of
 previous views. To this end, we maintain moving averages of style-representing Gram matrices
-over the recently sampled viewpoints. On each optimization iteration we compute style loss against those averaged matrices,
-instead of the ones computed for the particular view
+over the recently sampled viewpoints. On each optimization iteration we compute the style loss against those averaged matrices,
+instead of the ones computed for that particular view.
 <d-footnote>
-    We use TensorFlow 'tf.stop_gradient' trick to substitute current Gram matrices
-    with their moving averages on forward pass, while still propagating gradients
-    to current Gram matrices. <br/><br/>
+    We use TensorFlow's <code>tf.stop_gradient</code> method to substitute current Gram matrices
+    with their moving averages on forward pass, while still propagating the correct gradients
+    to the current Gram matrices. <br/><br/>
 
-    Alternative approach, employed by <d-cite key="kato2017neural3D"></d-cite>,
-    would require sampling multiple viewpoints of the  scene at each step,
-    increasing memory requirements. Contrary, our substitution trick can be also
-    used to style transfer high resolution (>10Mpix) images on a
+    An alternative approach, such as the one employed by <d-cite key="kato2017neural3D"></d-cite>,
+    would require sampling multiple viewpoints of the scene at each step,
+    increasing memory requirements. In contrast, our substitution trick can be also
+    used to apply style transfer to high resolution (>10M pixels) images on a
     single consumer-grade GPU.
 </d-footnote>
 </p>
 
   <p>
-The resulting textures combine elements models of the desired style, while preserving the characteristics of the original texture.
-Take as an example the model created by imposing Van Gogh's starry night as style image.
-The resulting texture contains the repetitive and vigorous brush strokes that characterize Van Gogh's work.
-However, despite the style image contains only cold tones, the resulting fur has a warm orange undertone as it is preserved from the original texture.
+The resulting textures combine elements of the desired style, while preserving the characteristics of the original texture.
+Take as an example <a id="3DStyleTransferExamples-VanGogh">the model created by imposing Van Gogh's starry night</a> as style image.
+The resulting texture contains the rythmic and vigorous brush strokes that characterize Van Gogh's work.
+However, despite the style image's primarily cold tones, the resulting fur has a warm orange undertone as it is preserved from the original texture.
 Even more interesting is how the eyes of the bunny are preserved when different styles are transfered.
-For example, when the style is obtained from the Van Gogh's painting, the eyes are transformed in a star-like swirl, while if Kandinsky's work is used, they become abstract patterns that still resemble the original eyes.
+For example, when the style is obtained from the Van Gogh's painting, the eyes are transformed in a star-like swirl, while <a id="3DStyleTransferExamples-Kandinsky">if Kandinsky's work</a> is used, they become abstract patterns that still resemble the original eyes.
   </p>
 
   <figure id="figure-style-transfer-3d-picture">
@@ -675,7 +675,7 @@ For example, when the style is obtained from the Van Gogh's painting, the eyes a
 <p>
 Our approach combines well with modern digital fabrication techniques<d-cite key="gershenfeld2012make,kodama1981automatic,jones2011reprap"></d-cite>.
 The geometry of the object is not part of its parameterization and, therefore, it is not modified during the optimization process.
-Hence, a faithful replica of the object can be 3D printed and, by adopting the latest color printing technologies<d-footnote>Full color sandstone was used to print and color our model.</d-footnote>, it can be textured accordingly to our generated style texture.
+Hence, a faithful replica of the object can be 3D printed and, by adopting color printing technologies<d-footnote>Full color sandstone was used to print and color our model.</d-footnote>, it can be textured accordingly to our generated style texture.
 </p>
 
 <!-- =================================================== -->
@@ -701,16 +701,15 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting the l
 
   </p>
 
-  <p>
+  <!-- <p>
     Finally, we think thoughtful use of parameterization can be useful in other optimization problems, providing additional control over the outcome.
     For example, dimensionality reduction is often framed as an optimization problem over the position of points;
     while each point is normally parameterized as a simple position, one could easily use alternate parameterizations.
     This may accelerate dimensionality reduction, or may be a tool in aligning several related dimensionality reductions.
     Of course, people do think very carefully about the way they parameterize the objects they optimize in many domains (eg. neural networks); we just think it's worth considering more generally.
     This kind of more general use of parameterization is in some ways similar to preconditioning and natural gradients.
-  </p>
-  <!-- TODO: remove? -->
-  <aside>WIP, may drop this paragraph</aside>
+  </p> -->
+  <!-- <aside>WIP, may drop this paragraph</aside> -->
 
 
 </d-article>
