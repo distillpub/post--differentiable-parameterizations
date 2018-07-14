@@ -20,9 +20,11 @@ import BunnyModelTextureSpace         from "./diagrams/BunnyModelTextureSpace.ht
 
 import ImageRow                       from './components/ImageRow.html';
 
+
 // eagerly initialize vtoc  as it's above the fold
+import { sections } from "./sections.json";
 const tocNav = document.getElementById('vtoc');
-const visualTOC = new VisualTOC({target: tocNav});
+const visualTOC = new VisualTOC({target: tocNav, data: {sections: sections}});
 
 {
   const figure = document.getElementById('StyleTransferExamples');

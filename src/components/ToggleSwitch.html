@@ -1,27 +1,34 @@
-<label class="switch">
-  <input type="checkbox" bind:checked>
-  <span class="slider round"></span>
-</label>
-<span class="switch-label">{text}</span>
+<div class="toggle-switch">
+  <label class="switch">
+    <input type="checkbox" bind:checked>
+    <span class="slider round"></span>
+  </label>
+  <span class="switch-label">{text}</span>
+</div>
 
 
 <style>
-/* via https://www.w3schools.com/howto/howto_css_switch.asp */
+.toggle-switch {
+  display: inline-block;
+}
+
+/* inspired by https://www.w3schools.com/howto/howto_css_switch.asp */
 /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  top: 9px;
+  width: 45px;
+  height: 26px;
 }
 
 /* Hide default HTML checkbox */
 .switch input {display:none;}
 
 .switch-label {
-  position: relative;
-  top: -11px;
-  left: 2px;
+  /* position: relative; */
+  /* top: -11px; */
+  /* left: 2px; */
   color: #888;
 }
 
@@ -41,10 +48,10 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
@@ -59,14 +66,14 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(19px);
+  -ms-transform: translateX(19px);
+  transform: translateX(19px);
 }
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+  border-radius: 26px;
 }
 
 .slider.round:before {

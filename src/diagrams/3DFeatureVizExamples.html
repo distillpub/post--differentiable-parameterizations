@@ -5,10 +5,13 @@
   <div class="l-body">
     <div class="controls">
       <ExampleSelector {spriteUrl} bind:index spriteWidth={128} spriteColumns={8} spriteNumItems={8}></ExampleSelector>
-      <div><ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch></div>
+      <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
     </div>
     <div ref:threejsContainer class="THREEjsview">
       <THREEjsView ref:view {modelFolder} textureUrl={textureUrl} {width} {height} bind:unfoldFlag></THREEjsView>
+    </div>
+    <div>
+      <ColabLink :url/>
     </div>
   </div>
 
@@ -18,8 +21,8 @@
 <style>
 
 .controls {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+  display: flex;
+  flex-flow: column;
 }
 
 </style>
@@ -29,13 +32,15 @@
 import ExampleSelector from '../components/ExampleSelector';
 import ToggleSwitch from '../components/ToggleSwitch';
 import THREEjsView from '../components/THREEjsView';
+import ColabLink from '../components/ColabLink.html';
+import { sections } from '../sections.json';
 
 function range(n){
   return Array(n).fill().map((_, i) => i);
 }
 
 export default {
-  components: { THREEjsView, Sprite, ExampleSelector, ToggleSwitch },
+  components: { THREEjsView, Sprite, ExampleSelector, ToggleSwitch, ColabLink },
   oncreate() {
     setTimeout(() => { this.resize(); }, 200);
   },
@@ -50,7 +55,8 @@ export default {
       texture_index: 0,
       index: 0,
       width: 600,
-      height: 400
+      height: 400,
+      url: sections[5].colab_url,
     }
   },
   computed: {

@@ -3,7 +3,7 @@
   <div id="checkerboard" class={backgroundMode}></div>
   
   <div id='container'>
-    <div class="controls">
+    <div class="controls controls-{backgroundMode}">
       <div class="background-controls">
         <button on:click="set({backgroundMode: 'light'})" class="bright {backgroundMode == 'light' ? 'active' : ''}" title="Use bright background" tabindex=0>bright</button>
         <button on:click="set({backgroundMode: 'black'})" class="dark {backgroundMode == 'black' ? 'active' : ''}" title="Use dark background" tabindex=0>dark</button>
@@ -36,7 +36,7 @@
       </svg>
     </div>
     {/each}
-
+  
   </div>
   
 </figure>
@@ -129,7 +129,7 @@
   }
 
   figcaption {
-    grid-column: text;
+    grid-column: 1 / -1;
     
     background-color: hsla(0, 0%, 97%, 75%);
     border-radius: 4px;
@@ -146,17 +146,14 @@
     align-items: center;
     flex-wrap: wrap;
     
-    background-color: hsla(0, 0%, 97%, 75%);
-    border-radius: 4px;
+    background-color: hsla(0, 0%, 97%, 85%);
     padding: 8px;
     
     transition: opacity 0.35s, background-color 0.35s;
   }
   
-  .checkerboard .controls,
-  .checkerboard figcaption {
-    /* box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); */
-    background-color: hsl(0, 0%, 92%);
+  .controls.controls-black {
+    border-radius: 4px;
   }
   
   .disabled {
@@ -191,8 +188,9 @@
   }
   
   .background-controls > .checkerboard {
-    background-image: url("images/checkerboard.png");
-    background-size: 200%;
+    background-image: url("images/checkerboard-pattern.png");
+    background-size: 8px;
+    image-rendering: pixelated;
   }
   
   .blending-controls {
@@ -253,6 +251,10 @@
     -webkit-logical-height: 1em; /* Chrome ignores auto, so we have to use this hack to set the correct height  */
     -webkit-logical-width: auto; /* Chrome ignores auto, but here for completeness */
   }
+  
+  button:focus {
+    outline: none;
+  }
 
   /* Mozilla uses a pseudo-element to show focus on buttons, */
   /* but anchors are highlighted via the focus pseudo-class. */
@@ -273,6 +275,7 @@
 
 <script>
 import Slider from '../components/Slider';
+import ColabLink from '../components/ColabLink.html';
 
 export default {
   data() {
@@ -303,6 +306,6 @@ export default {
       }
     }
   },
-  components: { Slider }
+  components: { Slider, ColabLink }
 }
 </script>

@@ -27,6 +27,9 @@
 
 <div id="output">
   <h4>Model with optimized texture</h4>
+  <div class="figcaption">
+    <ToggleSwitch bind:checked='unfoldFlag' text="Unfold Texture"></ToggleSwitch>
+  </div>
   <div ref:sizer class="THREEjsview">
     <THREEjsView ref:view2 on:animate {camera} {modelFolder} {textureUrl} {width} {height} bind:unfoldFlag autoRotate={false}></THREEjsView>
   </div>
@@ -36,11 +39,9 @@
 
 <span class="figcaption l-body">
   Styletransfer of "<a href="{styleImage.link}" target="_blank">{styleImage.title}</a>" onto the 3D model "<a href="{contentImage.link}" target="_blank">{contentImage.title}</a>" by {contentImage.author}.
-  <div class="controls">
-    <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
-  </div>
 </span>
 <span class="figcaption l-body">
+  <ColabLink :url/>
 </span>
 
 <style>
@@ -76,7 +77,7 @@ figure {
   display: grid;
   grid-area: output;
   grid-gap: inherit;
-  grid-template-rows: min-content auto;
+  grid-template-rows: min-content;
   height: 100%;
 }
 
@@ -166,6 +167,8 @@ h4 {
 
 <script>
   import { range } from '../util';
+  import { sections } from '../sections.json';
+  import ColabLink from '../components/ColabLink.html';
   import THREEjsView from '../components/THREEjsView';
   import ToggleSwitch from '../components/ToggleSwitch';
   import ImageComparison from '../components/ImageComparison'
@@ -173,7 +176,7 @@ h4 {
   import { PerspectiveCamera, Vector3 } from 'three';
 
   export default {
-    components: { ImageComparison, ExampleSelector, THREEjsView, ToggleSwitch },
+    components: { ImageComparison, ExampleSelector, THREEjsView, ToggleSwitch, ColabLink },
     computed: {
       modelFolder: ({ contentImage }) => `models/${contentImage.model}`,
       contentImage: ({ contentImages, contentIndex }) => contentImages[contentIndex],
@@ -201,6 +204,7 @@ h4 {
         height: 400,
         unfoldFlag: false,
         camera: camera,
+        url: sections[5].colab_url,
         styleImages: [
           {
             texture: 'tex_onwhite.jpg',
