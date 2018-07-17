@@ -92,13 +92,13 @@
         <use fill="#F2F3F5" stroke="#495160" stroke-width="1.5" xlink:href="#styletransfer-copy-h" />
       </g>
       <text fill="#323B4C" font-family="SFProText-Semibold, SF Pro Text" font-size="13" font-weight="500">
-        <tspan x="23.799" y="54.5">Loss</tspan>
+        <tspan x="26" y="54.5">Loss</tspan>
       </text>
       <text fill="#707A8C" font-family="SFProText-Semibold, SF Pro Text" font-size="13" font-weight="500">
-        <tspan x="12.903" y="22">Content</tspan>
+        <tspan x="16" y="22">Content</tspan>
       </text>
       <text fill="#707A8C" font-family="SFProText-Semibold, SF Pro Text" font-size="13" font-weight="500">
-        <tspan x="22.237" y="86">Style</tspan>
+        <tspan x="25" y="86">Style</tspan>
       </text>
     </g>
     <g transform="rotate(-90 340 -186)">
@@ -135,7 +135,7 @@
         <use fill="#F2F3F5" stroke="#495160" stroke-width="1.5" xlink:href="#styletransfer-copy-j" />
       </g>
       <text fill="#323B4C" font-family="SFProText-Semibold, SF Pro Text" font-size="13" font-weight="500">
-        <tspan x="25.378" y="54">CNN</tspan>
+        <tspan x="24" y="54">CNN</tspan>
       </text>
       <g transform="translate(0 155)">
         <g stroke-linecap="square">
@@ -143,7 +143,7 @@
           <use fill="#F2F3F5" stroke="#495160" stroke-width="1.5" xlink:href="#styletransfer-copy-l" />
         </g>
         <text fill="#323B4C" font-family="SFProText-Semibold, SF Pro Text" font-size="13" font-weight="500">
-          <tspan x="24.378" y="54.5">CNN</tspan>
+          <tspan x="24" y="54">CNN</tspan>
         </text>
       </g>
       <g transform="translate(0 312)">
@@ -152,7 +152,7 @@
           <use fill="#F2F3F5" stroke="#495160" stroke-width="1.5" xlink:href="#styletransfer-copy-n" />
         </g>
         <text fill="#323B4C" font-family="SFProText-Semibold, SF Pro Text" font-size="13" font-weight="500">
-          <tspan x="23.878" y="54">CNN</tspan>
+          <tspan x="24" y="54">CNN</tspan>
         </text>
       </g>
     </g>
@@ -168,10 +168,10 @@
         <tspan x="0" y="243.3">Parameterizing the learned </tspan> <tspan x="0" y="260.3">image in a decorrelated space </tspan> <tspan x="0" y="277.3">makes style transfer more </tspan> <tspan x="0" y="294.3">robust to choice of model.</tspan>
       </text>
       <text>
-        <tspan x="629" y="12.3">The </tspan> <tspan font-family="SFProText-Semibold, SF Pro Text" font-weight="500" x="656.054" y="12.3">content objective</tspan> <tspan x="767.15" y="12.3"> aims </tspan> <tspan x="629" y="29.3">to get neurons to fire in the </tspan> <tspan x="629" y="46.3">same position as they did for </tspan> <tspan x="629" y="63.3">the content image.</tspan>
+        <tspan x="629" y="12.3">The </tspan> <tspan font-family="SFProText-Semibold, SF Pro Text" font-weight="500" x="656.054" y="12.3">content objective</tspan> <tspan x="755" y="12.3"> aims </tspan> <tspan x="629" y="29.3">to get neurons to fire in the </tspan> <tspan x="629" y="46.3">same position as they did for </tspan> <tspan x="629" y="63.3">the content image.</tspan>
       </text>
       <text>
-        <tspan x="629" y="245.8">The </tspan> <tspan font-family="SFProText-Semibold, SF Pro Text" font-weight="500" x="656.054" y="245.8">style objective</tspan> <tspan x="749.015" y="245.8"> aims to </tspan> <tspan x="629" y="262.8">create similar patterns of </tspan> <tspan x="629" y="279.8">neuron activation as in the </tspan> <tspan x="629" y="296.8">style image&#8212;without regard </tspan> <tspan x="629" y="313.8">to position.</tspan>
+        <tspan x="629" y="245.8">The </tspan> <tspan font-family="SFProText-Semibold, SF Pro Text" font-weight="500" x="656.054" y="245.8">style objective</tspan> <tspan x="739" y="245.8"> aims to </tspan> <tspan x="629" y="262.8">create similar patterns of </tspan> <tspan x="629" y="279.8">neuron activation as in the </tspan> <tspan x="629" y="296.8">style image&#8212;without regard </tspan> <tspan x="629" y="313.8">to position.</tspan>
       </text>
     </g>
     <g transform="matrix(0 1 1 0 526.5 259.5)">
@@ -216,7 +216,7 @@
       <use fill="#F2F3F5" stroke="#495160" stroke-width="1.5" xlink:href="#styletransfer-copy-E" />
     </g>
     <text fill="#323B4C" font-family="SFProText-Semibold, SF Pro Text" font-size="13" font-weight="500">
-      <tspan x="179.936" y="210">inverse</tspan> <tspan x="180.494" y="225">2D FFT</tspan>
+      <tspan x="183" y="210">inverse</tspan> <tspan x="183" y="225">2D FFT</tspan>
     </text>
   </g>
 </svg>
