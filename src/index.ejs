@@ -344,7 +344,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 
   <p>
-    Random parameters can produce aesthetically interesting images <d-cite key="CPPN:random"></d-cite>, but we can produce more interesting images by learning the parameters of the CPPN.
+    Random parameters can produce aesthetically interesting images <d-cite key="CPPN:random"></d-cite>, but we can produce more interesting images by learning the parameters of the CPPN <d-cite key="karpathy2014cppns,ha2016cppns"></d-cite>.
     Often this is done by evolution  <d-cite key="stanley2007cppn,Nguyen2015:easilyFooled"></d-cite>; here we explore the possibility to backpropagate some objective function, such a feature visualization objective.
     This is easily done since the CPPN network is differentiable as the convolutional neural network and the objective function can be propagated also trough the CPPN to update its parameters accordingly.
     That is to say, CPPNs are a differentiable image parameterization --
@@ -695,10 +695,6 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting color
     This article focused on <em>differentiable</em> image parameterizations, because they are easy to optimize and cover a wide range of possible applications.
     But it's certain possible to optimize image parameterizations that aren't differentiable, or are only partly differentiable, using reinforcement learning or evolutionary strategies <d-cite key="wierstra2014naturalEvolutionStrategies,salimans2017evolution"></d-cite>.
     Using non-differentiable parameterizations could open up exciting possibilities for image or scene parameterization.
-  </p>
-
-  <p>
-
   </p>
 
   <!-- <p>
