@@ -204,8 +204,8 @@ We refer to the result of this procedure as the optimization for a feature visua
 </p>
 
   <!-- <img class="pointer" src="images/pointer.svg"> -->
-  <span class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
-    <a href="#figure-aligned-interpolation-comparison" class="figure-number">2</a>
+  <span id="figure-number-aligned-interpolation-comparison" class="figcaption kicker-text-align add-colab-link--section-aligned-interpolation" style="grid-column: kicker; margin-top: 20px;">
+    <p><a href="#figure-aligned-interpolation-comparison" class="figure-number">2</a></p>
   </span>
   <d-figure id='AlignedUnalignedComparison'></d-figure>
 
@@ -227,8 +227,8 @@ We refer to the result of this procedure as the optimization for a feature visua
     <!-- The shared parameterization makes it easier for the optimization process to find frames in which visual landmarks stay in the same position then frames where they don't. In order to produce an unaligned frame, this frame's unique parameterization would have to overpower the shared parameterization. -->
   </p>
 
-  <span class="figcaption kicker-text-align" style="grid-column: kicker; margin-top: 20px;">
-    <a href="#figure-aligned-interpolation-examples" class="figure-number">3</a>
+  <span class="figcaption kicker-text-align add-colab-link--section-aligned-interpolation" style="grid-column: kicker; margin-top: 20px;">
+    <p><a href="#figure-aligned-interpolation-examples" class="figure-number">3</a></p>
   </span>
   <d-figure class="distill-experimental-autoresize" id='AlignedInterpolationExamples'></d-figure>
 
@@ -289,7 +289,7 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <d-figure id='StyleTransferExamples' class="base-grid"></d-figure>
 
-  <p class="figcaption l-body">
+  <p id="figcaption--style-transfer-examples" class="figcaption l-body add-colab-link--section-styletransfer">
     <a href="#figure-style-transfer-examples" class="figure-number">4</a>:
     Move the slider under "final image optimization" to compare optimization in pixel space with optimization in a decorrelated space. Both images were created with the same objective and differ only in their parameterization.
   </p>
@@ -368,7 +368,7 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <figure id="figure-xy2rgb-examples" class="base-grid">
     <d-figure style="grid-column: screen;" id="CPPN-Examples"></d-figure>
-    <figcaption style="grid-column: text;">
+    <figcaption class="add-colab-link--section-xy2rgb" id="figcaption--xy2rgb-examples" style="grid-column: text;">
       <a href="#figure-xy2rgb-examples" class="figure-number">7</a>:
       A <d-cite key="stanley2007cppn">Compositional Pattern Producing Network (CPPN)</d-cite> is used as differentiable parameterization for visualizing features at different layers<d-cite key="olah2017feature"></d-cite>.
     </figcaption>
@@ -386,10 +386,12 @@ We refer to the result of this procedure as the optimization for a feature visua
   By iteratively adjusting the weights, our immaginary beams are positioned in such a way that fine details emerge.
     </p>
 
-    <span id="figure-xy2rgb-training" class="figcaption kicker-text-align" style="grid-column: kicker;">
-      <img class="pointer" src="images/pointer.svg"><br/>
-      <a href="#figure-xy2rgb-training" class="figure-number">8</a>:
-      <span>Output of CPPNs during training. <em>Control each video by hovering, or tapping it if you are on a mobile device.</em></span>
+    <span id="figure-xy2rgb-training" class="figcaption kicker-text-align add-colab-link--section-xy2rgb" style="grid-column: kicker;">
+      <p>
+        <img class="pointer" src="images/pointer.svg"><br/>
+        <a href="#figure-xy2rgb-training" class="figure-number">8</a>:
+        <span>Output of CPPNs during training. <em>Control each video by hovering, or tapping it if you are on a mobile device.</em></span>
+      </p>
     </span>
     <d-figure id='CPPNAnimations'></d-figure>
 
@@ -400,10 +402,12 @@ We refer to the result of this procedure as the optimization for a feature visua
   As before, changes in the parameter have a global effect and create visually appealing intermediate frames.
     </p>
 
-    <span id="figure-xy2rgb-interpolation" class="figcaption kicker-text-align" style="grid-column: kicker;">
-      <img class="pointer" src="images/pointer.svg"><br/>
-      <a href="#figure-xy2rgb-interpolation" class="figure-number">9</a>:
-      Interpolating CPPN weights between two learned points.
+    <span id="figure-xy2rgb-interpolation" class="figcaption kicker-text-align add-colab-link--section-xy2rgb" style="grid-column: kicker;">
+      <p>
+        <img class="pointer" src="images/pointer.svg"><br/>
+        <a href="#figure-xy2rgb-interpolation" class="figure-number">9</a>:
+        Interpolating CPPN weights between two learned points.
+      </p>
     </span>
 
 

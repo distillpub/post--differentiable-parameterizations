@@ -19,12 +19,24 @@ import CPPNInterpolation              from "./diagrams/CPPNInterpolation.html";
 import BunnyModelTextureSpace         from "./diagrams/BunnyModelTextureSpace.html";
 
 import ImageRow                       from './components/ImageRow.html';
+import ColabLink                      from './components/ColabLink.html';
 
 
 // eagerly initialize vtoc  as it's above the fold
 import { sections } from "./sections.json";
 const tocNav = document.getElementById('vtoc');
 const visualTOC = new VisualTOC({target: tocNav, data: {sections: sections}});
+
+{
+  for (const section of sections) {
+    const className = "add-colab-link--" + section.anchor.slice(1);
+    const elements = document.getElementsByClassName(className);
+    for (const element of elements) {
+      const data = {target: element, data: { url: section.colab_url }};
+      const colabLink = new ColabLink(data);
+    }
+  }
+}
 
 {
   const figure = document.getElementById('StyleTransferExamples');
