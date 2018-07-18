@@ -4,18 +4,19 @@
 
   <div class="inputs">
     <h4>Input Controls</h4>
-    <figcaption>
+    <div class="figcaption">
       <p>
         A naïve approach optimizes the texture as an image with a feature visualization objective function.
       </p>
       <p>
         Because this optimization is not aware of the UV mapping used to render the object, it creates artifacts such as
-        <a class="{index==1 ? 'selected' : ''}" on:click='toggle(1)'>seams</a>
+        <button class="{index==1 ? 'selected' : ''}" on:click='toggle(1)'>seams</button>
         or
-        <a class="{index==2 ? 'selected' : ''}" on:click='toggle(2)'>wrongly oriented patterns</a>.
+        <button class="{index==2 ? 'selected' : ''}" on:click='toggle(2)'>wrongly oriented patterns</button>.
       </p>
       <ToggleSwitch bind:checked='unfoldFlag' text="unfold texture"></ToggleSwitch>
-    </figcaption>
+    </div>
+    <ColabLink :url/>
   </div>
 
 
@@ -46,81 +47,95 @@
 
 <style>
 
-figure {
-  grid-column: page;
-  display: grid;
-  grid-gap: inherit;
-  grid-row-gap: 10px;
-  grid-auto-flow: column;
-  grid-template:
-    "input" auto
-    "naive" auto
-    "rendered" auto / 1fr;
-}
-
-figure > * {
-  overflow: hidden;
-}
-
-.inputs {
-  grid-area: input;
-}
-
-.output-naive {
-  grid-area: naive;
-}
-
-.output-rendered {
-  grid-area: rendered;
-}
-
-figure > div {
-  display: grid;
-  grid-gap: inherit;
-  align-items: flex-start;
-  grid-auto-rows: min-content;
-  grid-auto-flow: row;
-}
-
-h4 {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding-bottom: 8px;
-  margin: 0;
-  font-weight: 700;
-}
-
-a {
-  cursor: pointer;
-}
-
-a.selected {
-  color: hsl(24, 100%, 50%);
-  border-bottom: 1px solid hsl(24, 100%, 50%);
-  text-shadow: 0.5px 0 0 hsl(24, 100%, 50%);
-}
-
-@media (min-width: 768px) {
   figure {
+    grid-column: page;
+    display: grid;
+    grid-gap: inherit;
+    grid-row-gap: 10px;
+    grid-auto-flow: column;
     grid-template:
-      "naive rendered" auto
-      "input input" auto / 1fr 1fr;
+      "input" auto
+      "naive" auto
+      "rendered" auto / 1fr;
   }
-}
 
-@media (min-width: 1180px) {
-  figure {
-    grid-template:
-      "input naive rendered" auto / 1fr 2fr 2fr;
+  figure > * {
+    overflow: hidden;
   }
-}
+
+  .inputs {
+    grid-area: input;
+  }
+
+  .output-naive {
+    grid-area: naive;
+  }
+
+  .output-rendered {
+    grid-area: rendered;
+  }
+
+  figure > div {
+    display: grid;
+    grid-gap: inherit;
+    align-items: flex-start;
+    grid-auto-rows: min-content;
+    grid-auto-flow: row;
+  }
+
+  h4 {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 8px;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  button {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    cursor: pointer;
+    outline: none;
+    border-bottom: 1px solid
+  }
+
+  /* Firefox: removes the inner border shown on focus */
+  button::-moz-focus-inner {
+    border: none;
+  }
+
+  button.selected {
+    color: hsl(24, 100%, 50%);
+    border-bottom: 1px solid hsl(24, 100%, 50%);
+    text-shadow: 0.5px 0 0 hsl(24, 100%, 50%);
+  }
+
+  @media (min-width: 768px) {
+    figure {
+      grid-template:
+        "naive rendered" auto
+        "input input" auto / 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1180px) {
+    figure {
+      grid-template:
+        "input naive rendered" auto / 1fr 2fr 2fr;
+    }
+  }
 
 </style>
 
 <script>
 import ToggleSwitch from '../components/ToggleSwitch';
 import THREEjsView from '../components/THREEjsView';
+import ColabLink from '../components/ColabLink.html';
 import { range } from '../util';
 import { PerspectiveCamera, Vector3 } from 'three';
+import { sections } from '../sections.json';
 
 const cameraPositions = [
   new Vector3(0, 0, 3.3),
@@ -129,7 +144,7 @@ const cameraPositions = [
 ];
 
 export default {
-  components: { THREEjsView, Sprite, ToggleSwitch },
+  components: { THREEjsView, ToggleSwitch, ColabLink },
   oncreate() {
     this.on('animate', ()=>{
       if (this.refs.view1)
@@ -153,6 +168,7 @@ export default {
       index: 0,
       unfoldFlag: false,
       camera: camera,
+      url: sections[4].colab_url,
     }
   },
   methods: {

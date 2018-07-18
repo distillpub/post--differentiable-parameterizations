@@ -4,11 +4,11 @@
      on:mousemove="mousemove(event)"
      on:touchstart="touch(event)"
      on:touchmove="touch(event)">
-  <img ref:imgBackground class="background" src={right} on:click="toggle()">
+  <img ref:imgBackground alt="Background Image" class="background" src={right} on:click="toggle()">
   <div class="right label">{rightName}</div>
   <div class="resizeable" style="width: {overlayPercentage}%">
     <div class="left label">{leftName}</div>
-    <img ref:imgForeground src={left} on:click="toggle()">
+    <img ref:imgForeground alt="Foreground Image" src={left} on:click="toggle()">
   </div>
   <div ref:handle class="handle" 
        style="left: {overlayPercentage}%"
@@ -71,8 +71,6 @@
     height: 17px;
     transform: translate(-7px, -8px);
     content: url('data:image/svg+xml; utf8, <svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"> <circle fill="white" cx="8.5" cy="8.5" r="8"/> <g stroke-opacity="0.33" stroke="black"> <path d="M8.5,3.5 L8.5,13.5"/> <path d="M10.5,3.5 L10.5,13.5"/> <path d="M6.5,3.5 L6.5,13.5"/> </g> </svg>');
-    /* background: white; */
-    /* border-radius: 50%; */
   }
   
   .handle::before {
@@ -81,7 +79,6 @@
     width: 88px;
     height: 88px;
     transform: translate(-44px, -44px);
-    /* background: red; */
     content: ' ';
   }
   

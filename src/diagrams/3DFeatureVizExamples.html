@@ -40,7 +40,7 @@ function range(n){
 }
 
 export default {
-  components: { THREEjsView, Sprite, ExampleSelector, ToggleSwitch, ColabLink },
+  components: { THREEjsView, ExampleSelector, ToggleSwitch, ColabLink },
   oncreate() {
     setTimeout(() => { this.resize(); }, 200);
   },
@@ -56,7 +56,7 @@ export default {
       index: 0,
       width: 600,
       height: 400,
-      url: sections[5].colab_url,
+      url: sections[4].colab_url,
     }
   },
   computed: {

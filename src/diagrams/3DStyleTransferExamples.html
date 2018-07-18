@@ -23,7 +23,7 @@
 </div>
 
 
-<img class="arrow" src="images/vertical-join-arrow.svg"/>
+<img class="arrow" alt="An arrow joining content and style images, and pointing towards the style transfer result." src="images/vertical-join-arrow.svg"/>
 
 <div id="output">
   <h4>Model with optimized texture</h4>
@@ -61,9 +61,6 @@ figure {
     "output output" auto / 1fr 1fr;
 }
 
-.row {
-  grid-auto-flow: column;
-}
 
 #input-style {
   grid-area: style;
@@ -84,6 +81,7 @@ figure {
 .input-wrapper {
   display: grid;
   grid-gap: inherit;
+  grid-column-gap: 10px;
   align-items: flex-start;
   grid-auto-rows: min-content auto;
   z-index: 1;
@@ -148,18 +146,16 @@ h4 {
   .grid {
     grid-template:
       "style arrow output" 1fr
-      "content arrow output" 1fr / min-content 34px 1fr;
+      "content arrow output" 1fr / min-content min-content 1fr;
+    grid-column-gap: 0;
   }
   .sprite {
     min-width: 210px; /* magic number */
   }
   .arrow {
     display: initial;
-    position: absolute;
-    left: -20px;
-    top: 106px;
-    z-index: 0;
     grid-area: arrow;
+    align-self: center;
     width: unset;
   }
 }
@@ -171,12 +167,11 @@ h4 {
   import ColabLink from '../components/ColabLink.html';
   import THREEjsView from '../components/THREEjsView';
   import ToggleSwitch from '../components/ToggleSwitch';
-  import ImageComparison from '../components/ImageComparison'
   import ExampleSelector from '../components/ExampleSelector'
   import { PerspectiveCamera, Vector3 } from 'three';
 
   export default {
-    components: { ImageComparison, ExampleSelector, THREEjsView, ToggleSwitch, ColabLink },
+    components: { ExampleSelector, THREEjsView, ToggleSwitch, ColabLink },
     computed: {
       modelFolder: ({ contentImage }) => `models/${contentImage.model}`,
       contentImage: ({ contentImages, contentIndex }) => contentImages[contentIndex],

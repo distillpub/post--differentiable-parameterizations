@@ -2,7 +2,7 @@
   .root {
     display: flex!important;
   }
-  label {
+  /* label {
     color: rgba(0, 0, 0, 0.5);
     font-size: 13px;
     line-height: 13px;
@@ -11,13 +11,15 @@
     margin-left: 10px;
     width: 50px;
     display: block;
-  }
+  } */
   d-slider {
     position: relative;
     z-index: 1;
     width: 100%;
   }
 </style>
+
+
 <div class="root">
   <d-slider
     ref:slider
@@ -32,6 +34,8 @@
   ></d-slider>
   <!-- <label>{{value.toFixed(2)}}</label> -->
 </div>
+
+
 <script>
 export default {
   data: function() {

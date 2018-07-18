@@ -21,7 +21,7 @@
 </div>
 
 
-<img class="arrow" src="images/vertical-join-arrow.svg"/>
+<img class="arrow" alt="An arrow joining content and style images, and pointing towards the style transfer result." src="images/vertical-join-arrow.svg"/>
 
 <div id="output">
   <h4>Final image Optimization</h4>
@@ -47,10 +47,6 @@
     "output output" auto / 1fr 1fr;
 }
 
-.row {
-  grid-auto-flow: column;
-}
-
 #input-style {
   grid-area: style;
 }
@@ -68,6 +64,7 @@
 .input-wrapper {
   display: grid;
   grid-gap: inherit;
+  grid-column-gap: 10px;
   align-items: flex-start;
   grid-auto-rows: min-content;
   z-index: 1;

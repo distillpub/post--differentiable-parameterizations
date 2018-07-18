@@ -16,6 +16,7 @@
         <div class="slider-wrapper"><Slider bind:value="backgroundOpacity" type="range" min="0" max="1" step="0.01" ticks=false/></div>
         <span class="figcaption">opaque</span>
       </div>
+      <ColabLink class="test" url="test"/>
     </div>
 
     {#each images as img, i}
@@ -127,7 +128,7 @@
     margin-bottom: 0;
   }
 
-  figcaption {
+  /* figcaption {
     grid-column: 1 / -1;
     
     background-color: hsla(0, 0%, 97%, 75%);
@@ -135,7 +136,7 @@
     padding: 10px;
     
     z-index: 2;
-  }
+  } */
   
   .controls {
     grid-column: 1 / -1;
@@ -153,6 +154,11 @@
   
   .controls.controls-black {
     border-radius: 4px;
+  }
+  
+  .controls > :global(.colab-root) {
+    margin-top: 3px;
+    margin-bottom: 3px;
   }
   
   .disabled {
@@ -196,19 +202,19 @@
     display: flex;
     flex-flow: row;
     align-content: stretch;
-    min-width: 200px;
-    max-width: 300px;
+    min-width: 150px;
+    max-width: 250px;
     flex-basis: auto;
     flex-grow: 1;
   }
   
   .blending-controls > span {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
   }
   
   #toggle-alpha {
-    margin-left: 12px;
+    /* margin-left: 8px; */
     background-image: url("images/transparent/alpha/mixed4b_pool_reduce_pre_relu_46.jpg");
     background-size: cover;
   }

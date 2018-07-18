@@ -38,11 +38,6 @@ figure {
   transform-origin: 0 0;
 }
 
-h4 {
-  margin-top: 0;
-  margin-bottom: 0.5em;
-}
-
 .container {
   grid-column: text;
   display: grid;
@@ -87,7 +82,7 @@ h4 {
 <script>
 
 import { range } from '../util';
-import ExampleSelector from '../components/ExampleSelector';
+// import ExampleSelector from '../components/ExampleSelector';
 import { Sprite } from 'lucid-components';
 
 export default {
@@ -106,7 +101,7 @@ export default {
     url: ({ index }) => `images/interpolation-sprite-0${index}.jpg`,
   },
   components: { 
-    ExampleSelector, Sprite,
+    Sprite,
   },
   helpers: {
     range
