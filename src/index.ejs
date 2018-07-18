@@ -499,10 +499,12 @@ We refer to the result of this procedure as the optimization for a feature visua
   <p>
     It turns out that the generation of semi-transparent images is useful in feature visualization.
     Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
-    Unfortunately, there is no way for these visualizations to distuingish what areas of an image a neuron cares about strongly from what it cares about marginally.
-    <d-footnote>This issue does not occur when optimizing entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>
+    Unfortunately, there is no way for these visualizations to distuingish which areas of an image strongly influence a neuron's activation and those which only marginally do so.
+    <d-footnote>This issue does not occur when optimizing for the activation of entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>
+  </p>
+  <p>
     Ideally, we would like a way for our visualizations to make this distinction in importance--one natural way to represent that a part of the image doesn't matter is for it to be transparent.
-    Thus, if we optimize an image with an alpha channel and encourage the image to be transparent, unimportant parts of the image, according to the feature visualization objective, should become transparent.
+    Thus, if we optimize an image with an alpha channel and encourage the overall image to be transparent, parts of the image that are unimportant according to the feature visualization objective should become transparent.
   </p>
 
   <d-figure class="subgrid" id="TransparentNeuronExamples"></d-figure>

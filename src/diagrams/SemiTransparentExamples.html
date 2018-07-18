@@ -1,13 +1,13 @@
 <figure id="figure-rgba-examples" class="base-grid {backgroundMode}">
   
-  <div id="checkerboard" class={backgroundMode}></div>
+  <div id="checkerboard" class="{backgroundMode} image-rendering--pixelated"></div>
   
   <div id='container'>
     <div class="controls controls-{backgroundMode}">
       <div class="background-controls">
         <button on:click="set({backgroundMode: 'light'})" class="bright {backgroundMode == 'light' ? 'active' : ''}" title="Use bright background" tabindex=0>bright</button>
         <button on:click="set({backgroundMode: 'black'})" class="dark {backgroundMode == 'black' ? 'active' : ''}" title="Use dark background" tabindex=0>dark</button>
-        <button on:click="set({backgroundMode: 'checkerboard'})" class="checkerboard {backgroundMode == 'checkerboard' ? 'active' : ''}" title="Use checkerboard pattern background" tabindex=0>checkerboard</button>
+        <button on:click="set({backgroundMode: 'checkerboard'})" class="checkerboard image-rendering--pixelated {backgroundMode == 'checkerboard' ? 'active' : ''}" title="Use checkerboard pattern background" tabindex=0>checkerboard</button>
         <div class="separator"></div>
         <button id="toggle-alpha" on:click="toggleMode()" class={mode == 'alpha' ? 'active' : ''} title="Show only alpha masks" tabindex=0>Alpha mask</button>
       </div>
@@ -84,7 +84,6 @@
     opacity: 0;
     
     transition: opacity .25s;
-    image-rendering: pixelated;
     background-image: url(images/checkerboard-pattern.png);
     background-repeat: repeat;
     background-size: 16px;
