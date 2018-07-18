@@ -131,7 +131,8 @@ h4 {
   .grid {
     grid-template: 
       "style arrow output" auto
-      "content arrow output" auto / min-content 34px 2fr;
+      "content arrow output" auto / min-content min-content 2fr;
+    grid-column-gap: 0;
   }
   .sprite {
     min-width: 210px; /* magic number */
@@ -140,9 +141,6 @@ h4 {
     display: initial;
     grid-area: arrow;
     align-self: center;
-    position: relative;
-    left: -20px;
-    z-index: 0;
     width: unset;
   }
 }
