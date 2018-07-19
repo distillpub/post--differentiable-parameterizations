@@ -1,5 +1,9 @@
-// for hot reloading only. TODO: remove after development
-require('file-loader!./index.ejs')
+/* Fixes iterating over HTMLCollections for Edge prior to fall 2018 */
+if (/Edge/.test(navigator.userAgent)) {
+  NodeList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
+  HTMLCollection.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
+}
+/* End HTMLCollections iteration in Edge hotfix */
 
 import VisualTOC                      from './diagrams/VisualTOC.html';
 import StyleTransferExamples          from './diagrams/StyleTransferExamples.html';
@@ -27,16 +31,6 @@ import { sections } from "./sections.json";
 const tocNav = document.getElementById('vtoc');
 const visualTOC = new VisualTOC({target: tocNav, data: {sections: sections}});
 
-{
-  for (const section of sections) {
-    const className = "add-colab-link--" + section.anchor.slice(1);
-    const elements = document.getElementsByClassName(className);
-    for (const element of elements) {
-      const data = {target: element, data: { url: section.colab_url }};
-      const colabLink = new ColabLink(data);
-    }
-  }
-}
 
 {
   const figure = document.getElementById('StyleTransferExamples');
@@ -173,29 +167,40 @@ const visualTOC = new VisualTOC({target: tocNav, data: {sections: sections}});
   });
 }
 
-{
-  function determineTextZoomLevel() {
-    const p = document.getElementById('first-paragraph');
-    if (p) {
-      const brWidth = p.getBoundingClientRect().width;
-      const zoomlevel = brWidth / 704; // magic: default text body width
-      document.body.style = "--textzoomlevel: " + zoomlevel;
-      
-      const tags = document.getElementsByClassName("distill-experimental-autoresize");
-      for (const tag of tags) {
-        // magic, supposed to be figure tag within d-figure
-        if (tag.children.length == 1) {
-          const innerFigure = tag.children[0];
-          const height = parseInt(innerFigure.style.height);
-          const padding = 40;
-          tag.style.height = (height + padding) * zoomlevel + "px";
-        }
-        
+
+function determineTextZoomLevel() {
+  const p = document.getElementById('first-paragraph');
+  if (p) {
+    const brWidth = p.getBoundingClientRect().width;
+    const zoomlevel = brWidth / 704; // magic: default text body width
+    document.body.style = "--textzoomlevel: " + zoomlevel;
+    
+    const tags = document.getElementsByClassName("distill-experimental-autoresize");
+    for (const tag of tags) {
+      // magic, supposed to be figure tag within d-figure
+      if (tag.children.length == 1) {
+        const innerFigure = tag.children[0];
+        const height = parseInt(innerFigure.style.height);
+        const padding = 40;
+        tag.style.height = (height + padding) * zoomlevel + "px";
       }
+      
     }
   }
-  
-  window.onresize = determineTextZoomLevel;
-  determineTextZoomLevel();
+}
+window.onresize = determineTextZoomLevel;
+
+
+function addColabLinks(sections) {
+  for (const section of sections) {
+    const className = "add-colab-link--" + section.anchor.slice(1);
+    const elements = document.getElementsByClassName(className);
+    for (const element of elements) {
+      const data = {target: element, data: { url: section.colab_url }};
+      const colabLink = new ColabLink(data);
+    }
+  }
 }
 
+determineTextZoomLevel();
+addColabLinks(sections); 
