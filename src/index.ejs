@@ -237,7 +237,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     Intuitively, the shared parameterization provides a common reference for the displacement of visual landmarks, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
     <d-footnote>
       Concretely, we combine a usually lower-resolution shared parameterization $ P_{\text{shared}}$ and full-resolution independent parameterizations $P_{\text{unique}}^i$ that are unique to each frame $i$ of the visualization.
-      Each individual frame $i$ is then parameterized as a combination $P^i$ of the two, $P^i = \sigma(P_{\text{unique}}^i + P_{\text{shared}})$.
+      Each individual frame $i$ is then parameterized as a combination $P^i$ of the two, $P^i = \sigma(P_{\text{unique}}^i + P_{\text{shared}})$, where $\sigma$ is the logistic sigmoid function.
     </d-footnote>
     This parameterization doesn't change the objective, but it does enlarge the <b>(2) basins of attraction</b> where the visualizations are aligned.
     <d-footnote>
