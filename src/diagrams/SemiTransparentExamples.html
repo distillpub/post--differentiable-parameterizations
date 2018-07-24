@@ -1,6 +1,6 @@
 <figure id="figure-rgba-examples" class="base-grid {backgroundMode}">
   
-  <div id="checkerboard" class="{backgroundMode} image-rendering--pixelated"></div>
+  <!-- <div id="checkerboard" class="{backgroundMode} image-rendering--pixelated"></div> -->
   
   <div id='container'>
     <div class="controls controls-{backgroundMode}">
@@ -30,7 +30,8 @@
         </defs>
         <image xlink:href="images/transparent/{mode=='alpha' ? 'alpha' : 'rgb'}/{img}"
             x="0" y="0" height="288px" width="288px"
-            mask={ mode == 'alpha' ? '' : "url(#mask"+i+")"}/>
+            mask={ mode == 'alpha' ? 'none' : "url(#mask"+i+")"}
+        />
         <image xlink:href="images/transparent/rgb/{img}"
             x="0" y="0" height="288px" width="288px"
             opacity={ mode == 'alpha' ? 0 : backgroundOpacity }/>
@@ -57,10 +58,11 @@
 
   #container {
     display: grid;
+    position: relative;
+    z-index: 1;
     grid-gap: 8px;
     grid-template-columns: repeat(3, 1fr);
     grid-column: text-start / text-end;
-    z-index: 2;
   }
   
   @media (min-width: 768px) {
@@ -78,6 +80,7 @@
   #checkerboard {
     content:'';
     position: absolute;
+    z-index: 0;
     left:0; 
     top:0;
     width: 100%;
@@ -89,6 +92,17 @@
     background-repeat: repeat;
     background-size: 16px;
     background-position: center;
+  }
+
+  @supports not (image-rendering: pixelated) {
+    #checkerboard {
+      background-image: url("images/checkerboard-pattern.png");
+      background-size: 90px;
+    }
+    .background-controls > .checkerboard {
+      background-image: url("images/checkerboard-pattern.png");
+      background-size: 8px;
+    }
   }
   
   #checkerboard.checkerboard {
