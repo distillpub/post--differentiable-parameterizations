@@ -79,9 +79,8 @@
   </p>
 
   <p>
-    Typically, we parameterize the input image as the RGB values of each pixel.
-    But that isn’t the only way to parameterize images.
-    And, as long as the mapping from parameters to images is differentiable, we can still optimize alternative parameterizations with gradient descent.
+    Typically, we parameterize the input image as the RGB values of each pixel, but that isn’t the only way.
+    As long as the mapping from parameters to images is differentiable, we can still optimize alternative parameterizations with gradient descent.
   </p>
 
   <figure class="subgrid" id="figure-differentiable-parameterizations">
@@ -127,8 +126,8 @@
 
 <p><b>(1) - Improved Optimization</b> -
 Transforming the input to make an optimization problem easier -- a technique called "preconditioning" -- is a staple of optimization.
-  <d-footnote> 
-    Preconditioning is most often presented as a transformation of the gradient 
+  <d-footnote>
+    Preconditioning is most often presented as a transformation of the gradient
      (usually multiplying it by a positive definite "preconditioner" matrix).
     However, this is equivalent to optimizing an alternate parameterization of the input.
   </d-footnote>
@@ -136,8 +135,8 @@ We find that simple changes in parameterization make image optimization for neur
 </p>
 
 <p><b>(2) - Basins of Attraction</b> -
-When we optimize the input to a neural network, there are often many different solutions, corresponding to different local minima. 
-  <d-footnote> 
+When we optimize the input to a neural network, there are often many different solutions, corresponding to different local minima.
+  <d-footnote>
     Training deep neural networks characterized by complex optimization landscapes <d-cite key="choromanska2015loss"></d-cite>, which may have many equally good local minima for a given objective.
     (Note that finding the global minimum is not always desirable as it may result in an overfitted model <d-cite key="choromanska2015loss"></d-cite>.)
     Thus, it's probably not surprising that optimizing the input to a neural network would also have many local minima.
@@ -146,10 +145,10 @@ The probability of our optimization process falling into any particular local mi
 Changing the parameterization of an optimization problem is known to change the sizes of different basins of attraction, influencing the likely result.
 </p>
 
-<p><b>(3) - Additional Constraints </b> - 
-Some parameterizations only parameterize a subset of possible inputs, rather than the entire space.
+<p><b>(3) - Additional Constraints </b> -
+Some parameterizations cover only a subset of possible inputs, rather than the entire space.
 An optimizer working in such a parameterization will still find solutions that minimize or maximize the objective function, but they'll be subject to the constraints of the parameterization.
-By picking the right parameterization, one can impose a variety of constraints, ranging from simple constraints (e.g., the boundary of the image must be black), to rich, subtle constraints.
+By picking the right set of constraints, one can impose a variety of constraints, ranging from simple constraints (e.g., the boundary of the image must be black), to rich, subtle constraints.
 
 <p><b>(4) - Implicitly Optimizing other Objects</b> -
   A parameterization may internally use a different kind of object than the one it outputs and we optimize for.
@@ -223,7 +222,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     <d-footnote>
       For example, one could explicitly penalize differences between adjacent frames. Our final result and our colab notebook use this technique in combination with a shared parameterization.
     </d-footnote>
-    , one of which is using a <em>shared parameterization</em>: each frame is parameterized as a combination of its own unique parameterization, and a single shared parameterization.
+    , one of which is using a <em>shared parameterization</em>: each frame is parameterized as a combination of its own unique parameterization, and a single shared one.
     <!-- The shared parameterization makes it easier for the optimization process to find frames in which visual landmarks stay in the same position then frames where they don't. In order to produce an unaligned frame, this frame's unique parameterization would have to overpower the shared parameterization. -->
   </p>
 
@@ -234,7 +233,7 @@ We refer to the result of this procedure as the optimization for a feature visua
 
   <p>
     By partially sharing a parameterization between frames, we encourage the resulting visualizations to naturally align.
-    Intuitively, the shared parameterization provides a common reference for the displacement of visual landmarks, while the unique parameterizations give to each frame its own visual appeal based on its interpolation weights.
+    Intuitively, the shared parameterization provides a common reference for the displacement of visual landmarks, while the unique one gives to each frame its own visual appeal based on its interpolation weights.
     <d-footnote>
       Concretely, we combine a usually lower-resolution shared parameterization $ P_{\text{shared}}$ and full-resolution independent parameterizations $P_{\text{unique}}^i$ that are unique to each frame $i$ of the visualization.
       Each individual frame $i$ is then parameterized as a combination $P^i$ of the two, $P^i = \sigma(P_{\text{unique}}^i + P_{\text{shared}})$, where $\sigma$ is the logistic sigmoid function.
@@ -253,7 +252,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </p>
 
   <p>
-    Shared parameterizations are an initial example of how differentiable parameterizations in general can be a useful additional tool in visualizing neural networks.
+    This is an initial example of how differentiable parameterizations in general can be a useful additional tool in visualizing neural networks.
   </p>
 
 <!-- =================================================== -->
@@ -293,9 +292,9 @@ We refer to the result of this procedure as the optimization for a feature visua
     <a href="#figure-style-transfer-examples" class="figure-number">4</a>:
     Move the slider under "final image optimization" to compare optimization in pixel space with optimization in a decorrelated space. Both images were created with the same objective and differ only in their parameterization.
   </p>
-  
+
   <p>
-    Let's consider this change in a bit more detail. Style transfer involves three images: a content image, a style image, and the image we optimize. 
+    Let's consider this change in a bit more detail. Style transfer involves three images: a content image, a style image, and the image we optimize.
     All three of these feed into the CNN, and the style transfer objective<d-cite key="gatys2015"></d-cite> is based on the differences in how these images activate the CNN.
     The only change we make is how we parameterize the optimized image. Instead of parameterizing it in terms of pixels (which are highly correlated with their neighbors), we use a scaled Fourier transform<d-cite key="olah2017feature"></d-cite>.
   </p>
@@ -445,7 +444,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   <p>
     where $I_a$ is the alpha channel of the image $I$.
   </p>
-  
+
   <p>
     If we used a static background $BG$, such as black, the transparency would merely indicate pixel positions in which that background contributes directly to the optimization objective.
     In fact, this is equivalent to optimizing an RGB image and making it transparent in areas where its color matches with the background!
@@ -457,7 +456,7 @@ We refer to the result of this procedure as the optimization for a feature visua
       Thus, for simplicity, we use a smooth 2D gaussian noise.
     </d-footnote>
   </p>
-  
+
   <figure id="figure-rgba-diagram" class="subgrid" style="margin-top: 0;">
     <div class="l-body">
       <%= require("../static/images/diagrams/transparency.svg") %>
@@ -469,7 +468,7 @@ We refer to the result of this procedure as the optimization for a feature visua
       Transparent areas are blended with a random background at each step of the optimization.
     </figcaption>
   </figure>
-  
+
   <p>
     By default, optimizing our semi-transparent image will make the image fully opaque, so the network can always get its optimal input.
     To avoid this, we need to change our objective with an objective that encourages some transparency.
@@ -530,7 +529,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     In this section we explore optimizing <b>3D objects</b> for a feature-visualization objective<d-cite key="olah2017feature"></d-cite>.
     We use a 3D rendering process to turn them into 2D RGB images that can be fed into the network, and backpropegate through the rendering process to optimize the texture of the 3D object.
   </p>
-  
+
   <p>
     Our technique is similar to the approach that Athalye et al.<d-cite key="athalye2017synthesizing"></d-cite> used for the creation of real-world adversarial examples, as we rely on the backpropagation of the objective function to randomly sampled views of the 3D model.
     We differ from existing approaches for artistic texture generation<d-cite key="kato2017neural3D"></d-cite>, as we do not modify the geometry of the object during back-propagation.
@@ -687,7 +686,7 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting color
 <!-- =================================================== -->
 
   <hr/>
-  
+
   <h2 id='conclusions'><a href="#conclusions">Conclusions</a></h2>
 
   <p>
@@ -700,7 +699,7 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting color
   <p>
     This article focused on <em>differentiable</em> image parameterizations, because they are easy to optimize and cover a wide range of possible applications.
     But it's certain possible to optimize image parameterizations that aren't differentiable, or are only partly differentiable, using reinforcement learning or evolutionary strategies <d-cite key="wierstra2014naturalEvolutionStrategies,salimans2017evolution"></d-cite>.
-    Using non-differentiable parameterizations could open up exciting possibilities for image or scene parameterization.
+    Using non-differentiable parameterizations could open up exciting possibilities for image or scene generation.
   </p>
 
   <!-- <p>
@@ -722,7 +721,7 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting color
   <h3>Acknowledgments</h3>
   <p>
      We are very grateful to Justin Gilmer, Shan Carter, Dominik Roblek and Amit Patel.
-     Justin generously stepped in to handle the review process of this article. 
+     Justin generously stepped in to handle the review process of this article.
      Shan was available for outstanding design insight and implementation advice.
      Dominik Roblek made the <a href="figure-style-transfer-3d-picture">3D printed example</a> possible, while Amit Patel hunted down an obscure bug in our <a href="figure-style-transfer-diagram">Style Transfer diagram</a>.
   </p>
@@ -732,10 +731,10 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting color
      Matt Sharifi, Arvind Satyanarayan, Ian Johnson, and Vincent Sitzmann
      for their thoughts, comments, discussions and support.
   </p>
-  
+
   <p>
-    Lastly, this work was made possible by many open source tools, for which we are grateful. 
-    In particular, all of our experiments were based on <a href="https://www.tensorflow.org/">Tensorflow</a><d-cite key="abadi2016tensorflow"></d-cite>, 
+    Lastly, this work was made possible by many open source tools, for which we are grateful.
+    In particular, all of our experiments were based on <a href="https://www.tensorflow.org/">Tensorflow</a><d-cite key="abadi2016tensorflow"></d-cite>,
     most of our interactive diagrams are built in <a href="https://svelte.technology/">Svelte</a>,
     and all 3D diagrams use <a href="https://threejs.org/">ThreeJS</a>.
   </p>
@@ -748,7 +747,7 @@ Hence, a faithful replica of the object can be 3D printed and, by adopting color
   <p>
     <b>Writing & Diagrams:</b> The text was initially drafted by Nicola and refined by the other authors. The interactive diagrams were designed by Ludwig and Nicola. The final notebooks were primarily created by Ludwig, based on earlier code and notebooks by Alex and Chris.
   </p>
-  
+
   <h3 id="discussion-review">Discussion and Review</h3>
   <p>
     <a href="https://github.com/distillpub/post--differentiable-parameterizations/issues/50">Review 1 - Pang Wei Koh</a><br>
