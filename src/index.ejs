@@ -312,7 +312,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </figure>
 
   <p>
-    Our exact implementation can be found in this notebook. Note that it also uses <a href="https://distill.pub/2017/feature-visualization/#regularizer-playground-robust">transformation robustness</a><d-cite key="olah2017feature"></d-cite>, which not all implementations of style transfer use.
+    Our exact implementation can be found in the accompanying notebook. Note that it also uses <a href="https://distill.pub/2017/feature-visualization/#regularizer-playground-robust">transformation robustness</a><d-cite key="olah2017feature"></d-cite>, which not all implementations of style transfer use.
   </p>
 
 
@@ -547,7 +547,7 @@ You can use the following WebGL view to familiarize with these concepts. The vie
   <d-figure id="BunnyModel"></d-figure> -->
 
   <p>
-    A simple naive way to create the 3D object would be to optimize an image the normal way and then use it as a texture to paint on the object.
+    A simple naive way to create the 3D object texture would be to optimize an image the normal way and then use it as a texture to paint on the object.
     However, this approach generates a texture that does not consider the underlying UV-mapping and, therefore, will create a variety of visual artifacts in the rendered object.
     First, <b>seams</b> are visible on the rendered texture, because the optimization is not aware of the underlying UV-mapping and, therefore, does not optimize the texture consistently along the split patches of the texture.
     Second, the generated patterns are <b>randomly oriented</b> on different parts of the object (see, e.g., the vertical and wiggly patterns) because they are not consistently oriented in the underlying UV-mapping.
@@ -577,7 +577,7 @@ You can use the following WebGL view to familiarize with these concepts. The vie
 
   <p>
 We start the process by randomly initializing the texture with a Fourier parameterization.
-At every training iteration we sample a random camera position, which is oriented towards the center of mass of the object, and we render the textured object as an image.
+At every training iteration we sample a random camera position, which is oriented towards the center of the bounding box of the object, and we render the textured object as an image.
 We then backpropagate the gradient of the desired objective function, i.e., the feature of interest in the neural network, to the rendered image.
   </p>
 
@@ -625,7 +625,7 @@ The following diagram presents an overview of the approach:
 
   <p>
 The algorithm works in similar way to the one presented in the previous section, starting from a randomly initialized texture.
-At each iteration, we sample a random view point oriented toward the center of mass of the object and we render two images of it: one with the original texture, the <em>content image</em>, and one with the texture that we are currently optimizing, the <em>learned image</em>.
+At each iteration, we sample a random view point oriented toward the center of the bounding box of the object and we render two images of it: one with the original texture, the <em>content image</em>, and one with the texture that we are currently optimizing, the <em>learned image</em>.
   </p>
 
   <p>
