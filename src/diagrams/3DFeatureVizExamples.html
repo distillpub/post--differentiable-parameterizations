@@ -1,15 +1,11 @@
 <svelte:window on:resize="resize()"/>
+<figure id="figure-featureviz-3d-examples" class="">
 
-<figure id="figure-featureviz-3d-examples" class="base-grid">
+  <ExampleSelector {spriteUrl} bind:index spriteWidth={128} spriteColumns={8} spriteNumItems={8}></ExampleSelector>
+  <div class="figcaption"><ToggleSwitch bind:checked='unfoldFlag' text="Unfold Texture"></ToggleSwitch></div>
 
-  <div class="l-body">
-
-      <ExampleSelector {spriteUrl} bind:index spriteWidth={128} spriteColumns={8} spriteNumItems={8}></ExampleSelector>
-      <div class="figcaption"><ToggleSwitch bind:checked='unfoldFlag' text="Unfold Texture"></ToggleSwitch></div>
-
-    <div ref:threejsContainer class="THREEjsview">
-      <THREEjsView ref:view {modelFolder} textureUrl={textureUrl} {width} {height} bind:unfoldFlag></THREEjsView>
-    </div>
+  <div ref:threejsContainer class="THREEjsview">
+    <THREEjsView ref:view {modelFolder} textureUrl={textureUrl} {width} {height} bind:unfoldFlag></THREEjsView>
   </div>
 
 </figure>
