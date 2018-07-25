@@ -439,7 +439,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   <p>
     So far, we’ve explored image parameterizations that are relatively close to how we normally think of images, using pixels or Fourier components.
     In this section, we explore the possibility of <b> (3) adding additional constraints</b> to the optimization process by using a different parameterization.
-    More specifically, we parameterize our image as a neural network -- in particular, a Compositional Pattern Producing Network (CPPN) <d-cite key="stanley2007cppn"></d-cite>.
+    More specifically, we parameterize our image as a neural network <d-cite key="ulyanov2017deepimageprior"></d-cite> -- in particular, a Compositional Pattern Producing Network (CPPN) <d-cite key="stanley2007cppn"></d-cite>.
   </p>
 
   <p>
@@ -486,7 +486,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   </figure>
     <p>
   The visual quality of the generated images is heavily influenced by the architecture of the chosen CPPN.
-  Not only the shape of the network, i.e., the number of layers and filters, plays a role, but also the chosen activation functions and normalization.  For example, deeper networks produce more fine grained details compared to shallow ones.
+  Not only the shape of the network, i.e., the number of layers and filters, plays a role, but also the chosen activation functions and normalization. For example, deeper networks produce more fine grained details compared to shallow ones.
   We encourage readers to experiment in generating different images by changing the architecture of the CPPN. This can be easily done by changing the code in the supplementary notebook.
     </p>
 
