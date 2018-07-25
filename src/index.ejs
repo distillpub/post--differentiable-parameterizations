@@ -501,7 +501,7 @@ We refer to the result of this procedure as the optimization for a feature visua
   <p>
     It turns out that the generation of semi-transparent images is useful in feature visualization.
     Feature visualization aims to understand what neurons in a vision model are looking for, by creating images that maximally activate them.
-    Unfortunately, there is no way for these visualizations to distuingish which areas of an image strongly influence a neuron's activation and those which only marginally do so.
+    Unfortunately, there is no way for these visualizations to distinguish which areas of an image strongly influence a neuron's activation and those which only marginally do so.
     <d-footnote>This issue does not occur when optimizing for the activation of entire channels, because in that case every pixel has multiple neurons that are close to centered on it. As a consequence, the entire input image gets filled with copies of what those neurons care about strongly.</d-footnote>
   </p>
   <p>
@@ -526,7 +526,7 @@ We refer to the result of this procedure as the optimization for a feature visua
     In the previous section, we were able to use a neural network for RGB images to create a semi-transparent RGBA image.
     Can we push this even further, creating <b>(4) other kinds of objects</b> even further removed from the RGB input?
     In this section we explore optimizing <b>3D objects</b> for a feature-visualization objective<d-cite key="olah2017feature"></d-cite>.
-    We use a 3D rendering process to turn them into 2D RGB images that can be fed into the network, and backpropegate through the rendering process to optimize the texture of the 3D object.
+    We use a 3D rendering process to turn them into 2D RGB images that can be fed into the network, and backpropagate through the rendering process to optimize the texture of the 3D object.
   </p>
 
   <p>
