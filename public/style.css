@@ -1,0 +1,114 @@
+section {
+  display: contents;
+}
+
+.subgrid {
+  grid-column: screen; 
+  display: grid; 
+  grid-template-columns: inherit;
+  grid-template-rows: inherit;
+  grid-column-gap: inherit;
+  grid-row-gap: inherit;
+}
+
+d-figure.base-grid {
+  grid-column: screen;
+  background: hsl(0, 0%, 97%);
+  padding: 20px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+d-figure {
+  margin-bottom: 1em;
+  position: relative;
+}
+
+d-figure > figure {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.shaded-figure {
+  background-color: hsl(0, 0%, 97%);
+  border-top: 1px solid hsla(0, 0%, 0%, 0.1);
+  border-bottom: 1px solid hsla(0, 0%, 0%, 0.1);
+  padding: 30px 0;
+}
+
+.pointer {
+  grid-column: kicker;
+  justify-self: start;
+  /* margin-bottom: 1em; */
+}
+
+.kicker-text-align {
+  text-align: left;
+}
+
+@media (min-width: 1000px) {
+  .pointer {
+    justify-self: end;
+  }
+  
+  .kicker-text-align {
+    /* text-align: right; */
+  }
+}
+
+/* Workaround for katex incorrectly computing bounding boxes. 
+   Unsets contain: content and downgrades to style-onyl containment.
+   Usage: manually add the "math-overflow" class to offending d-math tags. */
+.math-overflow .katex {
+  contain: style;
+}
+
+/* Figure numbers */
+
+/* body {
+  counter-reset: distill-figure-counter;
+} */
+
+a.section-number::before {
+  content: "Section ";
+}
+
+a.figure-number::before {
+  content: "Figure ";
+}
+
+a.figure-number,
+a.section-number {
+  border-bottom-color: hsla(206, 90%, 20%, 0.3);
+  text-transform: uppercase;
+  font-size: .85em;
+  color: hsla(206, 90%, 20%, 0.7);
+}
+
+a.figure-number:hover,
+a.section-number:hover {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: hsla(206, 90%, 20%, 0.7);
+}
+
+figure canvas {
+  display: block;
+}
+
+d-article h2 {
+  margin-top: 0;
+}
+
+d-article h2 a {
+  border-bottom: none;
+}
+
+.image-rendering--pixelated {
+  -ms-interpolation-mode: nearest-neighbor; /* IE 7+ (non-standard property) */
+  image-rendering: -webkit-optimize-contrast; /* Safari 6, UC Browser 9.9 */
+  image-rendering: -webkit-crisp-edges; /* Safari 7+ */
+  image-rendering: -moz-crisp-edges; /* Firefox 3.6+ */
+  image-rendering: -o-crisp-edges; /* Opera 12 */
+  image-rendering: pixelated; /* Chrome 41+ and Opera 26+ */
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="444px" height="123px" viewBox="0 0 444 123" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.2 (51160) - http://www.bohemiancoding.com/sketch -->
+    <title>connection-arrows</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="connection-arrows" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Corner" stroke-linecap="square" transform="translate(113.500000, 71.000000)" stroke="#888888">
+            <path d="M0.944487245,1.5 L37,1.5" id="Line-2"></path>
+            <path d="M44.5,9 L44.5,15.5" id="Line-2-Copy"></path>
+            <path d="M37.5,1.5 C41.5,1.5 44.5,4.5 44.5,8.5" id="Path-2"></path>
+        </g>
+        <g id="Corner" stroke-linecap="square" transform="translate(113.500000, 67.000000)" stroke="#888888">
+            <path d="M0.5,0.5 L102,0.5" id="Line-2"></path>
+            <path d="M109.5,8 L109.5,14.5" id="Line-2-Copy"></path>
+            <path d="M102.5,0.5 C106.5,0.5 109.5,3.5 109.5,7.5" id="Path-2"></path>
+        </g>
+        <g id="Corner" stroke-linecap="square" transform="translate(113.500000, 62.000000)" stroke="#888888">
+            <path d="M0.5,0.5 L167,0.5" id="Line-2"></path>
+            <path d="M174.5,8 L174.5,14.5" id="Line-2-Copy"></path>
+            <path d="M167.5,0.5 C171.5,0.5 174.5,3.5 174.5,7.5" id="Path-2"></path>
+        </g>
+        <g id="Corner" stroke-linecap="square" transform="translate(113.500000, 57.000000)" stroke="#888888">
+            <path d="M0.5,0.5 L232,0.5" id="Line-2"></path>
+            <path d="M239.5,8 L239.5,14.5" id="Line-2-Copy"></path>
+            <path d="M232.5,0.5 C236.5,0.5 239.5,3.5 239.5,7.5" id="Path-2"></path>
+        </g>
+        <g id="Corner" stroke-linecap="square" transform="translate(113.500000, 52.000000)" stroke="#888888">
+            <path d="M0.5,0.5 L297,0.5" id="Line-2"></path>
+            <path d="M304.5,8 L304.5,14.5" id="Line-2-Copy"></path>
+            <path d="M297.5,0.5 C301.5,0.5 304.5,3.5 304.5,7.5" id="Path-2"></path>
+        </g>
+        <g id="Arrow" transform="translate(415.000000, -2.000000)">
+            <path d="M3,0.0809234877 L3,92.501462" id="Line-2" stroke="#888888" stroke-linecap="square"></path>
+            <polygon id="Triangle" fill="#888888" transform="translate(3.000000, 94.500000) scale(-1, 1) rotate(-180.000000) translate(-3.000000, -94.500000) " points="3 91 6 98 0 98"></polygon>
+        </g>
+        <g id="Arrow" transform="translate(155.000000, -2.000000)">
+            <path d="M3,0.0809234877 L3,92.501462" id="Line-2" stroke="#888888" stroke-linecap="square"></path>
+            <polygon id="Triangle" fill="#888888" transform="translate(3.000000, 94.500000) scale(-1, 1) rotate(-180.000000) translate(-3.000000, -94.500000) " points="3 91 6 98 0 98"></polygon>
+        </g>
+        <g id="Arrow" transform="translate(220.000000, -2.000000)">
+            <path d="M3,0.0809234877 L3,92.501462" id="Line-2" stroke="#888888" stroke-linecap="square"></path>
+            <polygon id="Triangle" fill="#888888" transform="translate(3.000000, 94.500000) scale(-1, 1) rotate(-180.000000) translate(-3.000000, -94.500000) " points="3 91 6 98 0 98"></polygon>
+        </g>
+        <g id="Arrow" transform="translate(285.000000, -2.000000)">
+            <path d="M3,0.0809234877 L3,92.501462" id="Line-2" stroke="#888888" stroke-linecap="square"></path>
+            <polygon id="Triangle" fill="#888888" transform="translate(3.000000, 94.500000) scale(-1, 1) rotate(-180.000000) translate(-3.000000, -94.500000) " points="3 91 6 98 0 98"></polygon>
+        </g>
+        <g id="Arrow" transform="translate(350.000000, -3.000000)">
+            <path d="M3,0 L3,92.4205385" id="Line-2" stroke="#888888" stroke-linecap="square"></path>
+            <polygon id="Triangle" fill="#888888" transform="translate(3.000000, 94.500000) scale(-1, 1) rotate(-180.000000) translate(-3.000000, -94.500000) " points="3 91 6 98 0 98"></polygon>
+        </g>
+    </g>
+</svg>
